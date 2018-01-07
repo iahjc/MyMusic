@@ -51,3 +51,5 @@
         git remote add origin 仓库地址
   * 推送至远程仓库
         git push -u origin 分支名
+  * 强制推送至远程仓库
+        git push -u origin 分支名 -f
