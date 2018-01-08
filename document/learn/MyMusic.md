@@ -12,6 +12,12 @@
         npm install babel-polyfill --save-dev
         需要添加到main.js的头部 并导入
         import 'babel-polyfill'
+
+## 配置访问别名
+  * 在webpack.base.conf.js文件下配置项目路径 这样引用会很方便
+        resolve 的 alias common:resolve('src/common')
+        可以配置多个
+
 ## 配置sass支持
 1. npm install node-sass --save-dev
 2. npm install sass-loader --save-dev
