@@ -5,6 +5,13 @@
   4. 输入 makdown preview toggle(可以偷懒输入mdpt,进行模糊匹配)
   5. 按enter进行预览
 
+## 增加babel的支持
+  * babel-runtime es语法转义
+        npm install babel-runtime --save-dev
+  * babel-polyfill 对es6的api做转义
+        npm install babel-polyfill --save-dev
+        需要添加到main.js的头部 并导入
+        import 'babel-polyfill'
 ## 配置sass支持
 1. npm install node-sass --save-dev
 2. npm install sass-loader --save-dev
