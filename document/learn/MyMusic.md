@@ -13,6 +13,11 @@
         需要添加到main.js的头部 并导入
         import 'babel-polyfill'
 
+## 配置字体图标
+  * 生成网址 https://icomoon.io/app/#/select
+  * 开源的 http://fontawesome.dashgame.com/
+
+
 ## 配置访问别名
   * 在webpack.base.conf.js文件下配置项目路径 这样引用会很方便
         resolve 的 alias common:resolve('src/common')
