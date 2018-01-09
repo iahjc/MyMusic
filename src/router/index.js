@@ -1,7 +1,6 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import HelloWorld from '@/components/HelloWorld'
-import Main from '@/components/main/main'
+import MusicHall from 'components/music-hall/music-hall'
 
 Vue.use(Router)
 
@@ -9,13 +8,8 @@ export default new Router({
   routes: [
     {
       path: '/',
-      name: 'HelloWorld',
-      component: HelloWorld
-    },
-    {
-      path: '/main',
-      name: 'Main',
-      component: Main
+      name: 'MusicHall',
+      component: MusicHall
     }
   ]
 })

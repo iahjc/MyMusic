@@ -7,6 +7,7 @@ import router from './router'
 import { flexible } from 'common/js/utils/flexible'
 
 import '../static/css/font-awesome.css'
+import '../static/css/reset.css'
 
 Vue.config.productionTip = false
 // 添加终端适配

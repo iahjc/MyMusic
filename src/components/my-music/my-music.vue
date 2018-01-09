@@ -1,5 +1,7 @@
-<template>
-
+<template lang="html">
+  <section class="my-music">
+    我的
+  </section>
 </template>
 
 <script>
