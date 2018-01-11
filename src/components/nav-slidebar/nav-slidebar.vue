@@ -1,136 +1,160 @@
 <template>
-<section class="navSlidebar">
-  <div class="l-ns">
-    <ul class="l-ns-lis">
-      <li>
-        <div class="l-ns-title">
-          升级VIP
-        </div>
-        <div class="l-ns-des">
-          畅享音乐特权
-        </div>
-      </li>
-      <li>
-        <div class="l-ns-title">
-          个性装扮
-        </div>
-        <div class="l-ns-des">
-          默认皮肤
-        </div>
-      </li>
-      <li>
-        <div class="l-ns-title">
-          消息中心
-        </div>
-        <div class="l-ns-des">
+  <transition name="barslider">
+    <section class="navSlidebar" v-show="isShow">
+      <div class="l-ns">
+        <ul class="l-ns-lis">
+          <li>
+            <div class="l-ns-title">
+              升级VIP
+            </div>
+            <div class="l-ns-des">
+              畅享音乐特权
+            </div>
+          </li>
+          <li>
+            <div class="l-ns-title">
+              个性装扮
+            </div>
+            <div class="l-ns-des">
+              默认皮肤
+            </div>
+          </li>
+          <li>
+            <div class="l-ns-title">
+              消息中心
+            </div>
+            <div class="l-ns-des">
 
-        </div>
-      </li>
-      <li>
-        <div class="l-ns-title">
-          免流量服务
-        </div>
-        <div class="l-ns-des">
-          在线听歌免流量
-        </div>
-      </li>
-    </ul>
+            </div>
+          </li>
+          <li>
+            <div class="l-ns-title">
+              免流量服务
+            </div>
+            <div class="l-ns-des">
+              在线听歌免流量
+            </div>
+          </li>
+        </ul>
 
-    <ul class="l-ns-lis">
-      <li>
-        <div class="l-ns-title">
-          定时关闭
-        </div>
-        <div class="l-ns-des">
+        <ul class="l-ns-lis">
+          <li>
+            <div class="l-ns-title">
+              定时关闭
+            </div>
+            <div class="l-ns-des">
 
-        </div>
-      </li>
-      <li>
-        <div class="l-ns-title">
-          仅Wi-Fi联网
-        </div>
-        <div class="l-ns-des">
+            </div>
+          </li>
+          <li>
+            <div class="l-ns-title">
+              仅Wi-Fi联网
+            </div>
+            <div class="l-ns-des">
 
-        </div>
-      </li>
-      <li>
-        <div class="l-ns-title">
-          流量提醒
-        </div>
-        <div class="l-ns-des">
+            </div>
+          </li>
+          <li>
+            <div class="l-ns-title">
+              流量提醒
+            </div>
+            <div class="l-ns-des">
 
-        </div>
-      </li>
-      <li>
-        <div class="l-ns-title">
-          听歌偏好
-        </div>
-        <div class="l-ns-des">
+            </div>
+          </li>
+          <li>
+            <div class="l-ns-title">
+              听歌偏好
+            </div>
+            <div class="l-ns-des">
 
-        </div>
-      </li>
-    </ul>
+            </div>
+          </li>
+        </ul>
 
-    <ul class="l-ns-lis">
-      <li>
-        <div class="l-ns-title">
-          微云音乐网盘
-        </div>
-        <div class="l-ns-des">
+        <ul class="l-ns-lis">
+          <li>
+            <div class="l-ns-title">
+              微云音乐网盘
+            </div>
+            <div class="l-ns-des">
 
-        </div>
-      </li>
-      <li>
-        <div class="l-ns-title">
-          清理占用空间
-        </div>
-        <div class="l-ns-des">
+            </div>
+          </li>
+          <li>
+            <div class="l-ns-title">
+              清理占用空间
+            </div>
+            <div class="l-ns-des">
 
-        </div>
-      </li>
-      <li>
-        <div class="l-ns-title">
-          帮助与反馈
-        </div>
-        <div class="l-ns-des">
+            </div>
+          </li>
+          <li>
+            <div class="l-ns-title">
+              帮助与反馈
+            </div>
+            <div class="l-ns-des">
 
+            </div>
+          </li>
+          <li>
+            <div class="l-ns-title">
+              关于QQ音乐
+            </div>
+            <div class="l-ns-des">
+            </div>
+          </li>
+        </ul>
+      </div>
+      <div class="l-ns-control">
+        <div class="l-ns-sz">
+          <i class="fa fa-cog fa-fw icon-color"></i><span>设置</span>
         </div>
-      </li>
-      <li>
-        <div class="l-ns-title">
-          关于QQ音乐
+        <div class="l-ns-login">
+          <i class="fa fa-toggle-right icon-color"></i>&nbsp;<span>立即登录</span>
         </div>
-        <div class="l-ns-des">
-        </div>
-      </li>
-    </ul>
-  </div>
-  <div class="l-ns-control">
-    <div class="l-ns-sz">
-      <i class="fa fa-cog fa-fw icon-color"></i><span>设置</span>
-    </div>
-    <div class="l-ns-login">
-      <i class="fa fa-toggle-right icon-color"></i>&nbsp;<span>立即登录</span>
-    </div>
-  </div>
-</section>
+      </div>
+    </section>
+  </transition>
 </template>
 
 <script>
-export default {}
+export default {
+  data () {
+    return {
+      isShow: false
+    }
+  },
+  methods: {
+    show() {
+      this.isShow = true
+    },
+    hide() {
+      console.log(1)
+      this.isShow = false
+    }
+  }
+}
 </script>
 
 <style lang="sass" scoped="" type="text/css">
   @import "../../common/scss/helpers/variables.scss";
   @import "../../common/scss/helpers/mixins.scss";
+  @import "../../common/scss/helpers/function.scss";
   @import "../../common/scss/base/base.scss";
 
+  .barslider-enter-active, .barslider-leave-active
+    transition: all .3s ease
+  .barslider-enter, .barslider-leave-to
+    transform: translate3d(pxtorem(-640px), 0, 0)
+    opacity: 0
   .navSlidebar
     position: absolute
     left: 0
     top: 0
     bottom: 0
     background: $navSlidebar-bg
+    z-index: 10
     @include px2rem(width, 640px, 75px)
     .l-ns
       width: 90%
@@ -173,4 +197,5 @@ export default {}
         @include font-dpr(14px)
       .l-ns-login
         justify-content: flex-end
+        @include font-dpr(14px)
 </style>

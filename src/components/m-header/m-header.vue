@@ -1,7 +1,7 @@
 <template>
   <header class="header">
     <section class="mh-t">
-      <div class="mh-t-navbar">
+      <div class="mh-t-navbar" @click="showNavbar">
 
       </div>
       <nav class="mh-t-nav">
@@ -29,7 +29,14 @@
 </template>
 
 <script>
-export default {}
+export default {
+  methods: {
+    // 打开/关闭左侧导航
+    showNavbar() {
+      this.$emit('showNavbar')
+    }
+  }
+}
 </script>
 
 <style lang="sass" scoped="" type="text/css">

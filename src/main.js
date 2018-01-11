@@ -4,6 +4,7 @@ import 'babel-polyfill'
 import Vue from 'vue'
 import App from './App'
 import router from './router'
+import store from './store'
 import { flexible } from 'common/js/utils/flexible'
 
 import '../static/css/font-awesome.css'
@@ -16,6 +17,7 @@ flexible(window)
 new Vue({
   el: '#app',
   router,
+  store,
   template: '<App/>',
   components: { App }
 })

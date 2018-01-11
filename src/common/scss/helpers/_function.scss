@@ -7,3 +7,13 @@
   }
   @return ($px / $base-font-size) * 1em;
 }
+
+@function pxtorem($px, $base-font-size: 75px) {
+  @if (unitless($px)) {
+    @warn "Assuming #{$px} to be in pixels, attempting to convert it into pixels for you著作权归作者所有。";
+    @return pxtorem($px + 0px);
+  } @else if (unit($px) == em) {
+    @return $px;
+  }
+  @return ($px / $base-font-size) * 1rem;
+}
