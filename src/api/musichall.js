@@ -1,37 +1,55 @@
-/* 轮播图数据临时 */
-export const sliderData = {
-  'code': 0,
-  'data': {
-    'slider': [
-      {
-        'linkUrl': 'http://y.qq.com/m/act/sfhd/117.html?ADTAG=banner',
-        'picUrl': 'http://y.gtimg.cn/music/photo_new/T003R720x288M000002pOdml1qIbRM.jpg',
-        'id': 13745
-      }, {
-        'linkUrl': 'http://y.qq.com/w/album.html?albummid=003k2D9q1fMFUM',
-        'picUrl': 'http://y.gtimg.cn/music/photo_new/T003R720x288M000000f4QA9036A4A.jpg',
-        'id': 13739
-      }, {
-        'linkUrl': 'http://y.qq.com/w/album.html?albummid=000YCSkS1q1WIn',
-        'picUrl': 'http://y.gtimg.cn/music/photo_new/T003R720x288M000004JtBsu3XXMHz.jpg',
-        'id': 13747
-      }, {
-        'linkUrl': 'http://y.qq.com/w/album.html?albummid=002wjCae1Gt8gv',
-        'picUrl': 'http://y.gtimg.cn/music/photo_new/T003R720x288M000000MMaeh0qPJ46.jpg',
-        'id': 13743
-      }, {
-        'linkUrl': 'https://y.qq.com/m/act/mixnine/v3/index.html?ADTAG=jiaodiantu',
-        'picUrl': 'http://y.gtimg.cn/music/photo_new/T003R720x288M0000021y6uX0peAJG.jpg',
-        'id': 13720
+import Jsonp from 'jsonp'
+/**
+ * qq音乐上抓取banner数据
+ * @return {[type]} 返回一个promise对象
+ */
+export function getSlideData() {
+  let url = 'https://c.y.qq.com/musichall/fcgi-bin/fcg_yqqhomepagerecommend.fcg?g_tk=5381&uin=1152921504662152394&format=json&inCharset=utf-8&outCharset=utf-8&notice=0&platform=h5&needNewCode=1&_=1515637692432'
+  return new Promise(function(resolve, reject) {
+    Jsonp(url, {
+      param: 'jsonpCallback'
+    }, function(err, data) {
+      if (err) {
+        reject(err)
+      } else {
+        resolve(data)
       }
-    ],
-    'radioList': [
-      {
-        'picUrl': 'http://y.gtimg.cn/music/photo/radio/track_radio_199_13_1.jpg',
-        'Ftitle': '热歌',
-        'radioid': 199
-      }
-    ],
-    'songList': []
-  }
+    })
+  })
 }
+
+/**
+ * 歌单推荐
+ */
+export const modePlayList = [
+  {
+    'title': '每日新歌：赵天宇&#215;周震南教你攻克恋爱难题',
+    'picUrl': 'http://p.qpic.cn/music_cover/ibSiagqKjw1zfTgxY7F8CfE3CQe3f4KmogUu93816CjiaFClMOgiaI3WsQ/600?n=1',
+    'playNumber': '116.2万'
+  },
+  {
+    'title': '每日新歌：赵天宇&#215;周震南教你攻克恋爱难题',
+    'picUrl': 'http://p.qpic.cn/music_cover/ibSiagqKjw1zfTgxY7F8CfE3CQe3f4KmogUu93816CjiaFClMOgiaI3WsQ/600?n=1',
+    'playNumber': '116.2万'
+  },
+  {
+    'title': '每日新歌：赵天宇&#215;周震南教你攻克恋爱难题',
+    'picUrl': 'http://p.qpic.cn/music_cover/ibSiagqKjw1zfTgxY7F8CfE3CQe3f4KmogUu93816CjiaFClMOgiaI3WsQ/600?n=1',
+    'playNumber': '116.2万'
+  },
+  {
+    'title': '每日新歌：赵天宇&#215;周震南教你攻克恋爱难题',
+    'picUrl': 'http://p.qpic.cn/music_cover/ibSiagqKjw1zfTgxY7F8CfE3CQe3f4KmogUu93816CjiaFClMOgiaI3WsQ/600?n=1',
+    'playNumber': '116.2万'
+  },
+  {
+    'title': '每日新歌：赵天宇&#215;周震南教你攻克恋爱难题',
+    'picUrl': 'http://p.qpic.cn/music_cover/ibSiagqKjw1zfTgxY7F8CfE3CQe3f4KmogUu93816CjiaFClMOgiaI3WsQ/600?n=1',
+    'playNumber': '116.2万'
+  },
+  {
+    'title': '每日新歌：赵天宇&#215;周震南教你攻克恋爱难题',
+    'picUrl': 'http://p.qpic.cn/music_cover/ibSiagqKjw1zfTgxY7F8CfE3CQe3f4KmogUu93816CjiaFClMOgiaI3WsQ/600?n=1',
+    'playNumber': '116.2万'
+  }
+]

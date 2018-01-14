@@ -4,18 +4,33 @@
       <slot>
       </slot>
     </div>
+
+    <loading v-show="showFlag"></loading>
   </section>
 </template>
 
 <script>
 import BScroll from 'better-scroll'
+import Loading from 'base/loading/loading'
 export default {
   name: 'slider',
+  data() {
+    return {
+      showFlag: true
+    }
+  },
+  components: {
+    Loading
+  },
   mounted() {
-    this._setWidth()
-    this.initSlider()
   },
   methods: {
+    setInit() {
+      setTimeout(() => {
+        this._setWidth()
+        this.initSlider()
+      }, 20)
+    },
     _setWidth() {
       let w = this.$refs.slider.clientWidth
       let lis = this.$refs.sliderGroup.children
@@ -24,6 +39,8 @@ export default {
         item.style.width = w + 'px'
       })
       this.$refs.sliderGroup.style.width = lis.length * w + 'px'
+
+      this.showFlag = false
     },
     initSlider() {
       this.$nextTick(() => {
@@ -42,8 +59,16 @@ export default {
   @import "../../common/scss/helpers/mixins.scss";
   @import "../../common/scss/base/base.scss";
   .slider
-    min-height: 1px
+    width: 100%
+    min-height: 120px
+    position: relative
     .slide-group
+      width: 100%
       display: flex
       position: relative
+    .loading
+      display: flex
+      justify-content: center
+      align-items: center
+
 </style>

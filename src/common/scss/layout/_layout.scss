@@ -1,0 +1,15 @@
+/*! three-col布局*/
+.col-3-t {
+  width: 100%;
+  @include px2rem(height, 148px);
+  position: relative;
+  text-align: center;
+  color: $l-color;
+  @include px2rem(line-height, 148px);
+  i {
+    position: absolute;
+    right: 5%;
+    top: 50%;
+    transform: translateY(-50%);
+  }
+}

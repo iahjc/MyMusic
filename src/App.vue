@@ -2,7 +2,7 @@
   <div id="app">
     <nav-slidebar ref="navSlidebar"></nav-slidebar>
     <section class="main">
-      <m-header @showNavbar="toggleNavbar"></m-header>
+      <m-header @showNavbar="toggleNavbar" v-show="false"></m-header>
       <keep-alive>
         <router-view></router-view>
       </keep-alive>

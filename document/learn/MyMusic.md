@@ -17,6 +17,15 @@
   * 生成网址 https://icomoon.io/app/#/select
   * 开源的 http://fontawesome.dashgame.com/
 
+## 添加Axios请求支持
+  * Axios是一个基于promise的HTTP库，可以用在浏览器和node.js中
+  * github https://github.com/axios/axios
+  * 中文文档 https://www.kancloud.cn/yunye/axios/234845
+        npm install axios --save-dev
+
+## 添加jsonp跨域请求支持
+  * github https://github.com/webmodules/jsonp
+        npm install jsonp --save-dev
 
 ## 配置访问别名
   * 在webpack.base.conf.js文件下配置项目路径 这样引用会很方便
