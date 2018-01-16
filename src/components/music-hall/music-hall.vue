@@ -1,5 +1,6 @@
 <template>
 <section class="music-hall">
+  <m-header></m-header>
   <slider ref="slider">
     <div class="banner-li" v-for="item in slideList">
       <img :src="item.picUrl" />
@@ -9,42 +10,41 @@
   <nav class="music-category">
     <ul>
       <li>
-      <router-link to="/singer"><i class="fa fa-user icon-color"></i><span>歌手</span></router-link>
+        <i class="fa fa-user icon-color"></i>&nbsp;&nbsp;<span>歌手</span>
+      <li>
+        <i class="fa fa-bar-chart icon-color"></i>&nbsp;&nbsp;<span>排行</span>
       </li>
       <li>
-        <i class="fa fa-bar-chart icon-color"></i><span>排行</span>
+        <i class="fa fa-codiepie icon-color"></i>&nbsp;&nbsp;<span>电台</span>
       </li>
       <li>
-        <i class="fa fa-codiepie icon-color"></i><span>电台</span>
+        <i class="fa fa-bars icon-color"></i>&nbsp;&nbsp;<span>分类歌单</span>
       </li>
       <li>
-        <i class="fa fa-bars icon-color"></i><span>分类歌单</span>
+        <i class="fa fa-video-camera icon-color">&nbsp;&nbsp;</i><span>视频MV</span>
       </li>
       <li>
-        <i class="fa fa-video-camera icon-color"></i><span>视频MV</span>
-      </li>
-      <li>
-        <i class="fa fa-bullseye icon-color"></i><span>数字专辑</span>
+        <i class="fa fa-bullseye icon-color"></i>&nbsp;&nbsp;<span>数字专辑</span>
       </li>
     </ul>
   </nav>
 
   <three-col title="歌单推荐">
     <ul class="col-3-cont">
-      <li v-for="item in modePlayList">
+      <li v-for="item in newRecommendList" @click="toMusicList(item)">
         <div class="i-mg">
-          <img :src="item.picUrl"/>
+          <img :src="item.imgurl"/>
           <div class="i-msg">
             <div class="i-msg-num">
-              <i></i> <span>{{item.playNumber}}</span>
+              <i class="fa fa-music"></i>&nbsp;&nbsp;<span>{{item.listennum}}</span>
             </div>
             <div class="i-msg-play">
-              <i></i>
+              <i class="fa fa-play-circle-o"></i>
             </div>
           </div>
         </div>
         <p>
-          {{item.title}}
+          {{item.dissname}}
         </p>
       </li>
     </ul>
@@ -59,29 +59,44 @@
 </template>
 
 <script>
+import MHeader from 'components/m-header/m-header'
 import Slider from 'base/slider/slider'
 import ThreeCol from 'base/three-col/three-col'
 import {
   getSlideData,
-  modePlayList
+  singerRecommend
 } from 'api/musichall'
 
 export default {
   data() {
     return {
       slideList: null,
-      modePlayList: null
+      newRecommendList: null
     }
   },
   created() {
     // 请求banner数据并填充
     this.getSlideList()
-    this.modePlayList = modePlayList
   },
   mounted() {
-    console.log(11)
+    this._getNewRecommend()
   },
   methods: {
+    toMusicList(item) {
+      console.log(item)
+      this.$router.push({
+        path: `/songlist/${item.dissid}`
+      })
+    },
+    _getNewRecommend() {
+      singerRecommend().then((res) => {
+        if (res.code === 0) {
+          this.newRecommendList = res.data.list
+          this.newRecommendList.length = 6
+          console.log(this.newRecommendList)
+        }
+      })
+    },
     toSinger() {
       this.$router.push({
         path: '/singer'
@@ -95,7 +110,7 @@ export default {
           this.loadImg()
         }
       }).then((err) => {
-
+        console.log(err)
       })
     },
     // 加载出第一张图片 去执行slider的方法
@@ -108,6 +123,7 @@ export default {
     }
   },
   components: {
+    MHeader,
     Slider,
     ThreeCol
   }
@@ -121,6 +137,7 @@ export default {
 
     .music-hall
       width: 100%
+      background: #f4f4f4
       .banner-li
         img
           width: 100%
@@ -136,20 +153,43 @@ export default {
           display: flex
           justify-content: center
           align-items: center
+          i
+            @include font-dpr(24px)
     .col-3-cont
       display: flex
       flex-wrap:  wrap
       justify-content: space-between
       li
         width: 32%
+        color: #fff2eb
         .i-mg
           width: 100%
           position: relative
           .i-msg
             position: absolute
             left: 0
-            bottom: 0
+            bottom: 2%
             z-index: 2
+            @include px2rem(height, 56px)
+            display: flex
+            justify-content: space-between
+            width: 100%
+            align-items: center
+            .i-msg-num
+              @include font-dpr(12px)
+              @include px2rem(margin-left, 20px)
+            .i-msg-play
+              @include font-dpr(20px)
+              @include px2rem(margin-right, 20px)
           img
             width: 100%
+        p
+          color: #0d0d0d
+          @include font-dpr(12px)
+          @include px2rem(line-height, 32px)
+          box-sizing: border-box
+          padding-left: 3%
+          padding-right: 3%
+          @include px2rem(margin-top, 16px)
+          @include px2rem(margin-bottom, 16px)
 </style>
