@@ -20,6 +20,36 @@ export function getSlideData() {
 }
 
 /**
+ * 获取歌曲播放时间戳
+ * @return {[type]} [description]
+ */
+export function getExpressSong(songmid, filename, callback) {
+  let url = '/api/getExpressSong'
+  let data = {
+    'g_tk': '1928093487',
+    'inCharset': 'utf-8',
+    'outCharset': 'utf-8',
+    'notice': '0',
+    'format': 'json',
+    'cid': '205361747',
+    'platform': 'yqq',
+    'hostUin': '0',
+    'needNewCode': '0',
+    'uin': '0',
+    'songmid': songmid,
+    'filename': filename,
+    'guid': '8707000960',
+    'callback': callback
+  }
+
+  return axios.get(url, {
+    params: data
+  }).then((res) => {
+    return Promise.resolve(res.data)
+  })
+}
+
+/**
  * 获取收藏量
  * @param  {[type]} disstid [description]
  * @return {[type]}         [description]
@@ -58,26 +88,21 @@ export function getCollectionNum(disstid) {
 export function getSongList(disstid) {
   const url = '/api/getSongList'
   const data = {
-    'g_tk': '5381',
+    'g_tk': '1928093487',
     'uin': '0',
-    'format': 'json',
+    'format': 'jsonp',
     'inCharset': 'utf-8',
     'outCharset': 'utf-8',
     'notice': '0',
-    'platform': 'h5',
-    'needNewCode': '1',
+    'platform': 'yqq',
+    'needNewCode': '0',
     'new_format': '1',
-    'pic': '500',
     'disstid': disstid,
+    'jsonpCallback': 'playlistinfoCallback',
     'type': '1',
     'json': '1',
     'utf8': '1',
-    'onlysong': '0',
-    'picmid': '1',
-    'nosign': '1',
-    'song_begin': '0',
-    'song_num': '15',
-    '_': '1515914500013'
+    'onlysong': '0'
   }
 
   return axios.get(url, {

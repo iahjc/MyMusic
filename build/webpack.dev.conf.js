@@ -75,6 +75,22 @@ const devWebpackConfig = merge(baseWebpackConfig, {
             console.log(e)
           })
       })
+
+      app.get('/api/getExpressSong', function (req, res) {
+        // let url = 'https://c.y.qq.com/base/fcgi-bin/fcg_music_express_mobile3.fcg?g_tk=5381&jsonpCallback=MusicJsonCallback6224818263178897&loginUin=0&hostUin=0&format=json&inCharset=utf8&outCharset=utf-8&notice=0&platform=yqq&needNewCode=0&cid=205361747&callback=MusicJsonCallback6224818263178897&uin=0&songmid=003OUlho2HcRHC&filename=C400003OUlho2HcRHC.m4a&guid=2419123392'
+        let url = 'https://c.y.qq.com/base/fcgi-bin/fcg_music_express_mobile3.fcg'
+          axios.get(url, {
+            headers: {
+              referer: 'https://c.y.qq.com',
+              host: 'c.y.qq.com'
+            },
+            params: req.query
+          }).then((response) => {
+            res.json(response.data)
+          }).catch((e) => {
+            console.log(e)
+          })
+      })
     },
     clientLogLevel: 'warning',
     historyApiFallback: true,

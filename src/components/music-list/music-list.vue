@@ -18,7 +18,7 @@
       <div class="ml-li" v-for="(item, index) in songList" @click="selectItem(item, index)">
         <div class="ml-l">
           <h4 class="ml-l-title">{{item.name}}</h4>
-          <p>{{item.singer[0].name}}.{{item.album.name}}.{{item.album.subtitle}}</p>
+          <p>{{item.des}}</p>
         </div>
         <div class="ml-m">
         </div>
@@ -42,7 +42,7 @@ export default {
   },
   methods: {
     selectItem(item, index) {
-      console.log(item)
+      this.$emit('selectSingerMusic', item, index)
     }
   }
 }
@@ -83,5 +83,4 @@ export default {
         display: flex
         align-items: center
         box-sizing: border-box
-        margin-left: 60px
 </style>

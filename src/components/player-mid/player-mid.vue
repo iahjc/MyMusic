@@ -4,7 +4,7 @@
       <li class="pmu-m">
         <div class="spm-img">
           <div>
-            <img src="http://p.qpic.cn/music_cover/V34Wl85ZuJRskg3Ds3R8y5u3SVib7ibpLN46hjAmDCykVdpmbicejo6vQ/600?n=1" />
+            <img :src="song.image" />
           </div>
         </div>
         <p class="sp-gc">
@@ -22,6 +22,12 @@
 
 <script>
 export default {
+  props: {
+    song: {
+      type: Object,
+      default: {}
+    }
+  }
 }
 </script>
 
