@@ -1,59 +1,62 @@
 <template>
 <section class="music-hall">
   <m-header></m-header>
-  <slider ref="slider">
-    <div class="banner-li" v-for="item in slideList">
-      <img :src="item.picUrl" />
-    </div>
-  </slider>
-
-  <nav class="music-category">
-    <ul>
-      <li>
-        <i class="fa fa-user icon-color"></i>&nbsp;&nbsp;<span>歌手</span>
-      <li>
-        <i class="fa fa-bar-chart icon-color"></i>&nbsp;&nbsp;<span>排行</span>
-      </li>
-      <li>
-        <i class="fa fa-codiepie icon-color"></i>&nbsp;&nbsp;<span>电台</span>
-      </li>
-      <li>
-        <i class="fa fa-bars icon-color"></i>&nbsp;&nbsp;<span>分类歌单</span>
-      </li>
-      <li>
-        <i class="fa fa-video-camera icon-color">&nbsp;&nbsp;</i><span>视频MV</span>
-      </li>
-      <li>
-        <i class="fa fa-bullseye icon-color"></i>&nbsp;&nbsp;<span>数字专辑</span>
-      </li>
-    </ul>
-  </nav>
-
-  <three-col title="歌单推荐">
-    <ul class="col-3-cont">
-      <li v-for="item in newRecommendList" @click="toMusicList(item)">
-        <div class="i-mg">
-          <img :src="item.imgurl"/>
-          <div class="i-msg">
-            <div class="i-msg-num">
-              <i class="fa fa-music"></i>&nbsp;&nbsp;<span>{{item.listennum}}</span>
-            </div>
-            <div class="i-msg-play">
-              <i class="fa fa-play-circle-o"></i>
-            </div>
-          </div>
+  <scroll ref="scroll" class="mh-cont" :data="newRecommendList">
+    <div>
+      <slider ref="slider">
+        <div class="banner-li" v-for="item in slideList">
+          <img :src="item.picUrl" />
         </div>
-        <p>
-          {{item.dissname}}
-        </p>
-      </li>
-    </ul>
-  </three-col>
+      </slider>
 
-  <three-col title="每日歌曲推荐">
+      <nav class="music-category">
+        <ul>
+          <li @click="toSinger">
+            <i class="fa fa-user icon-color"></i>&nbsp;&nbsp;<span>歌手</span>
+            <li>
+              <i class="fa fa-bar-chart icon-color"></i>&nbsp;&nbsp;<span>排行</span>
+            </li>
+            <li>
+              <i class="fa fa-codiepie icon-color"></i>&nbsp;&nbsp;<span>电台</span>
+            </li>
+            <li>
+              <i class="fa fa-bars icon-color"></i>&nbsp;&nbsp;<span>分类歌单</span>
+            </li>
+            <li>
+              <i class="fa fa-video-camera icon-color">&nbsp;&nbsp;</i><span>视频MV</span>
+            </li>
+            <li>
+              <i class="fa fa-bullseye icon-color"></i>&nbsp;&nbsp;<span>数字专辑</span>
+            </li>
+        </ul>
+      </nav>
 
-  </three-col>
+      <three-col title="歌单推荐">
+        <ul class="col-3-cont">
+          <li v-for="item in newRecommendList" @click="toMusicList(item)">
+            <div class="i-mg">
+              <img :src="item.imgurl" />
+              <div class="i-msg">
+                <div class="i-msg-num">
+                  <i class="fa fa-music"></i>&nbsp;&nbsp;<span>{{item.listennum}}</span>
+                </div>
+                <div class="i-msg-play">
+                  <i class="fa fa-play-circle-o"></i>
+                </div>
+              </div>
+            </div>
+            <p>
+              {{item.dissname}}
+            </p>
+          </li>
+        </ul>
+      </three-col>
 
+      <three-col title="每日歌曲推荐">
+
+      </three-col>
+    </div>
+  </scroll>
   <router-view></router-view>
 </section>
 </template>
@@ -62,6 +65,8 @@
 import MHeader from 'components/m-header/m-header'
 import Slider from 'base/slider/slider'
 import ThreeCol from 'base/three-col/three-col'
+import Scroll from 'base/scroll/scroll'
+
 import {
   getSlideData,
   singerRecommend
@@ -82,6 +87,11 @@ export default {
     this._getNewRecommend()
   },
   methods: {
+    toSinger() {
+      this.$router.push({
+        path: `/singer`
+      })
+    },
     toMusicList(item) {
       console.log(item)
       this.$router.push({
@@ -95,11 +105,6 @@ export default {
           this.newRecommendList.length = 6
           console.log(this.newRecommendList)
         }
-      })
-    },
-    toSinger() {
-      this.$router.push({
-        path: '/singer'
       })
     },
     // 获取banner数据
@@ -125,7 +130,8 @@ export default {
   components: {
     MHeader,
     Slider,
-    ThreeCol
+    ThreeCol,
+    Scroll
   }
 }
 </script>
@@ -138,6 +144,18 @@ export default {
     .music-hall
       width: 100%
       background: #f4f4f4
+      position: fixed
+      left: 0
+      top: 0
+      bottom: 0
+      overflow: hidden
+      .mh-cont
+        position: absolute
+        overflow: hidden
+        width: 100%
+        bottom: 0
+        left: 0
+        @include px2rem(top, 220px)
       .banner-li
         img
           width: 100%

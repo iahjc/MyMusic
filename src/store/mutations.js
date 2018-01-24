@@ -15,6 +15,12 @@ const matutaions = {
   },
   [types.SET_FULLSCREEN](state, flag) {
     state.fullScreen = flag
+  },
+  [types.SET_PLAYING](state, flag) {
+    state.playing = flag
+  },
+  [types.SET_MODE](state, mode) {
+    state.mode = mode
   }
 }
 

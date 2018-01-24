@@ -1,6 +1,6 @@
 <template>
   <header class="s-header">
-    <div class="s-h-nav">
+    <div class="s-h-nav" @click="back">
       <i class="fa  fa-chevron-left"></i>
     </div>
 
@@ -17,6 +17,11 @@
 
 <script>
 export default {
+  methods: {
+    back() {
+      window.history.length > 1 ? this.$router.go(-1) : this.$router.push('/')
+    }
+  }
 }
 </script>
 

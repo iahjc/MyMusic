@@ -3,13 +3,13 @@
     <div class="sl-key">
       热
     </div>
-    <div class="sl-lis">
+    <div class="sl-lis" v-for="(item, index) in singerList" @click="selectItem(item, index)">
       <div class="sl-li">
         <div class="sli-img">
-          <img src="https://y.gtimg.cn/music/photo_new/T001R150x150M000002J4UUk29y8BY.jpg?max_age=2592000" />
+          <img :src="item.img" />
         </div>
         <p class="sli-author">
-          于文文
+          {{item.name}}
         </p>
         <i class="fa fa-angle-right"></i>
       </div>
@@ -19,6 +19,21 @@
 
 <script>
 export default {
+  props: {
+    singerList: {
+      type: Array,
+      default: []
+    }
+  },
+  created() {
+    console.log(111)
+    console.log(this.singerList)
+  },
+  methods: {
+    selectItem(item, index) {
+      this.$emit('selectItem', item, index)
+    }
+  }
 }
 </script>
 

@@ -1,16 +1,16 @@
 <template>
   <section class="player-control">
-    <div class="pc-cr">
-      <i class="fa fa-random"></i>
+    <div class="pc-cr" @click="playMode" ref="pcCr">
+      <i class="fa fa-refresh"></i>
     </div>
     <ul class="pc-main">
-      <li>
+      <li @click="prev">
             <i class="fa fa-step-backward"></i>
       </li>
-      <li>
+      <li ref="isPlay" @click="isPlaying">
             <i class="fa fa-play"></i>
       </li>
-      <li>
+      <li @click="next">
             <i class="fa fa-step-forward"></i>
       </li>
     </ul>
@@ -21,7 +21,37 @@
 </template>
 
 <script>
+import {playMode} from 'common/js/playmode'
 export default {
+  methods: {
+    setModeStyle(mode) {
+      if (mode === playMode.sequence) {
+        this.$refs.pcCr.children[0].className = 'fa fa-refresh'
+      } else if (mode === playMode.loop) {
+        this.$refs.pcCr.children[0].className = 'fa fa-power-off'
+      } else {
+        this.$refs.pcCr.children[0].className = 'fa fa-random'
+      }
+    },
+    playMode() {
+      this.$emit('setModeStyle')
+    },
+    play() {
+      this.$refs.isPlay.children[0].className = 'fa fa-pause'
+    },
+    stop() {
+      this.$refs.isPlay.children[0].className = 'fa fa-play'
+    },
+    isPlaying() {
+      this.$emit('isPlaying')
+    },
+    prev() {
+      this.$emit('prev')
+    },
+    next() {
+      this.$emit('next')
+    }
+  }
 }
 </script>
 

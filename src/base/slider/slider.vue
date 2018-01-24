@@ -24,6 +24,20 @@ export default {
       slides: null
     }
   },
+  props: {
+    loop: {
+      type: Boolean,
+      default: true
+    },
+    autoPlay: {
+      type: Boolean,
+      default: true
+    },
+    interval: {
+      type: Number,
+      default: 4000
+    }
+  },
   components: {
     Loading
   },
@@ -56,7 +70,17 @@ export default {
       this.$nextTick(() => {
         this.slides = new BScroll(this.$refs.slider, {
           scrollX: true,
-          scrollY: false
+          scrollY: false,
+          momentum: false, // 当快速在屏幕上滑动一段距离的时候，会根据滑动的距离和时间计算出动量，并生成滚动动画。设置为true则开启动画。
+          snap: true,  // 开启slide组件
+          snapThreshold: 0.3, // 表示可滚动到下一个阈值
+          snapSpeed: 400
+        })
+
+        // 滚动结束的时候 改变状态
+        this.slides.on('scrollEnd', () => {
+          let pageIndex = this.slides.getCurrentPage().pageX
+          this.currentIndex = pageIndex
         })
       })
     }

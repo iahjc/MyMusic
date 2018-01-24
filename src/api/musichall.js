@@ -148,3 +148,34 @@ export function singerRecommend() {
     return Promise.resolve(res.data)
   })
 }
+
+/**
+ * 歌手列表
+ * @return {[type]} [description]
+ */
+export function singerList() {
+  let url = `/api/getSingerList`
+  let params = {
+    'channel': 'singer',
+    'page': 'list',
+    'key': 'all_all_all',
+    'pagesize': '100',
+    'pagenum': '1',
+    'g_tk': '5381',
+    'jsonpCallback': 'GetSingerListCallback',
+    'loginUin': '0',
+    'hostUin': '0',
+    'format': 'jsonp',
+    'inCharset': 'utf8',
+    'outCharset': 'utf-8',
+    'notice': '0',
+    'platform': 'yqq',
+    'needNewCode': '0'
+  }
+
+  return axios.get(url, {
+    params: params
+  }).then((res) => {
+    return Promise.resolve(res.data)
+  })
+}

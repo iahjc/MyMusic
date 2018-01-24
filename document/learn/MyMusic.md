@@ -68,6 +68,7 @@
   - github网址: https://github.com/ustbhuangyi/better-scroll
   - 中文文档  https://github.com/ustbhuangyi/better-scroll/blob/master/README_zh-CN.md
         npm install better-scroll --save-dev
+  - API介绍 https://ustbhuangyi.github.io/better-scroll/doc/zh-hans/#better-scroll %E6%98%AF%E4%BB%80%E4%B9%88
 
 ## 配置vuex状态管理
   - Vuex官方中文网址: https://vuex.vuejs.org/zh-cn/

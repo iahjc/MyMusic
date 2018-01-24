@@ -51,6 +51,9 @@ export default {
     display: flex
     flex-direction: column
     align-items: center
+    position: absolute
+    left: 0
+    top: 0
     .mh-t
       display: flex
       width: 90%

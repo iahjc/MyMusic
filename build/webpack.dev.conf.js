@@ -91,6 +91,51 @@ const devWebpackConfig = merge(baseWebpackConfig, {
             console.log(e)
           })
       })
+
+      app.get('/api/getSingerList', function (req, res) {
+        let url = 'https://c.y.qq.com/v8/fcg-bin/v8.fcg'
+        axios.get(url, {
+          headers: {
+            referer: 'https://c.y.qq.com',
+            host: 'c.y.qq.com'
+          },
+          params: req.query
+        }).then((response) => {
+          res.json(response.data)
+        }).catch((e) => {
+          console.log(e)
+        })
+      })
+
+      app.get('/api/getFSNum', function (req, res) {
+        let url = 'https://c.y.qq.com/rsc/fcgi-bin/fcg_order_singer_getnum.fcg'
+        axios.get(url, {
+          headers: {
+            referer: 'https://c.y.qq.com',
+            host: 'c.y.qq.com'
+          },
+          params: req.query
+        }).then((response) => {
+          res.json(response.data)
+        }).catch((e) => {
+          console.log(e)
+        })
+      })
+
+      app.get('/api/getSingerDetail', function (req, res) {
+        let url = 'https://c.y.qq.com/v8/fcg-bin/fcg_v8_singer_track_cp.fcg'
+        axios.get(url, {
+          headers: {
+            referer: 'https://c.y.qq.com',
+            host: 'c.y.qq.com'
+          },
+          params: req.query
+        }).then((response) => {
+          res.json(response.data)
+        }).catch((e) => {
+          console.log(e)
+        })
+      })
     },
     clientLogLevel: 'warning',
     historyApiFallback: true,

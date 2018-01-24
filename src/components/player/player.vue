@@ -6,7 +6,7 @@
           <i class="fa fa-angle-left"></i>
         </div>
         <p>
-          歌单
+          {{currentSong.name}}
         </p>
         <div class="sl-h-r">
            <i class="fa fa-ellipsis-h"></i>
@@ -19,7 +19,7 @@
       </div>
 
       <div class="sp-t">
-        <p v-html="currentSong.name"></p>
+        <p v-html="currentSong.singer"></p>
         <div class="sp-t-yx">
           <select-ui ref="selectUi"></select-ui>
           <div class="sp-bz">
@@ -32,10 +32,10 @@
         <player-mid :song="currentSong"></player-mid>
       </div>
       <div class="sp-process">
-        <player-process></player-process>
+        <player-process :song="currentSong" @toMusicTime="toMusicTime" ref="playerProcess"></player-process>
       </div>
       <div class="sp-control">
-        <player-control></player-control>
+        <player-control ref="playerControl" @setModeStyle="setModeStyle" @next="next" @prev="prev" @isPlaying="isPlaying"></player-control>
       </div>
       <div class="sp-auxiliary">
         <player-auxiliary></player-auxiliary>
@@ -62,7 +62,7 @@
         <i class="fa fa-music"></i>
       </div>
     </section>
-    <audio ref="myAudio" :src="currentSong.url" @canplay="ready"></audio>
+    <audio ref="myAudio" :src="currentSong.url" @error="error" @ended="end" @timeupdate="updateTime" @play="ready"></audio>
   </section>
 </template>
 
@@ -73,32 +73,108 @@ import PlayerMid from 'components/player-mid/player-mid'
 import PlayerProcess from 'components/player-process/player-process'
 import PlayerControl from 'components/player-control/player-control'
 import PlayerAuxiliary from 'components/player-auxiliary/player-auxiliary'
+import {playMode} from 'common/js/playmode'
 export default {
   data() {
     return {
       screenFlag: false,
-      miniFlag: false
+      miniFlag: false,
+      currentTime: 0,
+      songReady: false
     }
   },
   computed: {
     ...mapGetters([
       'fullScreen',
       'playList',
-      'currentSong'
+      'currentSong',
+      'playing',
+      'mode',
+      'currentIndex'
     ])
   },
   methods: {
     ...mapMutations({
-      setFullScreen: 'SET_FULLSCREEN'
+      setFullScreen: 'SET_FULLSCREEN',
+      setPlaying: 'SET_PLAYING',
+      setMode: 'SET_MODE',
+      setCurrentIndex: 'SET_CURRENTINDEX'
     }),
+    // 设置播放模式
+    setModeStyle() {
+      if (this.mode === playMode.sequence) {
+        this.$refs.playerControl.setModeStyle(playMode.loop)
+        this.setMode(playMode.loop)
+      } else if (this.mode === playMode.loop) {
+        this.$refs.playerControl.setModeStyle(playMode.random)
+        this.setMode(playMode.random)
+      } else {
+        this.$refs.playerControl.setModeStyle(playMode.sequence)
+        this.setMode(playMode.sequence)
+      }
+    },
+    prev() {
+      if (this.currentIndex <= -1) {
+        this.setCurrentIndex(0)
+        console.log(this.currentIndex)
+      } else {
+        let index = this.currentIndex - 1
+        this.setCurrentIndex(index)
+      }
+    },
+    next() {
+      if ((this.currentIndex - 1) >= this.playList.length) {
+        this.setCurrentIndex(0)
+      } else {
+        let index = this.currentIndex + 1
+        this.setCurrentIndex(index)
+      }
+    },
+    toMusicTime(percent) {
+      this.$refs.playerProcess.setProcess(percent)
+      let duration = percent * this.currentSong.duration / 100
+      this.$refs.playerProcess.setPlayTime(duration)
+      this.$refs.myAudio.currentTime = duration
+      this.$refs.playerControl.play()
+      this.$refs.myAudio.play()
+    },
+    updateTime(e) {
+      this.currentTime = e.target.currentTime
+      this.$refs.playerProcess.setTime(this.currentTime)
+    },
+    isPlaying() {
+      if (this.playing) {
+        this.setPlaying(false)
+        this.$refs.myAudio.pause()
+        this.$refs.playerControl.stop()
+      } else {
+        this.setPlaying(true)
+        this.$refs.myAudio.play()
+        this.$refs.playerControl.play()
+      }
+    },
     showMini() {
       this.setFullScreen(false)
     },
     showFullScreen() {
       this.setFullScreen(true)
     },
+    // play 当音频/视频已开始或不再暂停时
     ready() {
-      this.$refs.myAudio.play()
+      this.songReady = true
+    },
+    loop() {
+      this.toMusicTime(0)
+    },
+    end() {
+      // 歌曲播放结束
+      if (this.mode === playMode.loop) {
+        this.loop()
+      } else {
+        this.next()
+      }
+    },
+    error() {
     }
   },
   components: {
@@ -107,6 +183,26 @@ export default {
     PlayerProcess,
     PlayerControl,
     PlayerAuxiliary
+  },
+  watch: {
+    currentSong(newSong, oldSong) {
+      if (!newSong.id) {
+        return
+      }
+
+      if (newSong.id === oldSong.id) {
+        return
+      }
+      this.$refs.myAudio.addEventListener('canplay', function() {
+        this.play()
+      })
+    },
+    playing(newPlaying) {
+      const audio = this.$refs.myAudio
+      this.$nextTick(() => {
+        newPlaying ? audio.play() : audio.pause()
+      })
+    }
   }
 }
 </script>
@@ -142,6 +238,7 @@ export default {
           i
             color: #fff
             @include font-dpr(32px)
+            transform: rotate(-90deg)
         p
           @include font-dpr(15px)
           color: #fffdfe
