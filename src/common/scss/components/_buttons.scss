@@ -1,0 +1,13 @@
+.btn {
+  @include px2rem(height, 72px);
+  @include px2rem(width, 196px);
+  box-sizing: border-box;
+  border-color: #fff;
+  @include px2rem(border-width, 2px);
+  border-style: solid;
+  border-radius: 30px;
+  @include font-dpr(18px);
+  color: #fff;
+  @include px2rem(line-height, 72px);
+  text-align: center;
+}

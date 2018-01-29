@@ -1,19 +1,19 @@
 <template>
-<section class="music-hall">
-  <m-header></m-header>
-  <scroll ref="scroll" class="mh-cont" :data="newRecommendList">
-    <div>
-      <slider ref="slider">
-        <div class="banner-li" v-for="item in slideList">
-          <img :src="item.picUrl" />
-        </div>
-      </slider>
+  <section class="music-hall" ref="musicHall">
+    <scroll ref="scroll" class="mh-cont" :data="newRecommendList">
+      <div>
+        <slider ref="slider">
+          <div class="banner-li" v-for="item in slideList">
+            <img :src="item.picUrl" />
+          </div>
+        </slider>
 
-      <nav class="music-category">
-        <ul>
-          <li @click="toSinger">
-            <i class="fa fa-user icon-color"></i>&nbsp;&nbsp;<span>歌手</span>
-            <li>
+        <nav class="music-category">
+          <ul>
+            <li @click="toSinger">
+              <i class="fa fa-user icon-color"></i>&nbsp;&nbsp;<span>歌手</span>
+            </li>
+            <li @click="toRank">
               <i class="fa fa-bar-chart icon-color"></i>&nbsp;&nbsp;<span>排行</span>
             </li>
             <li>
@@ -28,44 +28,46 @@
             <li>
               <i class="fa fa-bullseye icon-color"></i>&nbsp;&nbsp;<span>数字专辑</span>
             </li>
-        </ul>
-      </nav>
+          </ul>
+        </nav>
 
-      <three-col title="歌单推荐">
-        <ul class="col-3-cont">
-          <li v-for="item in newRecommendList" @click="toMusicList(item)">
-            <div class="i-mg">
-              <img :src="item.imgurl" />
-              <div class="i-msg">
-                <div class="i-msg-num">
-                  <i class="fa fa-music"></i>&nbsp;&nbsp;<span>{{item.listennum}}</span>
-                </div>
-                <div class="i-msg-play">
-                  <i class="fa fa-play-circle-o"></i>
+        <three-col title="歌单推荐">
+          <ul class="col-3-cont">
+            <li v-for="item in newRecommendList" @click="toMusicList(item)">
+              <div class="i-mg">
+                <img :src="item.imgurl" />
+                <div class="i-msg">
+                  <div class="i-msg-num">
+                    <i class="fa fa-music"></i>&nbsp;&nbsp;<span>{{item.listennum}}</span>
+                  </div>
+                  <div class="i-msg-play">
+                    <i class="fa fa-play-circle-o"></i>
+                  </div>
                 </div>
               </div>
-            </div>
-            <p>
-              {{item.dissname}}
-            </p>
-          </li>
-        </ul>
-      </three-col>
+              <p>
+                {{item.dissname}}
+              </p>
+            </li>
+          </ul>
+        </three-col>
 
-      <three-col title="每日歌曲推荐">
+        <three-col title="每日歌曲推荐">
 
-      </three-col>
-    </div>
-  </scroll>
-  <router-view></router-view>
-</section>
+        </three-col>
+      </div>
+    </scroll>
+    <router-view></router-view>
+  </section>
 </template>
 
 <script>
+import {mapGetters, mapMutations} from 'vuex'
 import MHeader from 'components/m-header/m-header'
 import Slider from 'base/slider/slider'
 import ThreeCol from 'base/three-col/three-col'
 import Scroll from 'base/scroll/scroll'
+import Bg from 'base/bg/bg'
 
 import {
   getSlideData,
@@ -87,13 +89,24 @@ export default {
     this._getNewRecommend()
   },
   methods: {
+    showNavbar() {
+      if (this.navFlag) {
+        this._hideNav()
+      } else {
+        this._showNav()
+      }
+    },
     toSinger() {
       this.$router.push({
         path: `/singer`
       })
     },
+    toRank() {
+      this.$router.push({
+        path: '/rank'
+      })
+    },
     toMusicList(item) {
-      console.log(item)
       this.$router.push({
         path: `/songlist/${item.dissid}`
       })
@@ -128,7 +141,6 @@ export default {
     }
   },
   components: {
-    MHeader,
     Slider,
     ThreeCol,
     Scroll
@@ -138,6 +150,7 @@ export default {
 
   <style lang="sass" scoped="" type="text/css">
     @import "../../common/scss/helpers/variables.scss";
+    @import "../../common/scss/helpers/function.scss";
     @import "../../common/scss/helpers/mixins.scss";
     @import "../../common/scss/base/base.scss";
 
@@ -146,7 +159,7 @@ export default {
       background: #f4f4f4
       position: fixed
       left: 0
-      top: 0
+      @include px2rem(top, 152px)
       bottom: 0
       overflow: hidden
       .mh-cont
@@ -155,7 +168,7 @@ export default {
         width: 100%
         bottom: 0
         left: 0
-        @include px2rem(top, 220px)
+        top: 0
       .banner-li
         img
           width: 100%

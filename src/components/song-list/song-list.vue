@@ -45,7 +45,11 @@
       </li>
     </ul>
   </div>
-  <music-list :songList="songList" @selectSingerMusic="selectItems"></music-list>
+  <scroll class="sl-wrapper" :data="songList">
+    <div>
+      <music-list :songList="songList" @selectSingerMusic="selectItems"></music-list>
+    </div>
+  </scroll>
 </section>
 </template>
 
@@ -57,10 +61,12 @@ import {
   getCollectionNum
 } from 'api/musichall'
 import MusicList from 'components/music-list/music-list'
+import Scroll from 'base/scroll/scroll'
 
 export default {
   components: {
-    MusicList
+    MusicList,
+    Scroll
   },
   data() {
     return {
@@ -138,7 +144,10 @@ export default {
 
   .song-list
     width: 100%
-    position: relative
+    position: fixed
+    bottom: 0
+    overflow: hidden
+    top: 0
     .sl-h
       width: 100%
       position: absolute
@@ -255,4 +264,10 @@ export default {
           align-items: center
           i
             @include font-dpr(18px)
+    .sl-wrapper
+      position: absolute
+      @include px2rem(top, 520px)
+      width: 100%
+      bottom: 0
+      overflow: hidden
 </style>

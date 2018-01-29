@@ -2,7 +2,7 @@
   <section class="music-list">
     <div class="ml-t">
       <div class="ml-t-l">
-        <i class="fa fa-play-circle-o"></i>&nbsp;&nbsp;<span>全部播放()</span>
+        <i class="fa fa-play-circle-o"></i>&nbsp;&nbsp;<span>全部播放</span>
       </div>
       <ul>
         <li>
@@ -78,6 +78,8 @@ export default {
     .ml-list
       width: 100%
       .ml-li
+        padding-left: 3%
+        padding-right: 3%
         @include px2rem(height, 100px)
         border: 1px solid #f2f2f2
         display: flex

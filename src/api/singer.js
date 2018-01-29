@@ -25,7 +25,7 @@ export function getFSNum(mid) {
   })
 }
 
-export function getSingerDetail() {
+export function getSingerDetail(mid) {
   let params = {
     'g_tk': 5381,
     'jsonpCallback': 'MusicJsonCallbacksinger_track',
@@ -37,7 +37,7 @@ export function getSingerDetail() {
     'notice': '0',
     'platform': 'yqq',
     'needNewCode': '0',
-    'singermid': '0025NhlN2yWrP4',
+    'singermid': mid,
     'order': 'listen',
     'begin': '0',
     'num': '30',
@@ -45,6 +45,29 @@ export function getSingerDetail() {
   }
 
   let url = '/api/getSingerDetail'
+
+  return axios.get(url, {
+    params: params
+  }).then((res) => {
+    return Promise.resolve(res.data)
+  })
+}
+
+/**
+ * 获取歌手详情
+ * @param  {[type]} mid [description]
+ * @return {[type]}     [description]
+ */
+export function getSinger(mid) {
+  let params = {
+    'singermid': mid,
+    'utf8': '1',
+    'outCharset': 'utf-8',
+    'format': 'xml',
+    'r': '1516757464606'
+  }
+
+  let url = '/api/getSinger'
 
   return axios.get(url, {
     params: params

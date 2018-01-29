@@ -7,7 +7,9 @@ const state = {
   currentIndex: 0,
   fullScreen: false,
   playing: false,
-  mode: playMode.sequence
+  mode: playMode.sequence,
+  singer: {},
+  navFlag: false
 }
 
 export default state

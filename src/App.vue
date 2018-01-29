@@ -6,14 +6,29 @@
 </div>
 </template>
 <script>
+import {mapGetters} from 'vuex'
 import NavSlidebar from 'components/nav-slidebar/nav-slidebar'
 import Player from 'components/player/player'
 // import Main from 'components/main/main'
 export default {
   name: 'app',
+  computed: {
+    ...mapGetters([
+      'navFlag'
+    ])
+  },
   components: {
     NavSlidebar,
     Player
+  },
+  watch: {
+    navFlag(newFlag) {
+      if (newFlag) {
+        this.$refs.navSlidebar.show()
+      } else {
+        this.$refs.navSlidebar.hide()
+      }
+    }
   }
 }
 </script>

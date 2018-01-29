@@ -153,12 +153,13 @@ export function singerRecommend() {
  * 歌手列表
  * @return {[type]} [description]
  */
-export function singerList() {
+export function singerList(condition) {
+  console.log(condition)
   let url = `/api/getSingerList`
   let params = {
     'channel': 'singer',
     'page': 'list',
-    'key': 'all_all_all',
+    'key': condition,
     'pagesize': '100',
     'pagenum': '1',
     'g_tk': '5381',

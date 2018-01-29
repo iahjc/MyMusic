@@ -1,11 +1,16 @@
 <template>
-<section class="mask" ref="mask">
+<section class="mask" ref="mask" v-show="showFlag" @click="selectBg">
 
 </section>
 </template>
 
 <script>
 export default {
+  data() {
+    return {
+      showFlag: false
+    }
+  },
   props: {
     /**
      * 遮罩范围
@@ -31,6 +36,17 @@ export default {
     this.setBgColor()
   },
   methods: {
+    selectBg() {
+      this.$emit('selectBg')
+    },
+    show() {
+      this.showFlag = true
+      this.$refs.mask.style.transition = 'all .3s ease'
+      this.$refs.mask.style.opacity = '0.2'
+    },
+    hide() {
+      this.showFlag = false
+    },
     setMask() {
       if (this.maskType === 'screen') {
         let w = document.documentElement.clientWidth

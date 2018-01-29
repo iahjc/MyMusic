@@ -2,7 +2,7 @@
   <section class="player-mid">
     <ul class="pm-u">
       <li class="pmu-m">
-        <div class="spm-img">
+        <div class="spm-img" :class="spmCls" ref="spmImg">
           <div>
             <img :src="song.image" />
           </div>
@@ -22,11 +22,27 @@
 
 <script>
 export default {
+  data() {
+    return {
+      rotate: 0
+    }
+  },
   props: {
     song: {
       type: Object,
       default: {}
+    },
+    playing: {
+      type: Boolean,
+      default: false
     }
+  },
+  computed: {
+    spmCls() {
+      return this.playing ? 'play' : 'play pause'
+    }
+  },
+  methods: {
   }
 }
 </script>
@@ -60,6 +76,10 @@ export default {
             display: flex
             justify-content: center
             align-items: center
+            &.play
+              animation: rotate 30s linear infinite
+            &.pause
+              animation-play-state: paused
             div
               width: 96%
               height: 96%
@@ -85,4 +105,9 @@ export default {
           box-sizing: border-box
           background-color: rgba(255, 255, 255, .5)
 
+    @keyframes rotate
+      0%
+        transform: rotate(0)
+      100%
+        transform: rotate(360deg)
 </style>

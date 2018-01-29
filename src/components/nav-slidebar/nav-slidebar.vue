@@ -1,6 +1,5 @@
 <template>
-  <transition name="barslider">
-    <section class="navSlidebar" v-show="isShow">
+    <section class="navSlidebar" ref="navSlidebar">
       <div class="l-ns">
         <ul class="l-ns-lis">
           <li>
@@ -115,23 +114,24 @@
         </div>
       </div>
     </section>
-  </transition>
 </template>
 
 <script>
 export default {
   data () {
     return {
-      isShow: false
     }
   },
   methods: {
     show() {
-      this.isShow = true
+      this.$refs.navSlidebar.style.transition = 'all .3s ease'
+      this.$refs.navSlidebar.className = 'navSlidebar navSlidebarWidth'
+      this.$refs.navSlidebar.style.opacity = '1'
     },
     hide() {
-      console.log(1)
-      this.isShow = false
+      this.$refs.navSlidebar.style.transition = 'all .3s ease'
+      this.$refs.navSlidebar.className = 'navSlidebar'
+      this.$refs.navSlidebar.style.opacity = '0'
     }
   }
 }
@@ -142,12 +142,9 @@ export default {
   @import "../../common/scss/helpers/mixins.scss";
   @import "../../common/scss/helpers/function.scss";
   @import "../../common/scss/base/base.scss";
+  section.navSlidebarWidth
+    @include px2rem('width', 640px)
 
-  .barslider-enter-active, .barslider-leave-active
-    transition: all .3s ease
-  .barslider-enter, .barslider-leave-to
-    transform: translate3d(pxtorem(-640px), 0, 0)
-    opacity: 0
   .navSlidebar
     position: absolute
     left: 0
@@ -155,9 +152,12 @@ export default {
     bottom: 0
     background: $navSlidebar-bg
     z-index: 10
-    @include px2rem(width, 640px, 75px)
+    width: 0
+    overflow: hidden
+    opacity: 0
+    // @include px2rem(width, 640px, 75px)
     .l-ns
-      width: 90%
+      @include px2rem(width, 576px)
       margin-left: 5%
       .l-ns-lis
         width: 100%

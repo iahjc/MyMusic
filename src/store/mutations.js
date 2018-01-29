@@ -21,6 +21,12 @@ const matutaions = {
   },
   [types.SET_MODE](state, mode) {
     state.mode = mode
+  },
+  [types.SET_SINGER](state, singer) {
+    state.singer = singer
+  },
+  [types.SET_NAVFLAG](state, flag) {
+    state.navFlag = flag
   }
 }
 
