@@ -30,6 +30,9 @@ const matutaions = {
   },
   [types.SET_USERINFO](state, user) {
     state.userInfo = user
+  },
+  [types.SET_CATNAME](state, name) {
+    state.catName = name
   }
 }
 

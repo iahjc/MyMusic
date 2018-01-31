@@ -10,7 +10,8 @@ const state = {
   mode: playMode.sequence,
   singer: {},
   navFlag: false,
-  userInfo: {}
+  userInfo: {},
+  catName: ''
 }
 
 export default state

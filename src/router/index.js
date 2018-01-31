@@ -10,6 +10,7 @@ import Main from 'components/main/main'
 import Login from 'components/login/login'
 import RadioStation from 'components/radio-station/radio-station'
 import ClassRadiostation from 'components/class-radiostation/class-radiostation'
+import GdDetail from 'components/gd-detail/gd-detail'
 
 Vue.use(Router)
 
@@ -33,6 +34,11 @@ export default new Router({
           component: MusicHall
         }
       ]
+    },
+    {
+      path: '/gddetail/:id',
+      name: 'GdDetail',
+      component: GdDetail
     },
     {
       path: '/classradiostation',

@@ -26,6 +26,32 @@
   align-items: center;
 }
 
+.btn3 {
+  width: 100%;
+  @include px2rem(height, 70px);
+  background: #f7f7f7;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  @include font-dpr(15px);
+}
+
+.btn4 {
+  @include px2rem(width, 290px);
+  @include px2rem(height, 72px);
+  background: #61bf81;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #fff;
+  @include font-dpr(16px);
+  @include px2rem(border-radius, 150px);
+  i {
+    @include font-dpr(16px);
+    color: #fff;
+  }
+}
+
 .icon1 {
   @include px2rem(width, 52px);
   @include px2rem(height, 24px);

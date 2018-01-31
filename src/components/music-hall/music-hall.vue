@@ -19,7 +19,7 @@
           <li @click="toRadioStation">
             <i class="fa fa-codiepie icon-color"></i>&nbsp;&nbsp;<span>电台</span>
           </li>
-          <li>
+          <li @click="toClassRadiostation">
             <i class="fa fa-bars icon-color"></i>&nbsp;&nbsp;<span>分类歌单</span>
           </li>
           <li>
@@ -86,6 +86,11 @@ export default {
     this._getNewRecommend()
   },
   methods: {
+    toClassRadiostation() {
+      this.$router.push({
+        path: `/classradiostation`
+      })
+    },
     toRadioStation() {
       this.$router.push({
         path: `/radiostation`
