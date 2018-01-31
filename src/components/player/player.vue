@@ -8,7 +8,7 @@
         <p>
           {{currentSong.name}}
         </p>
-        <div class="sl-h-r">
+        <div class="sl-h-r" @click="showMusicControl">
            <i class="fa fa-ellipsis-h"></i>
         </div>
       </header>
@@ -32,10 +32,19 @@
         <player-mid :song="currentSong" :playing="playing" ref="playerMid"></player-mid>
       </div>
       <div class="sp-process">
-        <player-process :song="currentSong" @toMusicTime="toMusicTime" ref="playerProcess"></player-process>
+        <player-process
+              :song="currentSong"
+              @toMusicTime="toMusicTime"
+              ref="playerProcess"></player-process>
       </div>
       <div class="sp-control">
-        <player-control ref="playerControl" @setModeStyle="setModeStyle" @next="next" @prev="prev" @isPlaying="togglePlay"></player-control>
+        <player-control ref="playerControl"
+              @setModeStyle="setModeStyle"
+              @next="next"
+              @prev="prev"
+              @isPlaying="togglePlay"
+              @openPlayList="openPlayList"
+              ></player-control>
       </div>
       <div class="sp-auxiliary">
         <player-auxiliary></player-auxiliary>
@@ -62,10 +71,10 @@
         <i class="fa fa-music"></i>
       </div>
     </section>
-    <play-list></play-list>
+    <play-list :playList="playList" @closePlayList="closePlayList" ref="pList"></play-list>
+    <music-control ref="musicControl" @mcClose="closeBg"></music-control>
     <audio ref="myAudio" :src="currentSong.url" @error="error" @ended="end" @timeupdate="updateTime" @play="ready"></audio>
-
-
+    <bg ref="bg" @selectBg="closeBg"></bg>
   </section>
 </template>
 
@@ -77,6 +86,8 @@ import PlayerProcess from 'components/player-process/player-process'
 import PlayerControl from 'components/player-control/player-control'
 import PlayerAuxiliary from 'components/player-auxiliary/player-auxiliary'
 import PlayList from 'components/play-list/play-list'
+import MusicControl from 'components/music-control/music-control'
+import Bg from 'base/bg/bg'
 import {playMode} from 'common/js/playmode'
 export default {
   data() {
@@ -84,7 +95,9 @@ export default {
       screenFlag: false,
       miniFlag: false,
       currentTime: 0,
-      songReady: false
+      songReady: false,
+      playListFlag: false,
+      musicControlFlag: false
     }
   },
   computed: {
@@ -104,6 +117,8 @@ export default {
       setMode: 'SET_MODE',
       setCurrentIndex: 'SET_CURRENTINDEX'
     }),
+    closePlayList() {
+    },
     // 设置播放模式
     setModeStyle() {
       if (this.mode === playMode.sequence) {
@@ -175,6 +190,32 @@ export default {
       }
     },
     error() {
+    },
+    openPlayList() {
+      if (!this.playListFlag) {
+        this.$refs.pList.show()
+        this.$refs.bg.show()
+        this.playListFlag = true
+      }
+    },
+    closeBg() {
+      if (this.playListFlag) {
+        this.$refs.pList.hide()
+        this.$refs.bg.hide()
+        this.playListFlag = false
+      }
+      if (this.musicControlFlag) {
+        this.$refs.musicControl.hide()
+        this.$refs.bg.hide()
+        this.musicControlFlag = false
+      }
+    },
+    showMusicControl() {
+      if (!this.musicControlFlag) {
+        this.$refs.musicControl.show()
+        this.$refs.bg.show()
+        this.musicControlFlag = true
+      }
     }
   },
   components: {
@@ -183,7 +224,9 @@ export default {
     PlayerProcess,
     PlayerControl,
     PlayerAuxiliary,
-    PlayList
+    PlayList,
+    MusicControl,
+    Bg
   },
   watch: {
     currentSong(newSong, oldSong) {
@@ -230,7 +273,7 @@ export default {
       right: 0
       top: 0
       bottom: 0
-      z-index: 10000
+      z-index: 2
       .sl-h
         width: 100%
         position: absolute

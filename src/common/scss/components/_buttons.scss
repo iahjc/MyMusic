@@ -1,13 +1,54 @@
 .btn {
-  @include px2rem(height, 72px);
-  @include px2rem(width, 196px);
+  @include px2rem(height, 48px);
+  @include px2rem(width, 138px);
   box-sizing: border-box;
   border-color: #fff;
   @include px2rem(border-width, 2px);
   border-style: solid;
-  border-radius: 30px;
-  @include font-dpr(18px);
+  @include px2rem(border-radius, 20px);
+  @include font-dpr(11px);
   color: #fff;
-  @include px2rem(line-height, 72px);
+  @include px2rem(line-height, 48px);
   text-align: center;
+}
+
+.btn2 {
+  @include px2rem(width, 260px);
+  @include px2rem(height, 52px);
+  @include font-dpr(16px);
+  @include px2rem(border-width, 2px);
+  @include px2rem(border-radius, 6px);
+  border-style: solid;
+  border-color: #71ca9a;
+  display: flex;
+  color:  #71ca9a;
+  justify-content: center;
+  align-items: center;
+}
+
+.icon1 {
+  @include px2rem(width, 52px);
+  @include px2rem(height, 24px);
+  @include font-dpr(4px);
+  display: inline-flex;
+  box-sizing: border-box;
+  @include px2rem(border-width, 1px);
+  @include px2rem(border-radius, 6px);
+  border-style: solid;
+  border-color: #71ca9a;
+  color:  #71ca9a;
+  justify-content: center;
+  align-items: center;
+}
+
+.icon2 {
+  @include px2rem(width, 40px);
+  @include px2rem(height, 28px);
+  box-sizing: border-box;
+  @include font-dpr(6px);
+  color: #a9a9a9;
+  @include px2rem(border-width, 2px);
+  @include px2rem(border-radius, 6px);
+  border-style: solid;
+  border-color: #a9a9a9;
 }

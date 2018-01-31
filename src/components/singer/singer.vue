@@ -75,11 +75,13 @@ export default {
           let reg2 = new RegExp('\\)$')
           res = res.replace(reg, '').replace(reg2, '')
           res = JSON.parse(res)
+          console.log(res)
           this._initSingerList(res)
         } else {
           this.$refs.prompt.show()
         }
       }).then((err) => {
+        console.log(err)
       })
     },
     _initSingerList(res) {

@@ -9,7 +9,8 @@ const state = {
   playing: false,
   mode: playMode.sequence,
   singer: {},
-  navFlag: false
+  navFlag: false,
+  userInfo: {}
 }
 
 export default state

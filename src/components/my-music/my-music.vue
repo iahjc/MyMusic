@@ -2,7 +2,7 @@
   <section class="my-music">
 
     <div class="my-user">
-      <ul class="mu-ul">
+      <ul class="mu-ul" v-show="isLogin">
         <li>
           <img src="./user.jpg" />
         </li>
@@ -10,6 +10,11 @@
           演绎
         </li>
       </ul>
+
+      <div class="btn2" v-show="!isLogin">
+        立即登录
+      </div>
+
       <ul class="my-control">
         <li>
           <i class="fa fa-music"></i>
@@ -78,17 +83,63 @@
       </div>
     </div>
 
-    <create-mlist></create-mlist>
+    <create-mlist @createNewGd="createNewGd"></create-mlist>
+
+    <create-gd ref="createGd" @closeCreateBg="closeCreateBg"></create-gd>
   </section>
 </template>
 
 <script>
+import {mapGetters, mapMutations} from 'vuex'
+import {getUser, insertUser} from 'db/user'
 import MHeader from 'components/m-header/m-header'
 import CreateMlist from 'components/create-mlist/create-mlist'
+import CreateGd from 'components/create-gd/create-gd'
 export default {
+  data() {
+    return {
+      isLogin: false
+    }
+  },
   components: {
     MHeader,
-    CreateMlist
+    CreateMlist,
+    CreateGd
+  },
+  created() {
+    this._isLogin()
+  },
+  computed: {
+    ...mapGetters([
+      'userInfo'
+    ])
+  },
+  methods: {
+    closeCreateBg() {
+      console.log(111)
+      this.$refs.createGd.hide()
+    },
+    createNewGd() {
+      this.$refs.createGd.show()
+    },
+    _isLogin() {
+      if (JSON.stringify(this.userInfo) === '{}') {
+        if (JSON.stringify(getUser()) === '{}') {
+          let user = {
+            nickname: '演绎'
+          }
+          insertUser(user)
+          this.setUserInfo(user)
+        } else {
+          this.isLogin = true
+        }
+      } else {
+        this.isLogin = true
+      }
+    },
+    ...mapMutations({
+      'setUserInfo': 'SET_USERINFO'
+    })
   }
 }
 </script>
@@ -97,13 +148,20 @@ export default {
     @import "../../common/scss/helpers/variables.scss";
     @import "../../common/scss/helpers/mixins.scss";
     @import "../../common/scss/base/base.scss";
+    @import "../../common/scss/components/buttons.scss";
 
     .my-music
-      @include px2rem(margin-top, 152px)
+      @include px2rem(top, 152px)
+      width: 100%
+      position: absolute
       background: #f4f4f4
       .my-user
         width: 100%
         background: #fff
+        overflow: hidden
+        .btn2
+          margin: 0 auto
+          @include px2rem(margin-top, 60px)
         .mu-ul
           display: flex
           flex-direction: column

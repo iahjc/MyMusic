@@ -9,3 +9,4 @@ export const playing = state => state.playing
 export const mode = state => state.mode
 export const singer = state => state.singer
 export const navFlag = state => state.navFlag
+export const userInfo = state => state.userInfo

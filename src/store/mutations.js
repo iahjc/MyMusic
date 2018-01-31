@@ -27,6 +27,9 @@ const matutaions = {
   },
   [types.SET_NAVFLAG](state, flag) {
     state.navFlag = flag
+  },
+  [types.SET_USERINFO](state, user) {
+    state.userInfo = user
   }
 }
 

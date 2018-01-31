@@ -7,6 +7,9 @@ import SingerDetail from 'components/singer-detail/singer-detail'
 import Rank from 'components/rank/rank'
 import MyMusic from 'components/my-music/my-music'
 import Main from 'components/main/main'
+import Login from 'components/login/login'
+import RadioStation from 'components/radio-station/radio-station'
+import ClassRadiostation from 'components/class-radiostation/class-radiostation'
 
 Vue.use(Router)
 
@@ -30,6 +33,21 @@ export default new Router({
           component: MusicHall
         }
       ]
+    },
+    {
+      path: '/classradiostation',
+      name: 'ClassRadiostation',
+      component: ClassRadiostation
+    },
+    {
+      path: '/radiostation',
+      name: 'RadioStation',
+      component: RadioStation
+    },
+    {
+      path: '/login',
+      name: 'Login',
+      component: Login
     },
     {
       path: '/musichall',

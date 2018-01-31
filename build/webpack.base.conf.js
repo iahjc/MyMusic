@@ -40,7 +40,8 @@ module.exports = {
       'components': resolve('src/components/'),
       'base': resolve('src/base/'),
       'api': resolve('src/api/'),
-      'domain': resolve('src/domain/')
+      'domain': resolve('src/domain/'),
+      'db': resolve('src/db/')
     }
   },
   module: {

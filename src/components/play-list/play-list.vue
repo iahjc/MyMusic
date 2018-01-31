@@ -1,5 +1,5 @@
 <template>
-  <section class="play-list">
+  <section class="play-list" v-show="showFlag">
     <div class="pl-t">
       <div class="pl-t-mode">
         <i class="fa fa-refresh"></i>&nbsp;&nbsp;<span>单曲循环</span>
@@ -17,28 +17,57 @@
       </ul>
     </div>
     <div class="pl-cur">
-      <div class="pl-li">
+      <div class="pl-li" v-for="item in playList">
         <div class="pl-li-t">
-          <span>辈分歌</span> <span>SQ</span> - 郭德纲
+          <span>{{item.name}}</span>&nbsp;&nbsp;-&nbsp;&nbsp;<span>{{item.singer}}</span>
         </div>
-        <ul>
+        <ul class="pl-cor">
           <li>
-
+            <i>ani</i>
           </li>
           <li>
-
+            <i class="fa fa-heart-o"></i>
           </li>
           <li>
-
+            <i class="fa fa-times"></i>
           </li>
         </ul>
       </div>
+    </div>
+
+    <div class="pl-close" @click="closePlayList">
+      关闭
     </div>
   </section>
 </template>
 
 <script>
 export default {
+  data() {
+    return {
+      showFlag: false
+    }
+  },
+  props: {
+    playList: {
+      type: Array,
+      default: []
+    }
+  },
+  methods: {
+    show() {
+      this.showFlag = true
+    },
+    hide() {
+      this.showFlag = false
+    },
+    closePlayList() {
+      this.$emit('closePlayList')
+    }
+  },
+  created() {
+    console.log(this.playList)
+  }
 }
 </script>
 
@@ -49,8 +78,8 @@ export default {
 
     .play-list
       position: absolute
-      top: 0
-      background: rgba(0, 0, 0, .8)
+      @include px2rem(height, 930px)
+      background: rgba(0, 0, 0, .9)
       width: 100%
       bottom: 0
       z-index: 11111
@@ -63,7 +92,7 @@ export default {
         display: flex
         align-items: center
         justify-content: space-between
-        @include px2rem(border-width, 2px)
+        @include px2rem(border-bottom-width, 2px)
         border-color: #4d3932
         border-style: solid
         .pl-t-mode
@@ -83,4 +112,46 @@ export default {
               @include font-dpr(20px)
           li:last-child
             margin-right: 0
+      .pl-cur
+        width: 95%
+        @include px2rem(height, 700px)
+        overflow: hidden
+        .pl-li
+          @include px2rem(height, 75px)
+          align-items: center
+          justify-content: space-between
+          display: flex
+          @include px2rem(border-bottom-width, 2px)
+          border-color: #4d3932
+          border-style: solid
+          .pl-li-t
+            display: flex
+            @include font-dpr(11px)
+            color: #80756d
+            span:first-child
+              @include font-dpr(15px)
+              color: #fff
+            span:nth-child(2)
+            span:nth-child(3)
+          .pl-cor
+            display: flex
+            li
+              @include px2rem(width, 60px)
+              @include px2rem(height, 60px)
+              display: flex
+              justify-content: center
+              align-items: center
+              i
+                @include font-dpr(17px)
+                color: #978d8c
+      .pl-close
+        width: 100%
+        position: absolute
+        bottom: 0
+        @include px2rem(height, 100px)
+        color: #ff
+        display: flex
+        justify-content: center
+        align-items: center
+        @include font-dpr(18px)
 </style>

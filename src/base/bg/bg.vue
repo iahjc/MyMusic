@@ -30,7 +30,6 @@ export default {
     }
   },
   mounted() {
-    console.log(111)
     this.setMask()
     this.setZIndex()
     this.setBgColor()

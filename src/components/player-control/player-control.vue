@@ -14,7 +14,7 @@
             <i class="fa fa-step-forward"></i>
       </li>
     </ul>
-    <div class="pc-r">
+    <div class="pc-r" @click="openPlayList">
       <i class="fa fa-file-text-o"></i>
     </div>
   </section>
@@ -50,6 +50,9 @@ export default {
     },
     next() {
       this.$emit('next')
+    },
+    openPlayList() {
+      this.$emit('openPlayList')
     }
   }
 }
