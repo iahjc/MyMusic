@@ -1,6 +1,6 @@
 <template>
 <section class="main" ref="main">
-  <m-header @showNavbar="showNavbar"></m-header>
+  <m-header @search="search" @showNavbar="showNavbar"></m-header>
   <router-view></router-view>
   <bg ref="bg" @selectBg="selectBg"></bg>
 </section>
@@ -25,6 +25,11 @@ export default {
     ])
   },
   methods: {
+    search() {
+      this.$router.push({
+        path: `/search`
+      })
+    },
     _showNav() {
       this.setNavFlag(true)
       this.$refs.main.style.transition = 'all .3s ease'

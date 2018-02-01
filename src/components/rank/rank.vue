@@ -12,12 +12,12 @@
     <div>
       <h2>QQ音乐巅峰榜</h2>
       <div class="rh-cont">
-        <div class="rh-li" v-for="item in rankList">
+        <div class="rh-li" v-for="item in rankList" @click="selectItem(item)">
           <div class="rh-l">
-            <img :src="item.picUrl"/>
+            <img :src="item.pic_v12"/>
           </div>
           <ul class="rh-m">
-            <li v-for="(item2, index) in item.songList">
+            <li v-for="(item2, index) in item.songlist">
               {{index+1}} {{item2.songname}} <span>-</span> <span>{{item2.singername}}</span>
             </li>
           </ul>
@@ -45,8 +45,9 @@
 </template>
 
 <script>
+import {mapMutations} from 'vuex'
 import Scroll from 'base/scroll/scroll'
-import { getRank, getGlobalRank } from 'api/rank'
+import { getRankList, getGlobalRank } from 'api/rank'
 
 export default {
   components: {
@@ -62,23 +63,28 @@ export default {
     this._getRank()
   },
   methods: {
+    ...mapMutations({
+      'setTopList': 'SET_TOPLIST'
+    }),
+    selectItem(item) {
+      let id = `${item.topID},,,${item.showtime}`
+      this.$router.push({
+        path: `/rank/${id}`
+      })
+      this.setTopList(item)
+    },
     back() {
-      console.log(111)
       window.history.length > 1 ? this.$router.go(-1) : this.$router.push('/')
     },
     _getRank() {
-      getRank().then((res) => {
-        if (res.code === 0) {
-          this.rankList = res.data.topList
-        }
-      })
       getGlobalRank().then((res) => {
         let reg = new RegExp(`^ jsonCallback\\(`)
         let reg2 = new RegExp('\\)$')
         res = res.replace(reg, '').replace(reg2, '')
         res = JSON.parse(res)
+        this.rankList = res[0].List
+        console.log(res)
         this.golbalRank = res[1].List
-        console.log(this.golbalRank)
       })
     }
   }

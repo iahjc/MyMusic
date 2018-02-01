@@ -33,6 +33,9 @@ const matutaions = {
   },
   [types.SET_CATNAME](state, name) {
     state.catName = name
+  },
+  [types.SET_TOPLIST](state, list) {
+    state.topList = list
   }
 }
 

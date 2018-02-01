@@ -40,3 +40,35 @@ export function getGlobalRank() {
     return Promise.resolve(res.data)
   })
 }
+
+/**
+ * 歌曲列表
+ */
+export function getRankList(rid, updateKey) {
+  let params = {
+    'tpl': '3',
+    'page': 'detail',
+    'date': updateKey,
+    'topid': rid,
+    'type': 'top',
+    'song_begin': '0',
+    'song_num': '30',
+    'g_tk': '5381',
+    'jsonpCallback': 'MusicJsonCallbacktoplist',
+    'loginUin': '0',
+    'hostUin': '0',
+    'format': 'jsonp',
+    'inCharset': 'utf8',
+    'outCharset': 'utf-8',
+    'notice': '0',
+    'platform': 'yqq',
+    'needNewCode': '0'
+  }
+
+  let url = '/api/getRankList'
+  return axios.get(url, {
+    params: params
+  }).then((res) => {
+    return Promise.resolve(res.data)
+  })
+}

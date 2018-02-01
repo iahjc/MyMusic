@@ -15,7 +15,7 @@
       </div>
     </section>
 
-    <div class="mh-search">
+    <div class="mh-search"  @click="search">
       <i class="fa fa-search"></i>&nbsp;&nbsp;<span>搜索</span>
     </div>
   </header>
@@ -27,6 +27,9 @@ export default {
     // 打开/关闭左侧导航
     showNavbar() {
       this.$emit('showNavbar')
+    },
+    search() {
+      this.$emit('search')
     }
   }
 }

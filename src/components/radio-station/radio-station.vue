@@ -8,12 +8,12 @@
         电台
       </p>
     </header>
-    <div class="rs-cont">
-      <ul class="c-w-lis">
-        <li class="cur" v-for="item in rsList">{{item.name}}</li>
+    <scroll class="rs-cont">
+      <div>
+        <ul class="c-w-lis">
+        <li :class="{cur: currentIndex === index}" v-for="(item, index) in rsList" @click="selectItem(index)">{{item.name}}</li>
       </ul>
-
-      <div class="cw-c">
+        <div class="cw-c">
         <div class="cw-c-li" v-for="item in radioList">
           <div class="cwc-img">
             <img :src="item.radioImg" />
@@ -26,13 +26,18 @@
           </p>
         </div>
       </div>
-    </div>
+      </div>
+    </scroll>
   </section>
 </template>
 
 <script>
+import Scroll from 'base/scroll/scroll'
 import {getRadioStationList} from 'api/radiostation'
 export default {
+  components: {
+    Scroll
+  },
   data() {
     return {
       rsList: [],
@@ -44,6 +49,9 @@ export default {
     this._getRadioStationList()
   },
   methods: {
+    selectItem(index) {
+      this.currentIndex = index
+    },
     _getRadioStationList() {
       getRadioStationList().then((res) => {
         let reg = new RegExp(`^MusicJsonCallback052271854983912514\\(`)
@@ -108,6 +116,7 @@ export default {
         position: absolute
         @include px2rem(top, 86px)
         width: 100%
+        bottom: 0
         .c-w-lis
           display: flex
           border-bottom: 2px solid #ededed

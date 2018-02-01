@@ -22,11 +22,11 @@
           <li @click="toClassRadiostation">
             <i class="fa fa-bars icon-color"></i>&nbsp;&nbsp;<span>分类歌单</span>
           </li>
-          <li>
+          <li @click="toMV">
             <i class="fa fa-video-camera icon-color">&nbsp;&nbsp;</i><span>视频MV</span>
           </li>
-          <li>
-            <i class="fa fa-bullseye icon-color"></i>&nbsp;&nbsp;<span>专辑</span>
+          <li @click="toAlbum">
+            <i class="fa fa-bullseye icon-color"></i>&nbsp;&nbsp;<span>数字专辑</span>
           </li>
         </ul>
       </nav>
@@ -86,6 +86,11 @@ export default {
     this._getNewRecommend()
   },
   methods: {
+    toAlbum() {
+      this.$router.push({
+        path: `/album`
+      })
+    },
     toClassRadiostation() {
       this.$router.push({
         path: `/classradiostation`
@@ -116,6 +121,11 @@ export default {
     toMusicList(item) {
       this.$router.push({
         path: `/songlist/${item.dissid}`
+      })
+    },
+    toMV() {
+      this.$router.push({
+        path: `/mv`
       })
     },
     _getNewRecommend() {

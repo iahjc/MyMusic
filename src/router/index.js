@@ -11,6 +11,10 @@ import Login from 'components/login/login'
 import RadioStation from 'components/radio-station/radio-station'
 import ClassRadiostation from 'components/class-radiostation/class-radiostation'
 import GdDetail from 'components/gd-detail/gd-detail'
+import Search from 'components/search/search'
+import Mv from 'components/mv/mv'
+import Album from 'components/album/album'
+import RankList from 'components/rank-list/rank-list'
 
 Vue.use(Router)
 
@@ -34,6 +38,26 @@ export default new Router({
           component: MusicHall
         }
       ]
+    },
+    {
+      path: '/album',
+      name: 'Album',
+      component: Album
+    },
+    {
+      path: '/rank/:id',
+      name: 'RankList',
+      component: RankList
+    },
+    {
+      path: '/search',
+      name: 'Search',
+      component: Search
+    },
+    {
+      path: '/mv',
+      name: 'Mv',
+      component: Mv
     },
     {
       path: '/gddetail/:id',

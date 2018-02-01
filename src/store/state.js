@@ -11,7 +11,8 @@ const state = {
   singer: {},
   navFlag: false,
   userInfo: {},
-  catName: ''
+  catName: '',
+  topList: {}
 }
 
 export default state
