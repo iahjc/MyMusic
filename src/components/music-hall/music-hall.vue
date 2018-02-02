@@ -65,7 +65,6 @@
 import Slider from 'base/slider/slider'
 import ThreeCol from 'base/three-col/three-col'
 import Scroll from 'base/scroll/scroll'
-
 import {
   getSlideData,
   singerRecommend

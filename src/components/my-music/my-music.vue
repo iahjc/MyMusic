@@ -49,8 +49,6 @@
       </ul>
     </div>
 
-
-
     <div class="my-it">
       <div class="it-li">
         <div class="il-img">
@@ -83,9 +81,18 @@
       </div>
     </div>
 
-    <create-mlist @createNewGd="createNewGd"></create-mlist>
+    <create-mlist
+              @createNewGd="createNewGd"
+              @manageSongSheets="manageSongSheets"
+              @selectItems="selectItems"
+              :songSheets="songSheets"></create-mlist>
 
     <create-gd ref="createGd" @closeCreateBg="closeCreateBg"></create-gd>
+
+    <manage-songsheet ref="ManageSongsheet"
+          :songSheets="songSheets"
+          @refreshSongSheets="refreshSongSheets"
+          ></manage-songsheet>
   </section>
 </template>
 
@@ -95,19 +102,24 @@ import {getUser, insertUser} from 'db/user'
 import MHeader from 'components/m-header/m-header'
 import CreateMlist from 'components/create-mlist/create-mlist'
 import CreateGd from 'components/create-gd/create-gd'
+import {getSongSheet} from 'db/songSheet'
+import ManageSongsheet from 'components/manage-songsheet/manage-songsheet'
 export default {
   data() {
     return {
-      isLogin: false
+      isLogin: false,
+      songSheets: []
     }
   },
   components: {
     MHeader,
     CreateMlist,
-    CreateGd
+    CreateGd,
+    ManageSongsheet
   },
   created() {
     this._isLogin()
+    this._getSongSheet()
   },
   computed: {
     ...mapGetters([
@@ -115,8 +127,23 @@ export default {
     ])
   },
   methods: {
+    refreshSongSheets() {
+      this._getSongSheet()
+    },
+    selectItems(item) {
+      let id = `${item.id},,,${item.songSheetName}`
+      this.$router.push({
+        path: `/songsheet/${id}`
+      })
+    },
+    manageSongSheets() {
+      this.$refs.ManageSongsheet.show()
+    },
+    _getSongSheet() {
+      this.songSheets = getSongSheet()
+      console.log(this.songSheets)
+    },
     closeCreateBg() {
-      console.log(111)
       this.$refs.createGd.hide()
     },
     createNewGd() {

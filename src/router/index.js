@@ -15,6 +15,7 @@ import Search from 'components/search/search'
 import Mv from 'components/mv/mv'
 import Album from 'components/album/album'
 import RankList from 'components/rank-list/rank-list'
+import SongSheet from 'components/song-sheet/song-sheet'
 
 Vue.use(Router)
 
@@ -38,6 +39,11 @@ export default new Router({
           component: MusicHall
         }
       ]
+    },
+    {
+      path: '/songsheet/:id',
+      name: 'SongSheet',
+      component: SongSheet
     },
     {
       path: '/album',
