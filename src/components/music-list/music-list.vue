@@ -1,5 +1,5 @@
 <template>
-  <section class="music-list">
+  <section class="music-list" v-show="showFlag">
     <div class="ml-t">
       <div class="ml-t-l">
         <i class="fa fa-play-circle-o"></i>&nbsp;&nbsp;<span>全部播放</span>
@@ -35,6 +35,11 @@
 
 <script>
 export default {
+  data() {
+    return {
+      showFlag: true
+    }
+  },
   props: {
     songList: {
       type: Array,
@@ -47,6 +52,12 @@ export default {
   methods: {
     selectItem(item, index) {
       this.$emit('selectSingerMusic', item, index)
+    },
+    show() {
+      this.showFlag = true
+    },
+    hide() {
+      this.showFlag = false
     }
   }
 }

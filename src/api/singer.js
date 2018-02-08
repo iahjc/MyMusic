@@ -86,7 +86,7 @@ export function getAlbum(mid) {
     'singermid': mid,
     'order': 'time',
     'begin': '0',
-    'num': '5',
+    'num': '30',
     'g_tk': '5381',
     'jsonpCallback': 'singeralbumlistJsonCallback',
     'loginUin': '0',

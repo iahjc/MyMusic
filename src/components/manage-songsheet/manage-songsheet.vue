@@ -6,7 +6,7 @@
         <i class="fa  fa-chevron-left"></i>
       </div>
       <p class="r-h-title">
-        管理自建歌单
+        {{title}}
       </p>
       <p class="r-h-r">
         恢复
@@ -53,6 +53,7 @@
     </div>
 
     <msg ref="msg"></msg>
+    <confirm ref="confirm"></confirm>
   </section>
   </transition>
 </template>
@@ -60,17 +61,21 @@
 <script>
 import Scroll from 'base/scroll/scroll'
 import Msg from 'base/msg/msg'
+import Confirm from 'base/confirm/confirm'
 import {deleteSongSheet} from 'db/songSheet'
 export default {
   data() {
     return {
       showFlag: false,
-      sheets: []
+      sheets: [],
+      title: '管理自建歌单',
+      size: 0
     }
   },
   components: {
     Scroll,
-    Msg
+    Msg,
+    Confirm
   },
   props: {
     songSheets: {
@@ -81,9 +86,19 @@ export default {
   methods: {
     remove() {
       if (this.sheets.length > 0) {
-        deleteSongSheet(this.sheets)
+        this.$refs.confirm.show({
+          title: '删除自建歌单',
+          msg: `确定要删除要选中的${this.size}个自建歌单吗？`,
+          btns: [
+            {
+              title: '取消',
+              click: function(confirmThis) { confirmThis.hide()}
+            }
+          ]
+        })
+        // deleteSongSheet(this.sheets)
         // 应该有删除成功的标记 后期添加
-        this.$emit('refreshSongSheets')
+        // this.$emit('refreshSongSheets')
       } else {
         this.$refs.msg.show({
           msg: '请选择要移除的歌单!',
@@ -106,6 +121,17 @@ export default {
         this.sheets.push(item)
       } else {
         this.sheets.splice(index, 1)
+      }
+
+      // 修改标题
+      this._setTitle()
+    },
+    _setTitle() {
+      this.size = this.sheets.length
+      if (this.size <= 0) {
+        this.title = '管理自建歌单'
+      } else {
+        this.title = `已选定${this.size}个`
       }
     },
     _isChecked(el) {
@@ -173,7 +199,6 @@ export default {
         align-items: center
         position: absolute
         top: 0
-        z-index: 10
         .r-h-r
           @include px2rem(width, 86px)
           @include px2rem(height, 86px)

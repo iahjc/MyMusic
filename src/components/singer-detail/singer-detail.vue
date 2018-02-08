@@ -40,39 +40,71 @@
       </div>
     </div>
 
-    <ul class="sd-nav">
-      <li>单曲 {{total}}</li>
-      <li>专辑 {{albumTotal}}</li>
-      <li>MV {{mvTotal}}</li>
-      <li>详情</li>
-    </ul>
-
-    <div class="sd-cont">
-      <div class="sd-c-1">
-        <div class="sd-c-search">
+    <scroll class="sd-wrapper">
+      <div>
+        <div class="sd-nav-wrapper">
+          <ul class="sd-nav" @click="selectLi($event)" ref="sdNav">
+            <li class="cur">单曲 {{total}}</li>
+            <li>专辑 {{albumTotal}}</li>
+            <li>MV {{mvTotal}}</li>
+            <li>详情</li>
+          </ul>
+          <div ref="sdcur" class="sdcur"></div>
         </div>
-        <music-list :songList="songList"></music-list>
+
+        <div class="sd-cont">
+          <div class="sd-c-1">
+            <div class="sd-c-search">
+            </div>
+            <music-list :songList="songList" @selectSingerMusic="selectItems" ref="ml"></music-list>
+          </div>
+          <div class="sd-c-2">
+            <album-list :albumList="albumList" ref="al"></album-list>
+          </div>
+          <div class="sd-c-3">
+            <mv-list :mvList="mvList" ref="mv"></mv-list>
+          </div>
+          <div class="sd-c-4">
+            <singer-detail :desc="desc"  ref="sd"></singer-detail>
+          </div>
+        </div>
       </div>
-    </div>
+    </scroll>
   </section>
 </template>
 
 <script>
+import {mapActions} from 'vuex'
 import {getFSNum, getSingerDetail, getSinger, getAlbum, getMV} from 'api/singer'
 import {mapGetters} from 'vuex'
 import { createSingerSong } from 'domain/song'
+import { createAlbum } from 'domain/album'
+import AlbumList from 'base/album-list/album-list'
 import MusicList from 'components/music-list/music-list'
+import MvList from 'base/mv-list/mv-list'
+import SingerDetail from 'base/singer-detail/singer-detail'
+import Scroll from 'base/scroll/scroll'
+import {prefixStyle} from 'common/js/utils/dom'
+let transform = prefixStyle('transform')
 export default {
   components: {
-    MusicList
+    MusicList,
+    AlbumList,
+    MvList,
+    SingerDetail,
+    Scroll
   },
   data() {
     return {
       songList: null,
       total: 0,
       albumTotal: 0,
+      albumList: [],
       mvTotal: 0,
-      fansNum: 0
+      mvList: [],
+      desc: '',
+      fansNum: 0,
+      items: []
     }
   },
   computed: {
@@ -84,11 +116,59 @@ export default {
     ])
   },
   mounted() {
-    console.log(this.singer)
+    this.$refs.ml.show()
+    this.items.push(this.$refs.ml)
+    this.items.push(this.$refs.al)
+    this.items.push(this.$refs.mv)
+    this.items.push(this.$refs.sd)
   },
   methods: {
+    selectItems(item, index) {
+      this.selectSingerMusic({
+        list: this.songList,
+        index: index
+      })
+    },
+    ...mapActions([
+      'selectSingerMusic'
+    ]),
+    selectLi(ev) {
+      let target = ev.target || ev.srcElement
+      if (target.nodeName.toLowerCase() === 'li') {
+        this._toggleSdNav(target)
+      }
+    },
+    _toggleSdNav(obj) {
+      let currentIndex = -1
+      let lis = this.$refs.sdNav.children
+      lis = Array.from(lis)
+      lis.forEach((item, index) => {
+        if (item === obj) {
+          currentIndex = index
+        }
+        item.className = ''
+
+        this.items[index].hide()
+      })
+      obj.className = 'cur'
+      this.$refs.sdcur.style.transition = 'transform .3s ease'
+      let w = this.$refs.sdcur.clientWidth
+      w = w * currentIndex
+      this.$refs.sdcur.style[transform] = `translateX(${w}px)`
+
+      this.items[currentIndex].show()
+    },
     back() {
       this.$router.go(-1)
+    },
+    _initAlbumList(list) {
+      let ret = []
+      list.forEach((item) => {
+        if (item.albumID && item.albumMID) {
+          ret.push(createAlbum(item))
+        }
+      })
+      return ret
     },
     /**
      * 初始化歌曲数据
@@ -121,6 +201,7 @@ export default {
       let reg2 = new RegExp('\\)$')
       res = res.replace(reg, '').replace(reg2, '')
       res = JSON.parse(res)
+      this.albumList = this._initAlbumList(res.data.list)
       this.albumTotal = res.data.total
     })
 
@@ -130,6 +211,7 @@ export default {
       let reg2 = new RegExp('\\)$')
       res = res.replace(reg, '').replace(reg2, '')
       res = JSON.parse(res)
+      this.mvList = res.data.list
       this.mvTotal = res.data.total
     })
 
@@ -141,13 +223,13 @@ export default {
       this.total = res.data.total
       console.log(res.data.list)
       this.songList = this._initSongList(res.data.list)
-      console.log(this.songList)
     })
 
     getSinger(mid).then((res) => {
-      // let parser = new DOMParser()
-      // let xmlDoc = parser.parseFromString(res, 'text/xml')
-      // let data = xmlDoc.getElementsByTagName('data')
+      let parser = new DOMParser()
+      let xmlDoc = parser.parseFromString(res, 'text/xml')
+      let data = xmlDoc.getElementsByTagName('data')
+      this.desc = data[0].innerHTML
     })
   }
 }
@@ -161,6 +243,11 @@ export default {
 
   .singer-detail
     width: 100%
+    position: fixed
+    width: 100%
+    left: 0
+    top: 0
+    bottom: 0
     .sl-h
       width: 100%
       position: absolute
@@ -230,19 +317,41 @@ export default {
             @include px2rem(margin-right, 30px)
           .btn:last-child
             margin-right: 0
-    .sd-nav
-      display: flex
+    .sd-wrapper
+      position: absolute
+      left: 0
+      @include px2rem(top, 500px)
       width: 100%
-      @include px2rem(height, 85px)
-      box-sizing: border-box
-      border-style: solid
-      @include px2rem(border-bottom-width, 2px)
-      border-color: #eaeaea
-      li
-        width: 25%
-        color: #7f7f7f
-        @include font-dpr(16px)
-        display: flex
-        justify-content: center
-        align-items: center
+      bottom: 0
+      overflow: hidden
+      .sd-nav-wrapper
+        width: 100%
+        @include px2rem(height, 85px)
+        box-sizing: border-box
+        border-style: solid
+        @include px2rem(border-bottom-width, 2px)
+        border-color: #eaeaea
+        position: relative
+        .sdcur
+          width: 25%
+          @include px2rem(height, 8px)
+          background: #60c17e
+          position: absolute
+          @include px2rem(bottom, 2px)
+          left: 0
+          box-sizing: border-box
+          overflow: hidden
+        .sd-nav
+          display: flex
+          width: 100%
+          height: 100%
+          li.cur
+            color: #60c17e
+          li
+            width: 25%
+            color: #7f7f7f
+            @include font-dpr(16px)
+            display: flex
+            justify-content: center
+            align-items: center
 </style>
