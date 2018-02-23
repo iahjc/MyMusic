@@ -1,16 +1,16 @@
 <template>
-  <section class="album-list" v-show="showFlag">
+  <section class="album-list">
     <div class="al-li" v-for="item in albumList">
       <ul>
         <li>
-          <img :src="item.headimg" />
+          <img :src="item.albumPic" />
         </li>
         <li>
           <p>
             {{item.albumName}}
           </p>
           <p>
-            {{item.pubTime}}
+            {{item.singerName}}&nbsp;&nbsp;{{item.publicTime}}
           </p>
         </li>
         <li>
@@ -22,24 +22,35 @@
 </template>
 
 <script>
+import {searchAlbumList} from 'api/search'
+import {mapGetters} from 'vuex'
 export default {
+  computed: {
+    ...mapGetters([
+      'keywords'
+    ])
+  },
   props: {
-    albumList: {
-      type: Array,
-      default: []
-    }
   },
   data() {
     return {
-      showFlag: false
+      showFlag: false,
+      albumList: []
     }
   },
+  created() {
+    this._searchAlbumList(this.keywords)
+  },
   methods: {
-    show() {
-      this.showFlag = true
-    },
-    hide() {
-      this.showFlag = false
+    _searchAlbumList(key) {
+      searchAlbumList(key).then((res) => {
+        let reg = new RegExp(`^MusicJsonCallback5987696727295411\\(`)
+        let reg2 = new RegExp('\\)$')
+        res = res.replace(reg, '').replace(reg2, '')
+        res = JSON.parse(res)
+        this.albumList = res.data.album.list
+        console.log(res)
+      })
     }
   }
 }

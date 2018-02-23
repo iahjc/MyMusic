@@ -90,5 +90,5 @@ export default {
         @include px2rem(width, 75px)
         color: #b28e8e
         text-align: center
-        @include font-dpr(9px)
+        font-size: 18px; /*px*/
 </style>

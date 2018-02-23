@@ -49,7 +49,7 @@ export default {
       background-color: #eaeaea
       border-top: 1px solid #e5e5e5
       border-bottom: 1px solid #e5e5e5
-      @include font-dpr(10px)
+      font-size: 20px; /*px*/
       color: #565656
       @include px2rem(line-height, 54px)
       @include px2rem(padding-left, 32px)
@@ -73,11 +73,11 @@ export default {
           img
             width: 100%
         .sli-author
-          @include font-dpr(16px)
+          font-size: 32px; /*px*/
           color: #000
           flex: 1
         i
-          @include font-dpr(18px)
+          font-size: 36px; /*px*/
           color: #969696
           @include px2rem(margin-right, 30px)
 </style>

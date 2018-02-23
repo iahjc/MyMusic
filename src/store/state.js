@@ -12,7 +12,8 @@ const state = {
   navFlag: false,
   userInfo: {},
   catName: '',
-  topList: {}
+  topList: {},
+  keywords: ''
 }
 
 export default state

@@ -96,7 +96,7 @@ export default {
         border-color: #4d3932
         border-style: solid
         .pl-t-mode
-          @include font-dpr(17px)
+          font-size: 34px; /*px*/
           i
             color: #917f7b
         .pl-c
@@ -109,7 +109,7 @@ export default {
             justify-content: center
             @include px2rem(margin-right, 20px)
             i
-              @include font-dpr(20px)
+              font-size: 40px; /*px*/
           li:last-child
             margin-right: 0
       .pl-cur
@@ -126,10 +126,10 @@ export default {
           border-style: solid
           .pl-li-t
             display: flex
-            @include font-dpr(11px)
+            font-size: 22px; /*px*/
             color: #80756d
             span:first-child
-              @include font-dpr(15px)
+              font-size: 30px; /*px*/
               color: #fff
             span:nth-child(2)
             span:nth-child(3)
@@ -142,7 +142,7 @@ export default {
               justify-content: center
               align-items: center
               i
-                @include font-dpr(17px)
+                font-size: 34px; /*px*/
                 color: #978d8c
       .pl-close
         width: 100%
@@ -153,5 +153,5 @@ export default {
         display: flex
         justify-content: center
         align-items: center
-        @include font-dpr(18px)
+        font-size: 36px; /*px*/
 </style>

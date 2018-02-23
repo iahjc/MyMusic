@@ -59,9 +59,9 @@ export default {
         @include px2rem(height, 92px)
         align-items: center
         .gd-t-title
-          @include font-dpr(16px)
+          font-size: 32px; /*px*/
         .gd-t-r
-          @include font-dpr(13px)
+          font-size: 26px; /*px*/
       .gd-ul
         display: flex
         flex-wrap: wrap
@@ -75,7 +75,7 @@ export default {
             img
               width: 100%
           p
-            @include font-dpr(14px)
+            font-size: 28px; /*px*/
             width: 95%
             margin: 0 auto
             color: #000000
@@ -83,7 +83,7 @@ export default {
           .gd-author
             width: 95%
             margin: 0 auto
-            @include font-dpr(10px)
+            font-size: 20px; /*px*/
             @include px2rem(height, 40px)
             display: flex
             align-items: center

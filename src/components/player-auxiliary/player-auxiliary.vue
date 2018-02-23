@@ -28,7 +28,7 @@ export default {
     .player-auxiliary
       display: flex
       color: #b6b6b8
-      @include font-dpr(20px)
+      font-size: 40px; /*px*/
       justify-content: center
       li
         @include px2rem(width, 72px)

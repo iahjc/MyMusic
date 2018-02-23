@@ -34,11 +34,11 @@ export default {
       display: inline-block
       color: #fffbfc
       border-radius: 10px
-      @include font-dpr(10px)
+      font-size: 20px; /*px*/
       display: inline-flex
       align-items: center
       @include px2rem(padding-left, 10px)
       @include px2rem(padding-right, 10px)
       i
-        @include font-dpr(14px)
+        font-size: 28px; /*px*/
 </style>

@@ -62,7 +62,7 @@ export default {
     background: #f4f4f4
     .c-w-lis
       display: flex
-      border-bottom: 2px solid #ededed
+      border-bottom: 1px solid #ededed; /*no*/
       li
         @include px2rem(height, 70px)
         @include px2rem(width, 110px)

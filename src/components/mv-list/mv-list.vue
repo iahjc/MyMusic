@@ -59,9 +59,9 @@ export default {
         @include px2rem(height, 92px)
         align-items: center
         .mv-t-title
-          @include font-dpr(16px)
+          font-size: 32px; /*px*/
         .mv-t-r
-          @include font-dpr(13px)
+          font-size: 26px; /*px*/
       .mv-ul
         display: flex
         flex-wrap: wrap
@@ -74,7 +74,7 @@ export default {
             img
               width: 100%
           p
-            @include font-dpr(12px)
+            font-size: 24px; /*px*/
             width: 95%
             margin: 0 auto
             color: #000000
@@ -82,7 +82,7 @@ export default {
           .mv-author
             width: 95%
             margin: 0 auto
-            @include font-dpr(10px)
+            font-size: 20px; /*px*/
             @include px2rem(height, 40px)
             display: flex
             align-items: center

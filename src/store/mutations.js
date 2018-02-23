@@ -36,6 +36,9 @@ const matutaions = {
   },
   [types.SET_TOPLIST](state, list) {
     state.topList = list
+  },
+  [types.SET_KEYWORDS](state, keywords) {
+    state.keywords = keywords
   }
 }
 

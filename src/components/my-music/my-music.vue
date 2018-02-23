@@ -178,8 +178,8 @@ export default {
     @import "../../common/scss/components/buttons.scss";
 
     .my-music
-      @include px2rem(top, 152px)
-      width: 100%
+      top: 152px
+      width: 750px
       position: absolute
       background: #f4f4f4
       .my-user
@@ -188,19 +188,19 @@ export default {
         overflow: hidden
         .btn2
           margin: 0 auto
-          @include px2rem(margin-top, 60px)
+          margin-top: 60px
         .mu-ul
           display: flex
           flex-direction: column
           align-items: center
-          @include px2rem(padding-top, 10px)
+          padding-top: 10px
           li:first-child
-            @include px2rem(width, 105px)
-            @include px2rem(height, 105px)
+            width: 105px
+            height: 105px
             img
               width: 100%
           li:last-child
-            @include font-dpr(17px)
+            font-size: 34px; /*px*/
             @include px2rem(line-height, 60px)
         .my-control
           width: 100%
@@ -216,10 +216,10 @@ export default {
             justify-content: center
             flex-direction: column
             i
-              @include font-dpr(32px)
+              font-size: 64px; /*px*/
               color: #58c088
             p:nth-child(2)
-              @include font-dpr(14px)
+              font-size: 28px; /*px*/
               @include px2rem(line-height, 48px)
             p:nth-child(3)
               color: #444444
@@ -244,10 +244,10 @@ export default {
             @include px2rem(margin-left, 20px)
             border-bottom: 2px solid #f4f4f4
             p:first-child
-              @include font-dpr(13px)
+              font-size: 26px; /*px*/
               @include px2rem(line-height, 40px)
             p:last-child
-              @include font-dpr(10px)
+              font-size: 20px; /*px*/
               color: #797979
               @include px2rem(line-height, 32px)
 </style>

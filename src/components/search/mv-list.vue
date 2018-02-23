@@ -3,14 +3,13 @@
     <div class="mv-li" v-for="item in mvList">
       <ul>
         <li>
-          <img :src="item.pic" />
+          <img :src="item.mv_pic_url" />
         </li>
         <li>
-          <p>
-            {{item.title}}
+          <p v-html="item.mv_name">
           </p>
           <p>
-            {{item.date}}
+            <span v-for="(singer, index) in item.singer_list">{{singer.name}}<em v-show="item.singer_list.length !== (index + 1)">/</em></span>&nbsp;&nbsp;<span>{{item.duration}}</span>
           </p>
         </li>
       </ul>
@@ -19,24 +18,33 @@
 </template>
 
 <script>
+import {searchMvList} from 'api/search'
+import {mapGetters} from 'vuex'
 export default {
-  props: {
-    mvList: {
-      type: Array,
-      default: []
-    }
+  computed: {
+    ...mapGetters([
+      'keywords'
+    ])
   },
   data() {
     return {
-      showFlag: false
+      showFlag: true,
+      mvList: []
     }
   },
+  created() {
+    this._searchMvList(this.keywords)
+  },
   methods: {
-    show() {
-      this.showFlag = true
-    },
-    hide() {
-      this.showFlag = false
+    _searchMvList(key) {
+      searchMvList(key).then((res) => {
+        let reg = new RegExp(`^MusicJsonCallback5987696727295411\\(`)
+        let reg2 = new RegExp('\\)$')
+        res = res.replace(reg, '').replace(reg2, '')
+        res = JSON.parse(res)
+        this.mvList = res.data.mv.list
+        console.log(this.mvList)
+      })
     }
   }
 }
@@ -51,6 +59,10 @@ export default {
       width: 100%
       .mv-li
         @include px2rem(height, 128px)
+        @include px2rem(border-bottom-width, 2px)
+        border-style: solid
+        border-color: #efefef
+        box-sizing: border-box
         ul
           display: flex
           li
@@ -64,6 +76,8 @@ export default {
             display: flex
             flex-direction: column
             justify-content: center
+            box-sizing: border-box
+            @include px2rem(max-width, 480px)
             @include px2rem(margin-left, 28px)
             p:last-child
               font-size: 20px; /*px*/

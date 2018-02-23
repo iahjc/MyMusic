@@ -203,12 +203,12 @@ export default {
           @include px2rem(width, 86px)
           @include px2rem(height, 86px)
           color: #fff
-          @include font-dpr(15px)
+          font-size: 30px; /*px*/
           display: flex
           justify-content: center
           align-items: center
         .r-h-title
-          @include font-dpr(15px)
+          font-size: 30px; /*px*/
           display: flex
           justify-content: center
           align-items: center
@@ -218,7 +218,7 @@ export default {
           @include px2rem(width, 80px)
           text-align: center
           i
-            @include font-dpr(18px)
+            font-size: 36px; /*px*/
       .ms-cont
         position: absolute
         @include px2rem(top, 86px)
@@ -245,7 +245,7 @@ export default {
               justify-content: center
               align-items: center
               i
-                @include font-dpr(12px)
+                font-size: 24px; /*px*/
                 display: none
           div.checked
             div
@@ -285,7 +285,7 @@ export default {
                 align-items: center
                 justify-content: center
                 i
-                  @include font-dpr(16px)
+                  font-size: 32px; /*px*/
                   color: #d6d6d6
             li:nth-child(3)
               @include px2rem(width, 80px)
@@ -295,21 +295,21 @@ export default {
               align-items: center
               i
                 color: #808080
-                @include font-dpr(15px)
+                font-size: 30px; /*px*/
             li:nth-child(2)
               flex: 1
               display: flex
               justify-content: center
               flex-direction: column
-              @include font-dpr(15px)
+              font-size: 30px; /*px*/
               box-sizing: border-box
               @include px2rem(padding-left, 20px)
               p:first-child
-                @include font-dpr(15px)
+                font-size: 30px; /*px*/
                 @include px2rem(line-height, 45px)
                 color: #444
               p:last-child
-                @include font-dpr(12px)
+                font-size: 24px; /*px*/
                 @include px2rem(line-height, 38px)
                 color: #bdbdbd
       .ms-remove
@@ -326,7 +326,7 @@ export default {
           @include px2rem(width, 100px)
           @include px2rem(height, 100px)
           color: #9f9f9f
-          @include font-dpr(10px)
+          font-size: 20px; /*px*/
           display: flex
           justify-content: center
           align-items: center
@@ -334,5 +334,5 @@ export default {
           p
             @include px2rem(line-height, 40px)
           i
-            @include font-dpr(25px)
+            font-size: 50px; /*px*/
 </style>

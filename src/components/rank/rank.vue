@@ -114,7 +114,7 @@ export default {
       .r-h-title
         height: 100%
         width: 100%
-        @include font-dpr(15px)
+        font-size: 30px; /*px*/
         display: flex
         justify-content: center
         align-items: center
@@ -125,7 +125,7 @@ export default {
         @include px2rem(width, 80px)
         text-align: center
         i
-          @include font-dpr(18px)
+          font-size: 36px; /*px*/
     .rank-main
       position: absolute
       @include px2rem(top, 86px)
@@ -137,7 +137,7 @@ export default {
         display: flex
         justify-content: center
         align-items: center
-        @include font-dpr(15px)
+        font-size: 30px; /*px*/
       .rh-cont
         width: 95%
         margin: 0 auto
@@ -165,7 +165,7 @@ export default {
             li
               @include px2rem(height, 60px)
               @include px2rem(line-height, 60px)
-              @include font-dpr(13px)
+              font-size: 26px; /*px*/
               overflow: hidden
               span
                 color: #6d6d6d
@@ -174,7 +174,7 @@ export default {
             display: flex
             justify-content: center
             align-items: center
-            @include font-dpr(20px)
+            font-size: 40px; /*px*/
             color: #8e8e8e
       .gl-cont
         display: flex
@@ -191,7 +191,7 @@ export default {
           p
             width: 90%
             margin: 0 auto
-            @include font-dpr(12px)
+            font-size: 24px; /*px*/
             color: #272727
             @include px2rem(line-height, 28px)
             @include px2rem(height, 90px)

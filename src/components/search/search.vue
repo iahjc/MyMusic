@@ -29,7 +29,14 @@
         </div>
 
         <div class="sh-c2" v-show="scFlag">
-          <search-cont :songs="songs"></search-cont>
+          <ul class="sd-nav">
+            <li @click="goSingle">单曲</li>
+            <li><router-link :to="{ path: '/search/searchmvlist' }">MV</router-link></li>
+            <li><router-link :to="{ path: '/search/searchalbumlist' }">专辑</router-link></li>
+            <li><router-link :to="{ path: '/search/searchsongsheetlist'}">歌单</router-link></li>
+            <li><router-link :to="{ path: '/search/searchlyriclist' }">歌词</router-link></li>
+          </ul>
+          <router-view></router-view>
         </div>
       </div>
     </scroll>
@@ -43,12 +50,11 @@ import Scroll from 'base/scroll/scroll'
 import {hotSearchList, searchKeyList} from 'api/search'
 import Confirm from 'base/confirm/confirm'
 import {debounce} from 'common/js/utils/util'
-import SearchCont from 'components/search-cont/search-cont'
+import {mapMutations} from 'vuex'
 
 let sh = new SearchHistory()
 export default {
   components: {
-    SearchCont,
     Scroll,
     Confirm
   },
@@ -60,19 +66,31 @@ export default {
       songs: [],
       historyList: [],
       showFlag: true,
-      scFlag: false
+      scFlag: false,
+      zhida: {}
     }
   },
   created() {
     this.$watch('query', debounce((newQuery) => {
-      this._searchKeyList(this.query)
     }, 800))
 
     this._hotSearchList()
-    this._searchKeyList()
     this._getSearchHistoryList()
   },
   methods: {
+    goSingle() {
+      this.$router.push({
+        path: `/search/`
+      })
+    },
+    goMv() {
+      this.$router.push({
+        path: `/search/mvList`
+      })
+    },
+    ...mapMutations({
+      'setKeywords': 'SET_KEYWORDS'
+    }),
     clearAll() {
       let _this = this
       this.$refs.confirm.show({
@@ -112,6 +130,8 @@ export default {
       // 添加历史记录
       sh.insert(key)
 
+      this.setKeywords(key)
+
       // 执行搜索操作
       this.showFlag = false
       this.scFlag = true
@@ -127,16 +147,6 @@ export default {
         res = JSON.parse(res)
         this.keys = res.data.hotkey
         this.keys.length = 9
-      })
-    },
-    _searchKeyList(keywords) {
-      searchKeyList(keywords).then((res) => {
-        let reg = new RegExp(`^MusicJsonCallback5987696727295411\\(`)
-        let reg2 = new RegExp('\\)$')
-        res = res.replace(reg, '').replace(reg2, '')
-        res = JSON.parse(res)
-        this.songs = res.data.song.list
-        console.log(this.songs)
       })
     }
   }
@@ -171,13 +181,13 @@ export default {
           border: 0
           background: #55a872
           @include px2rem(border-radius, 8px)
-          @include font-dpr(14px)
+          font-size: 28px; /*px*/
           color: #e6f6e0
           &::placeholder
             color: #e6f6e0
         span
           color: #fff
-          @include font-dpr(15px)
+          font-size: 30px; /*px*/
           display: flex
           @include px2rem(width, 86px)
           @include px2rem(height, 56px)
@@ -190,18 +200,35 @@ export default {
         bottom: 0
         overflow: hidden
         width: 100%
+        .sh-c2
+          .sd-nav
+            display: flex
+            width: 100%
+            @include px2rem(height, 85px)
+            box-sizing: border-box
+            border-style: solid
+            @include px2rem(border-bottom-width, 2px)
+            border-color: #eaeaea
+            li
+              width: 20%
+              box-sizing: border-box
+              color: #7f7f7f
+              font-size: 30px; /*px*/
+              display: flex
+              justify-content: center
+              align-items: center
         .hot-search
           width: 92%
           margin: 0 auto
           @include px2rem(margin-top, 36px)
           p
-            @include font-dpr(12px)
+            font-size: 24px; /*px*/
             color: #6a6a6a
           ul
             display: flex
             flex-wrap: wrap
             li
-              @include font-dpr(12px)
+              font-size: 24px; /*px*/
               @include px2rem(height, 54px)
               @include px2rem(padding-left, 20px)
               @include px2rem(padding-right, 20px)
@@ -227,12 +254,12 @@ export default {
               @include px2rem(height, 90px)
               width: 90%
               margin: 0 auto
-              @include font-dpr(15px)
+              font-size: 30px; /*px*/
               @include px2rem(border-bottom-width, 2px)
               border-style: solid
               border-color: #f0f0f0
               i
-                @include font-dpr(14px)
+                font-size: 28px; /*px*/
                 color: #808080
                 @include px2rem(padding, 10px)
           .sh-t
@@ -240,7 +267,7 @@ export default {
             display: flex
             justify-content: space-between
             align-items: center
-            @include font-dpr(13px)
+            font-size: 26px; /*px*/
             @include px2rem(border-bottom-width, 2px)
             border-style: solid
             border-color: #f8f8f8

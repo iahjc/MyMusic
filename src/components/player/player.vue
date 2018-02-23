@@ -289,17 +289,17 @@ export default {
           justify-content: center
           i
             color: #fff
-            @include font-dpr(32px)
+            font-size: 64px; /*px*/
             transform: rotate(-90deg)
         p
-          @include font-dpr(15px)
+          font-size: 30px; /*px*/
           color: #fffdfe
         .sl-h-r
           @include px2rem(width, 100px)
           display: flex
           justify-content: center
           i
-            @include font-dpr(20px)
+            font-size: 40px; /*px*/
             color: #fff
       .sp-bg
         width: 100%
@@ -335,14 +335,14 @@ export default {
             display: inline-block
             color: #fffbfc
             border-radius: 10px
-            @include font-dpr(10px)
+            font-size: 20px; /*px*/
             display: inline-flex
             align-items: center
             @include px2rem(padding-left, 10px)
             @include px2rem(padding-right, 10px)
         p
           width: 100%
-          @include font-dpr(15px)
+          font-size: 30px; /*px*/
           color: #f3ebe9
           text-align: center
       .sp-m
@@ -376,10 +376,10 @@ export default {
         .mi-l-c
           @include px2rem(margin-left, 18px)
           h2
-            @include font-dpr(10px)
+            font-size: 20px; /*px*/
           p
             @include px2rem(margin-top, 10px)
-            @include font-dpr(8px)
+            font-size: 16px; /*px*/
             color: #6b6b6b
         .mi-l-img
           @include px2rem(width, 82px)
@@ -403,9 +403,9 @@ export default {
         border-radius: 100%
         i
           color: #5dbf82
-          @include font-dpr(12px)
+          font-size: 24px; /*px*/
       .mi-his
         i
-          @include font-dpr(21px)
+          font-size: 42px; /*px*/
           color: #5dbf82
 </style>

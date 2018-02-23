@@ -93,13 +93,13 @@ export default {
             display: flex
             justify-content: center
           p:first-child
-            @include font-dpr(16px)
+            font-size: 32px; /*px*/
             @include px2rem(line-height, 32px)
             color: #444
           p:nth-child(2)
             @include px2rem(margin-top, 20px)
             width: 90%
-            @include font-dpr(14px)
+            font-size: 28px; /*px*/
             @include px2rem(line-height,32px)
             color: #4a4a4a
         .c-btn
@@ -124,6 +124,6 @@ export default {
             display: flex
             justify-content: center
             align-items: center
-            @include font-dpr(12px)
+            font-size: 24px; /*px*/
             box-sizing: border-box
 </style>

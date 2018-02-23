@@ -83,9 +83,9 @@ export default {
         align-items: center
       i
         color: #62bd82
-        @include font-dpr(20px)
+        font-size: 40px; /*px*/
       span
-        @include font-dpr(16px)
+        font-size: 32px; /*px*/
       ul
         display: flex
         li
@@ -105,7 +105,7 @@ export default {
         .ml-l
           .ml-l-title
             display: flex
-            @include font-dpr(14px)
+            font-size: 28px; /*px*/
             @include px2rem(line-height, 45px)
             align-items: center
             p
@@ -120,13 +120,13 @@ export default {
               color: #6ac292
               border-color: #6ac292
           p.ml-des
-            @include font-dpr(10px)
+            font-size: 20px; /*px*/
             color: #595959
             @include px2rem(width, 600px)
             @include px2rem(height, 24px)
             overflow: hidden
         .ml-r
           i
-            @include font-dpr(4px)
+            font-size: 8px; /*px*/
             color: #9f9f9f
 </style>

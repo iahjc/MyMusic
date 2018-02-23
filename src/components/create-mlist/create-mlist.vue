@@ -91,7 +91,7 @@ export default {
           justify-content: center
           color: #6b6b6b
           span
-            @include font-dpr(15px)
+            font-size: 30px; /*px*/
           span.cur
             color: #000
         .cl-r
@@ -109,16 +109,14 @@ export default {
             justify-content: center
             align-items: center
             i
-              @include font-dpr(16px)
+              font-size: 32px; /*px*/
       .c-l-cont
         width: 100%
         @include px2rem(margin-top, 4px)
         background: #fff
         .c-li
           width: 100%
-          @include px2rem(border-bottom-width, 2px)
-          border-color: #f9f9f9
-          border-style: solid
+          border-bottom: 1px solid #f9f9f9; /*no*/
           ul
             display: flex
             align-items: center
@@ -143,7 +141,7 @@ export default {
                 align-items: center
                 justify-content: center
                 i
-                  @include font-dpr(16px)
+                  font-size: 32px; /*px*/
                   color: #d6d6d6
             li:nth-child(3)
               @include px2rem(width, 80px)
@@ -153,21 +151,21 @@ export default {
               align-items: center
               i
                 color: #808080
-                @include font-dpr(15px)
+                font-size: 30px; /*px*/
             li:nth-child(2)
               flex: 1
               display: flex
               justify-content: center
               flex-direction: column
-              @include font-dpr(15px)
+              font-size: 30px; /*px*/
               box-sizing: border-box
               @include px2rem(padding-left, 20px)
               p:first-child
-                @include font-dpr(15px)
+                font-size: 30px; /*px*/
                 @include px2rem(line-height, 45px)
                 color: #444
               p:last-child
-                @include font-dpr(12px)
+                font-size: 24px; /*px*/
                 @include px2rem(line-height, 38px)
                 color: #bdbdbd
         .c-gd
@@ -184,9 +182,9 @@ export default {
               align-items: center
               i
                 color: #808080
-                @include font-dpr(15px)
+                font-size: 30px; /*px*/
             li:nth-child(2)
-              @include font-dpr(15px)
+              font-size: 30px; /*px*/
               display: flex
               align-items: center
               @include px2rem(margin-left, 20px)

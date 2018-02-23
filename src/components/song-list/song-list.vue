@@ -161,7 +161,7 @@ export default {
         justify-content: center
         i
           color: #fff
-          @include font-dpr(32px)
+          font-size: 64px; /*px*/
       p
         @include font-dpr(15px)
         color: #fffdfe
@@ -170,7 +170,7 @@ export default {
         display: flex
         justify-content: center
         i
-          @include font-dpr(20px)
+          font-size: 40px; /*px*/
           color: #fff
     .sl-c
       @include px2rem(height, 520px)
@@ -213,7 +213,7 @@ export default {
           @include px2rem(width, 382px)
           @include px2rem(margin-left, 24px)
           h2
-            @include font-dpr(17px)
+            font-size: 34px; /*px*/
             @include px2rem(line-height, 38px)
             @include px2rem(width, 320px)
             color: #fff3f7
@@ -238,14 +238,14 @@ export default {
                 right: 0
                 bottom: 0
             span
-              @include font-dpr(12px)
+              font-size: 24px; /*px*/
               color: #f9f1ef
         p
           text-overflow: ellipsis
           @include px2rem(height, 32px)
           @include px2rem(line-height, 32px)
           overflow: hidden
-          @include font-dpr(13px)
+          font-size: 26px; /*px*/
           color: #fff8f0
       .sl-b
         display: flex
@@ -261,7 +261,7 @@ export default {
           display: flex
           align-items: center
           i
-            @include font-dpr(18px)
+            font-size: 36px; /*px*/
     .sl-wrapper
       position: absolute
       @include px2rem(top, 520px)

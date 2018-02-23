@@ -76,7 +76,7 @@ export default {
       align-items: center
       box-sizing: border-box
       padding-left: 5%
-      @include font-dpr(14px)
+      font-size: 28px; /*px*/
       z-index: 11111
       color: #fff
     .success

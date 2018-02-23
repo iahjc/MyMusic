@@ -204,7 +204,7 @@ export default {
             display: block
             @include px2rem(width, 100px)
           i
-            @include font-dpr(24px)
+            font-size: 48px; /*px*/
     .col-3-cont
       display: flex
       flex-wrap:  wrap
@@ -226,16 +226,16 @@ export default {
             width: 100%
             align-items: center
             .i-msg-num
-              @include font-dpr(12px)
+              font-size: 24px; /*px*/
               @include px2rem(margin-left, 20px)
             .i-msg-play
-              @include font-dpr(20px)
+              font-size: 40px; /*px*/
               @include px2rem(margin-right, 20px)
           img
             width: 100%
         p
           color: #0d0d0d
-          @include font-dpr(12px)
+          font-size: 24px; /*px*/
           @include px2rem(line-height, 32px)
           box-sizing: border-box
           padding-left: 3%

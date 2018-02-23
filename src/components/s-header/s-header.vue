@@ -42,7 +42,7 @@ export default {
       @include px2rem(width, 80px)
       text-align: center
       i
-        @include font-dpr(18px)
+        font-size: 36px; /*px*/
     .s-h-cont
       display: flex
       @include px2rem(width, 330px)
@@ -55,7 +55,7 @@ export default {
         text-align: center
         @include px2rem(line-height, 52px)
         color: #fff
-        @include font-dpr(12px)
+        font-size: 24px; /*px*/
       li.cur
         background: #fff
         color: #61bf81
@@ -64,5 +64,5 @@ export default {
       text-align: center
       i
         color: #fff
-        @include font-dpr(18px)
+        font-size: 36px; /*px*/
 </style>

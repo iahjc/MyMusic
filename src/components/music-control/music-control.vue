@@ -147,12 +147,12 @@ export default {
         @include px2rem(border-bottom-width, 2px)
         border-style: solid
         border-color: rbga(255, 255, 255, .7)
-        @include font-dpr(12px)
+        font-size: 24px; /*px*/
         box-sizing: border-box
         padding-left: 5%
         padding-right: 3%
         span
-          @include font-dpr(13px)
+          font-size: 26px; /*px*/
           color: #fff
       .mc-cont
         width: 100%
@@ -182,10 +182,10 @@ export default {
               justify-content: center
               align-items: center
               i
-                @include font-dpr(25px)
+                font-size: 50px; /*px*/
             p
               @include px2rem(height, 70px)
-              @include font-dpr(10px)
+              font-size: 20px; /*px*/
               color: #fff
               opacity: .7
               display: flex
@@ -218,12 +218,12 @@ export default {
             justify-content: center
             align-items: center
             i
-              @include font-dpr(16px)
+              font-size: 32px; /*px*/
       .mc-close
         width: 100%
         @include px2rem(height, 110px)
         color: #fff
-        @include font-dpr(15px)
+        font-size: 30px; /*px*/
         display: flex
         justify-content: center
         align-items: center

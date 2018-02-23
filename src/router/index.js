@@ -16,6 +16,11 @@ import Mv from 'components/mv/mv'
 import Album from 'components/album/album'
 import RankList from 'components/rank-list/rank-list'
 import SongSheet from 'components/song-sheet/song-sheet'
+import SingleList from 'components/search/single-list'
+import MvList from 'components/search/mv-list'
+import AlbumList from 'components/search/album-list'
+import SongsheetList from 'components/search/songsheet-list'
+import LyricList from 'components/search/lyric-list'
 
 Vue.use(Router)
 
@@ -58,7 +63,29 @@ export default new Router({
     {
       path: '/search',
       name: 'Search',
-      component: Search
+      component: Search,
+      children: [
+        {
+          path: '/',
+          component: SingleList
+        },
+        {
+          path: '/search/searchmvlist',
+          component: MvList
+        },
+        {
+          path: '/search/searchalbumlist',
+          component: AlbumList
+        },
+        {
+          path: '/search/searchsongsheetlist',
+          component: SongsheetList
+        },
+        {
+          path: '/search/searchlyriclist',
+          component: LyricList
+        }
+      ]
     },
     {
       path: '/mv',

@@ -61,7 +61,7 @@ export default {
           flex-direction: column
           p.sp-gc
             width: 100%
-            @include font-dpr(14px)
+            font-size: 28px; /*px*/
             color: #b0a69d
             @include px2rem(line-height, 42px)
             @include px2rem(margin-top, 40px)

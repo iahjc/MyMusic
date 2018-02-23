@@ -104,7 +104,7 @@ export default {
         ul
           display: flex
           align-items: center
-          @include font-dpr(15px)
+          font-size: 30px; /*px*/
           li:first-child,li:last-child
             @include px2rem(width, 100px)
             @include px2rem(height, 75px)
@@ -134,13 +134,13 @@ export default {
           align-items: center
           i
             color: #ccc
-            @include font-dpr(18px)
+            font-size: 36px; /*px*/
         input
           height: 100%
           box-sizing: border-box
           padding-left: 3%
           width: 80%
           border: 0
-          @include font-dpr(14px)
+          font-size: 28px; /*px*/
           color: #747474
 </style>

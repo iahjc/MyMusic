@@ -100,7 +100,7 @@ export default {
         .r-h-title
           height: 100%
           width: 100%
-          @include font-dpr(15px)
+          font-size: 30px; /*px*/
           display: flex
           justify-content: center
           align-items: center
@@ -111,7 +111,7 @@ export default {
           @include px2rem(width, 80px)
           text-align: center
           i
-            @include font-dpr(18px)
+            font-size: 36px; /*px*/
       .album-cont
         width: 95%
         left: 2.5%
@@ -121,7 +121,7 @@ export default {
         overflow: hidden
         h2
           @include px2rem(height, 100px)
-          @include font-dpr(16px)
+          font-size: 32px; /*px*/
           display: flex
           align-items: center
         .album-cat

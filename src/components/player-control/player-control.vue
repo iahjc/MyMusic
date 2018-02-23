@@ -75,7 +75,7 @@ export default {
         display: flex
         justify-content: center
         i
-          @include font-dpr(19px)
+          font-size: 38px; /*px*/
           color: #d3cfcc
       .pc-main
         display: flex
@@ -96,10 +96,10 @@ export default {
           align-items: center
           @include px2rem(margin-right, 72px)
           i
-            @include font-dpr(19px)
+            font-size: 38px; /*px*/
         li:nth-child(2)
           @include px2rem(width, 118px)
           @include px2rem(height, 118px)
           i
-            @include font-dpr(21px)
+            font-size: 42px; /*px*/
 </style>

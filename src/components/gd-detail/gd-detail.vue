@@ -97,16 +97,16 @@ export default {
           justify-content: center
           i
             color: #fff
-            @include font-dpr(32px)
+            font-size: 64px; /*px*/
         p
-          @include font-dpr(15px)
+          font-size: 30px; /*px*/
           color: #fffdfe
         .sl-h-r
           @include px2rem(width, 100px)
           display: flex
           justify-content: center
           i
-            @include font-dpr(20px)
+            font-size: 40px; /*px*/
             color: #fff
       .gd-detail-cont
         width: 95%
@@ -121,7 +121,7 @@ export default {
         justify-content: center
         align-items: center
         p
-          @include font-dpr(30px)
+          font-size: 60px; /*px*/
           color: #fff
         .btn4
           position: absolute

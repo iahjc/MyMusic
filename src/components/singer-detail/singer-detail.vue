@@ -263,16 +263,16 @@ export default {
         justify-content: center
         i
           color: #fff
-          @include font-dpr(32px)
+          font-size: 64px; /*px*/
       p
-        @include font-dpr(10px)
+        font-size: 20px; /*px*/
         color: #fffdfe
       .sl-h-r
         @include px2rem(width, 100px)
         display: flex
         justify-content: center
         i
-          @include font-dpr(20px)
+          font-size: 40px; /*px*/
           color: #fff
     .sd-h
       @include px2rem(height, 500px)
@@ -290,7 +290,7 @@ export default {
         justify-content: space-around
         .sd-title
           color: #fff
-          @include font-dpr(20px)
+          font-size: 40px; /*px*/
           width: 100%
           text-align: center
         .sd-fs
@@ -307,7 +307,7 @@ export default {
             background-color: rgba(255, 255, 255, .7)
             @include px2rem(height, 2px)
           li
-            @include font-dpr(16px)
+            font-size: 32px; /*px*/
             color: #fff
         .sd-btn
           width: 100%
@@ -350,7 +350,7 @@ export default {
           li
             width: 25%
             color: #7f7f7f
-            @include font-dpr(16px)
+            font-size: 32px; /*px*/
             display: flex
             justify-content: center
             align-items: center

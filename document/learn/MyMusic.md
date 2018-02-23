@@ -70,6 +70,11 @@
         npm install better-scroll --save-dev
   - API介绍 https://ustbhuangyi.github.io/better-scroll/doc/zh-hans/#better-scroll %E6%98%AF%E4%BB%80%E4%B9%88
 
+## 添加 px2rem-loader px转rem的loader
+  - npm install px2rem-loader --save-dev
+          font-size: 12px; /*px*/ 根据三级dpr修改字体为 12 24 36 px
+          border: 1px solid #ccc; /*no*/ 不转换为rem 直接使用px为单位
+
 ## 配置vuex状态管理
   - Vuex官方中文网址: https://vuex.vuejs.org/zh-cn/
   - Vuex是一个专为vue.js应用程序开发的状态管理模式。他采用集中式存储管理应用的所有组件的状态，并以相应的规则保证状态以一种可预测的方式发生变化。Vuex也集成到vue的官方调试工具devtools extension,提供了诸如零配置的time-travel调试，状态快照导入导出等高级调试功能。

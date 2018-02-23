@@ -100,7 +100,7 @@ export default {
         .r-h-title
           height: 100%
           width: 100%
-          @include font-dpr(15px)
+          font-size: 30px; /*px*/
           display: flex
           justify-content: center
           align-items: center
@@ -111,7 +111,7 @@ export default {
           @include px2rem(width, 80px)
           text-align: center
           i
-            @include font-dpr(18px)
+            font-size: 36px; /*px*/
       .rs-cont
         position: absolute
         @include px2rem(top, 86px)
@@ -143,11 +143,11 @@ export default {
             p:nth-child(2)
               width: 90%
               margin: 0 auto
-              @include font-dpr(14px)
+              font-size: 28px; /*px*/
               @include px2rem(line-height, 60px)
             p:nth-child(3)
               width: 90%
               margin: 0 auto
-              @include font-dpr(12px)
+              font-size: 24px; /*px*/
               color: #999
 </style>

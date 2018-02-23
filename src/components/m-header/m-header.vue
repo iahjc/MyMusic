@@ -73,7 +73,7 @@ export default {
       .mh-t-nav
         ul
           display: flex
-          @include font-dpr(15px)
+          font-size: 30px; /*px*/
           color: $h-cr-color
           @include px2rem(height, 50px)
           align-items: center
@@ -108,7 +108,7 @@ export default {
     display: flex
     align-items: center
     justify-content: center
-    @include font-dpr(15px)
+    font-size: 30px; /*px*/
     color: #fff
 
 </style>

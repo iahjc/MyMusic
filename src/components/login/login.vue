@@ -63,7 +63,7 @@ export default {
               @include px2rem(height, 100px)
           li:nth-child(2)
             span
-              @include font-dpr(14px)
+              font-size: 28px; /*px*/
             input
               @include px2rem(height, 45px)
               background: none

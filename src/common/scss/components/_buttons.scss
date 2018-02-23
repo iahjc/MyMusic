@@ -1,3 +1,19 @@
+@import "../layout/layout.scss";
+
+@mixin btn($size:14px, $color:#fff, $bgcolor:#F04752, $padding:5px, $radius:5px) {
+  padding: $padding;
+  background-color: $bgcolor;
+  border-radius: $radius;
+  border: 1px solid $bgcolor;
+  font-size: $size;
+  color: $color;
+  text-align: center;
+  line-height: 1;
+  display: inline-block;
+}
+
+
+
 .btn {
   @include px2rem(height, 48px);
   @include px2rem(width, 138px);
@@ -6,7 +22,7 @@
   @include px2rem(border-width, 2px);
   border-style: solid;
   @include px2rem(border-radius, 20px);
-  @include font-dpr(11px);
+  font-size: 22px; /*px*/
   color: #fff;
   @include px2rem(line-height, 48px);
   text-align: center;
@@ -15,7 +31,7 @@
 .btn2 {
   @include px2rem(width, 260px);
   @include px2rem(height, 52px);
-  @include font-dpr(16px);
+  font-size: 32px; /*px*/
   @include px2rem(border-width, 2px);
   @include px2rem(border-radius, 6px);
   border-style: solid;
@@ -33,7 +49,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  @include font-dpr(15px);
+  font-size: 30px; /*px*/
 }
 
 .btn4 {
@@ -44,10 +60,10 @@
   justify-content: center;
   align-items: center;
   color: #fff;
-  @include font-dpr(16px);
+  font-size: 32px; /*px*/
   @include px2rem(border-radius, 150px);
   i {
-    @include font-dpr(16px);
+    font-size: 32px; /*px*/
     color: #fff;
   }
 }
@@ -55,7 +71,7 @@
 .icon1 {
   @include px2rem(width, 52px);
   @include px2rem(height, 24px);
-  @include font-dpr(4px);
+  font-size: 8px; /*px*/
   display: inline-flex;
   box-sizing: border-box;
   @include px2rem(border-width, 1px);
@@ -71,7 +87,7 @@
   @include px2rem(width, 40px);
   @include px2rem(height, 28px);
   box-sizing: border-box;
-  @include font-dpr(6px);
+  font-size: 12px; /*px*/
   color: #a9a9a9;
   @include px2rem(border-width, 2px);
   @include px2rem(border-radius, 6px);

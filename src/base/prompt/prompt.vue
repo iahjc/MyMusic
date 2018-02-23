@@ -82,14 +82,14 @@ export default {
         justify-content: center
         align-items: center
         p
-          @include font-dpr(15px)
+          font-size: 30px; /*px*/
           @include px2rem(width, 440px)
           @include px2rem(line-height, 42px)
           text-align: center
       .prompt-btn
         @include px2rem(height, 82px)
         width: 100%
-        @include font-dpr(17px)
+        font-size: 34px; /*px*/
         display: flex
         justify-content: center
         align-items: center

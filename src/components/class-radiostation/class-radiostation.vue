@@ -16,12 +16,13 @@
             {{item.categoryName}}
           </li>
         </ul>
-        <div class="btn3">
+        <div class="btn3" @click="showCateList">
           查看全部分类 >
         </div>
         <gd-list :rsList="rsList" @selectItem="selectItem"></gd-list>
       </div>
     </scroll>
+    <category-list :categories="categories" ref="catelist"></category-list>
   </section>
 </template>
 
@@ -30,10 +31,12 @@ import {mapMutations} from 'vuex'
 import {getClassRs, getClassRsList} from 'api/radiostation'
 import GdList from 'components/gd-list/gd-list'
 import Scroll from 'base/scroll/scroll'
+import CategoryList from 'components/category-list/category-list'
 export default {
   components: {
     GdList,
-    Scroll
+    Scroll,
+    CategoryList
   },
   data() {
     return {
@@ -47,6 +50,9 @@ export default {
     this._getClassRsList()
   },
   methods: {
+    showCateList() {
+      this.$refs.catelist.show()
+    },
     ...mapMutations({
       'setCatName': 'SET_CATNAME'
     }),
@@ -116,7 +122,7 @@ export default {
         .r-h-title
           height: 100%
           width: 100%
-          @include font-dpr(15px)
+          font-size: 30px; /*px*/
           display: flex
           justify-content: center
           align-items: center
@@ -127,7 +133,7 @@ export default {
           @include px2rem(width, 80px)
           text-align: center
           i
-            @include font-dpr(18px)
+            font-size: 36px; /*px*/
       .crt-cont
         width: 95%
         left: 2.5%
@@ -137,7 +143,7 @@ export default {
         overflow: hidden
         h2
           @include px2rem(height, 100px)
-          @include font-dpr(16px)
+          font-size: 32px; /*px*/
           display: flex
           align-items: center
         .crt-cat

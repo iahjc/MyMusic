@@ -272,6 +272,21 @@ const devWebpackConfig = merge(baseWebpackConfig, {
         })
       })
 
+      app.get('/api/searchSongSheetsList', function (req, res) {
+        let url = 'https://c.y.qq.com/soso/fcgi-bin/client_music_search_songlist'
+        axios.get(url, {
+          headers: {
+            referer: 'https://c.y.qq.com',
+            host: 'c.y.qq.com'
+          },
+          params: req.query
+        }).then((response) => {
+          res.json(response.data)
+        }).catch((e) => {
+          console.log(e)
+        })
+      })
+
       app.get('/api/searchKeyList', function (req, res) {
         let url = 'https://c.y.qq.com/soso/fcgi-bin/client_search_cp'
         axios.get(url, {

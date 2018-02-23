@@ -157,7 +157,7 @@ export default {
     opacity: 0
     // @include px2rem(width, 640px, 75px)
     .l-ns
-      @include px2rem(width, 576px)
+      width: 576px
       margin-left: 5%
       .l-ns-lis
         width: 100%
@@ -166,14 +166,14 @@ export default {
           display: flex
           .l-ns-title
             width: 50%
-            @include font-dpr(14px)
+            font-size: 28px; /*px*/
             color: $ns-l-color
             @include px2rem(margin-top, 24px)
             @include px2rem(margin-bottom, 24px)
           .l-ns-des
             width: 50%
             text-align: right
-            @include font-dpr(12px)
+            font-size: 24px; /*px*/
             color: $ns-l-des-color
             display: flex
             align-items: center
@@ -186,16 +186,16 @@ export default {
       left: 5%
       @include px2rem(height, 100px)
       box-sizing: border-box
-      border-top: 1px solid #e8e8e8
+      border-top: 1px solid #e8e8e8; /*no*/
       i
-        @include font-dpr(16px)
+        font-size: 32px; /*px*/
       div
         width: 50%
         display: flex
         align-items: center
       .l-ns-sz
-        @include font-dpr(14px)
+        font-size: 28px; /*px*/
       .l-ns-login
         justify-content: flex-end
-        @include font-dpr(14px)
+        font-size: 28px; /*px*/
 </style>

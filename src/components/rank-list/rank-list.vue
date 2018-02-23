@@ -144,16 +144,16 @@ export default {
         justify-content: center
         i
           color: #fff
-          @include font-dpr(32px)
+          font-size: 64px; /*px*/
       p
-        @include font-dpr(15px)
+        font-size: 30px; /*px*/
         color: #fffdfe
       .sl-h-r
         @include px2rem(width, 100px)
         display: flex
         justify-content: center
         i
-          @include font-dpr(20px)
+          font-size: 40px; /*px*/
           color: #fff
     .sl-c
       @include px2rem(height, 520px)
@@ -185,7 +185,7 @@ export default {
         align-items: center
         overflow: hidden
         @include px2rem(bottom, 30px)
-        @include font-dpr(14px)
+        font-size: 28px; /*px*/
         color: #fff
       .sl-b
         display: flex
@@ -201,7 +201,7 @@ export default {
           display: flex
           align-items: center
           i
-            @include font-dpr(18px)
+            font-size: 36px; /*px*/
     .sl-wrapper
       position: absolute
       @include px2rem(top, 520px)
