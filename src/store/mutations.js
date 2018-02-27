@@ -39,6 +39,9 @@ const matutaions = {
   },
   [types.SET_KEYWORDS](state, keywords) {
     state.keywords = keywords
+  },
+  [types.SET_PLAY_HISTORY](state, history) {
+    state.playHistory = history
   }
 }
 

@@ -1,10 +1,13 @@
 import {playMode} from 'common/js/playmode'
+import Storage from 'db/storage'
+
+let stroage = new Storage()
 
 const state = {
   showNavslide: false,
   playList: [],
   sequenceList: [],
-  currentIndex: 0,
+  currentIndex: -1,
   fullScreen: false,
   playing: false,
   mode: playMode.sequence,
@@ -13,7 +16,8 @@ const state = {
   userInfo: {},
   catName: '',
   topList: {},
-  keywords: ''
+  keywords: '',
+  playHistory: stroage.loadPlayHistory()
 }
 
 export default state

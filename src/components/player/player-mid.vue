@@ -15,7 +15,6 @@
     <ul class="pm-lis">
       <li class="cur"></li>
       <li></li>
-      <li></li>
     </ul>
   </section>
 </template>
@@ -43,6 +42,9 @@ export default {
     }
   },
   methods: {
+    getEl() {
+      return this.$refs.spmImg
+    }
   }
 }
 </script>
@@ -51,6 +53,7 @@ export default {
     @import "../../common/scss/helpers/variables.scss";
     @import "../../common/scss/helpers/mixins.scss";
     @import "../../common/scss/base/base.scss";
+    @import "../../common/scss/components/animation.scss";
     .player-mid
       width: 100%
       .pm-u
@@ -64,7 +67,7 @@ export default {
             font-size: 28px; /*px*/
             color: #b0a69d
             @include px2rem(line-height, 42px)
-            @include px2rem(margin-top, 40px)
+            @include px2rem(margin-top, 20px)
             text-align: center
           .spm-img
             @include px2rem(width, 676px)
@@ -76,10 +79,6 @@ export default {
             display: flex
             justify-content: center
             align-items: center
-            &.play
-              animation: rotate 30s linear infinite
-            &.pause
-              animation-play-state: paused
             div
               width: 96%
               height: 96%
@@ -92,7 +91,7 @@ export default {
         width: 100%
         display: flex
         justify-content: center
-        @include px2rem(margin-top, 32px)
+        @include px2rem(margin-top, 12px)
         li:last-child
           margin-right: 0
         li.cur
@@ -105,9 +104,4 @@ export default {
           box-sizing: border-box
           background-color: rgba(255, 255, 255, .5)
 
-    @keyframes rotate
-      0%
-        transform: rotate(0)
-      100%
-        transform: rotate(360deg)
 </style>

@@ -27,7 +27,7 @@
 
 <script>
 import {mapMutations} from 'vuex'
-import {getMvType} from 'api/mv'
+// import {getMvType} from 'api/mv'
 import {getAlbumType} from 'api/album'
 import AlbumList from 'components/album-list/album-list'
 import Scroll from 'base/scroll/scroll'

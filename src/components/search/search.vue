@@ -47,7 +47,7 @@
 <script>
 import SearchHistory from 'db/searchHistory'
 import Scroll from 'base/scroll/scroll'
-import {hotSearchList, searchKeyList} from 'api/search'
+import {hotSearchList} from 'api/search'
 import Confirm from 'base/confirm/confirm'
 import {debounce} from 'common/js/utils/util'
 import {mapMutations} from 'vuex'

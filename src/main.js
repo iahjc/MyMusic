@@ -5,12 +5,21 @@ import Vue from 'vue'
 import App from './App'
 import router from './router'
 import store from './store'
+import fastclick from 'fastclick'
+import VueLazyload from 'vue-lazyload'
 import { flexible } from 'common/js/utils/flexible'
 
 import '../static/css/font-awesome.css'
 import '../static/css/reset.css'
 
 Vue.config.productionTip = false
+
+fastclick.attach(document.body)
+
+Vue.use(VueLazyload, {
+  loading: require('common/image/default.gif')
+})
+
 // 添加终端适配
 flexible(window)
 /* eslint-disable no-new */

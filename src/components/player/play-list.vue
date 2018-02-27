@@ -16,24 +16,23 @@
         </li>
       </ul>
     </div>
-    <div class="pl-cur">
-      <div class="pl-li" v-for="item in playList">
-        <div class="pl-li-t">
-          <span>{{item.name}}</span>&nbsp;&nbsp;-&nbsp;&nbsp;<span>{{item.singer}}</span>
+    <scroll class="pl-cur" :data="playList">
+      <div>
+        <div class="pl-li" v-for="(item, index) in playList" :class="{active: currentIndex === index}">
+          <div class="pl-li-t" @click="selectItem(item, index)">
+            <span>{{item.name}}</span>&nbsp;&nbsp;-&nbsp;&nbsp;<span>{{item.singer}}</span>&nbsp;&nbsp;<img v-show="currentIndex === index" src="./wave.gif"/>
+          </div>
+          <ul class="pl-cor">
+            <li>
+              <i class="fa fa-heart-o"></i>
+            </li>
+            <li>
+              <i class="fa fa-times"></i>
+            </li>
+          </ul>
         </div>
-        <ul class="pl-cor">
-          <li>
-            <i>ani</i>
-          </li>
-          <li>
-            <i class="fa fa-heart-o"></i>
-          </li>
-          <li>
-            <i class="fa fa-times"></i>
-          </li>
-        </ul>
       </div>
-    </div>
+    </scroll>
 
     <div class="pl-close" @click="closePlayList">
       关闭
@@ -42,7 +41,12 @@
 </template>
 
 <script>
+import Scroll from 'base/scroll/scroll'
+
 export default {
+  components: {
+    Scroll
+  },
   data() {
     return {
       showFlag: false
@@ -52,6 +56,10 @@ export default {
     playList: {
       type: Array,
       default: []
+    },
+    currentIndex: {
+      type: Number,
+      default: -1
     }
   },
   methods: {
@@ -63,6 +71,9 @@ export default {
     },
     closePlayList() {
       this.$emit('closePlayList')
+    },
+    selectItem(item, index) {
+      this.$emit('selectItem', item, index)
     }
   },
   created() {
@@ -87,16 +98,17 @@ export default {
       .pl-t
         @include px2rem(height, 100px)
         box-sizing: border-box
-        padding-left: 5%
-        padding-right: 5%
+        padding-left: 2.5%
+        padding-right: 2.5%
         display: flex
         align-items: center
         justify-content: space-between
-        @include px2rem(border-bottom-width, 2px)
-        border-color: #4d3932
-        border-style: solid
+        border-bottom: 1px solid #4d3932; /*no*/
+        color: #b59e98
         .pl-t-mode
           font-size: 34px; /*px*/
+          span
+            font-size: 28px; /*px*/
           i
             color: #917f7b
         .pl-c
@@ -115,21 +127,28 @@ export default {
       .pl-cur
         width: 95%
         @include px2rem(height, 700px)
+        position: absolute
+        top: 100px
         overflow: hidden
+        left: 2.5%
+        div.active
+          div.pl-li-t
+            span
+              color: #69b586
+            span:first-child
+              color: #69b586
         .pl-li
           @include px2rem(height, 75px)
           align-items: center
           justify-content: space-between
           display: flex
-          @include px2rem(border-bottom-width, 2px)
-          border-color: #4d3932
-          border-style: solid
+          border-bottom: 1px solid #4d3932; /*no*/
           .pl-li-t
             display: flex
             font-size: 22px; /*px*/
             color: #80756d
             span:first-child
-              font-size: 30px; /*px*/
+              font-size: 26px; /*px*/
               color: #fff
             span:nth-child(2)
             span:nth-child(3)

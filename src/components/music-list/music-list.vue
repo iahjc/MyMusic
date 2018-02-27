@@ -1,8 +1,8 @@
 <template>
   <section class="music-list" v-show="showFlag">
     <div class="ml-t">
-      <div class="ml-t-l">
-        <i class="fa fa-play-circle-o"></i>&nbsp;&nbsp;<span>全部播放</span>
+      <div class="ml-t-l" @click="playAll">
+        <i class="fa fa-play-circle-o"></i>&nbsp;&nbsp;<span>全部播放</span><span v-if="count">({{count}})</span>
       </div>
       <ul>
         <li>
@@ -15,8 +15,8 @@
     </div>
 
     <div class="ml-list">
-      <div class="ml-li" v-for="(item, index) in songList" @click="selectItem(item, index)">
-        <div class="ml-l">
+      <div class="ml-li" v-for="(item, index) in songList">
+        <div class="ml-l"  @click="selectItem(item, index)">
           <div class="ml-l-title">
             <p>{{item.name}}</p>&nbsp;&nbsp;<span class="icon1">SQ</span>&nbsp;&nbsp;<span class="icon1" v-show="item.isOnly === 1">独家</span>
           </div>
@@ -25,7 +25,7 @@
         <div class="ml-m">
           <span class="icon2" v-show="item.isMv">MV</span>
         </div>
-        <div class="ml-r">
+        <div class="ml-r" @click="iconItem(item, index)">
           <i class="fa fa-ellipsis-h"></i>
         </div>
       </div>
@@ -44,14 +44,23 @@ export default {
     songList: {
       type: Array,
       default: null
+    },
+    count: {
+      type: Number,
+      default: 0
     }
   },
-  created() {
-    console.log(this.songList)
+  mounted() {
   },
   methods: {
+    playAll() {
+      this.$emit('playAll')
+    },
     selectItem(item, index) {
       this.$emit('selectSingerMusic', item, index)
+    },
+    iconItem(item, index) {
+      this.$emit('selectIconItem', item, index)
     },
     show() {
       this.showFlag = true
@@ -127,6 +136,6 @@ export default {
             overflow: hidden
         .ml-r
           i
-            font-size: 8px; /*px*/
+            font-size: 30px; /*px*/
             color: #9f9f9f
 </style>

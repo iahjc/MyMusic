@@ -15,7 +15,9 @@ export default class Song {
     url,
     des,
     isMv,
-    isOnly
+    isOnly,
+    pay,
+    count
   }) {
     this.id = id
     this.mid = mid
@@ -28,6 +30,8 @@ export default class Song {
     this.des = des
     this.isMv = isMv
     this.isOnly = isOnly
+    this.pay = pay
+    this.count = count
   }
 }
 
@@ -75,7 +79,9 @@ export function createSong(musicData) {
     duration: musicData.interval,
     isOnly: musicData.isonly,
     isMv: setIsMv(musicData.mv),
-    image: `https://y.gtimg.cn/music/photo_new/T002R300x300M000${musicData.album.mid}.jpg?max_age=2592000`
+    image: `https://y.gtimg.cn/music/photo_new/T002R300x300M000${musicData.album.mid}.jpg?max_age=2592000`,
+    pay: musicData.pay,
+    count: musicData.cur_song_num
   })
   let callbackName = 'jb' + Math.random(10000) + 'jb'
   getExpressSong(song.mid, 'C400' + musicData.mid + '.m4a', callbackName).then((res) => {

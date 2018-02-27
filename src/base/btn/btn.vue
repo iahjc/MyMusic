@@ -1,5 +1,5 @@
 <template lang="html">
-  <div :class="[btnClass,cname]">
+  <div :class="[btnClass,cname]" @click="selectItem">
     <slot/>
   </div>
 </template>
@@ -14,14 +14,22 @@ export default {
   },
   data() {
     return {
-      btnClass: "btn"
+      btnClass: "button"
     }
+  },
+  methods: {
+    selectItem() {
+      this.$emit('selectItem')
+    }
+  },
+  mounted() {
+    console.log(this.cname)
   }
 }
 </script>
 
 <style lang="sass" scoped="" type="text/css">
   @import "../../common/scss/components/buttons.scss";
-  .btn
+  .button
     @include btn
 </style>

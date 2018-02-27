@@ -74,6 +74,9 @@
           })
         }
       },
+      setTop(t) {
+        this.$refs.wrapper.style.top = t + 'px'
+      },
       disable() {
         this.scroll && this.scroll.disable()
       },

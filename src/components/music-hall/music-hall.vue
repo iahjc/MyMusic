@@ -1,80 +1,82 @@
 <template>
-<section class="music-hall" ref="musicHall">
-  <scroll ref="scroll" class="mh-cont" :data="newRecommendList">
-    <div>
-      <slider ref="slider">
-        <div class="banner-li" v-for="item in slideList">
-          <img :src="item.picUrl" />
-        </div>
-      </slider>
+  <section class="music-hall" ref="musicHall">
+    <scroll ref="scroll" class="mh-cont" :data="newRecommendList">
+      <div>
+        <slider ref="slider">
+          <div class="banner-li" v-for="item in slideList">
+            <img :src="item.picUrl" />
+          </div>
+        </slider>
 
-      <nav class="music-category">
-        <ul>
-          <li @click="toSinger">
-            <i class="fa fa-user icon-color"></i>&nbsp;&nbsp;<span>歌手</span>
-          </li>
-          <li @click="toRank">
-            <i class="fa fa-bar-chart icon-color"></i>&nbsp;&nbsp;<span>排行</span>
-          </li>
-          <li @click="toRadioStation">
-            <i class="fa fa-codiepie icon-color"></i>&nbsp;&nbsp;<span>电台</span>
-          </li>
-          <li @click="toClassRadiostation">
-            <i class="fa fa-bars icon-color"></i>&nbsp;&nbsp;<span>分类歌单</span>
-          </li>
-          <li @click="toMV">
-            <i class="fa fa-video-camera icon-color">&nbsp;&nbsp;</i><span>视频MV</span>
-          </li>
-          <li @click="toAlbum">
-            <i class="fa fa-bullseye icon-color"></i>&nbsp;&nbsp;<span>数字专辑</span>
-          </li>
-        </ul>
-      </nav>
+        <nav class="music-category">
+          <ul>
+            <li @click="toSinger">
+              <i class="fa fa-user icon-color"></i>&nbsp;&nbsp;<span>歌手</span>
+            </li>
+            <li @click="toRank">
+              <i class="fa fa-bar-chart icon-color"></i>&nbsp;&nbsp;<span>排行</span>
+            </li>
+            <li @click="toRadioStation">
+              <i class="fa fa-codiepie icon-color"></i>&nbsp;&nbsp;<span>电台</span>
+            </li>
+            <li @click="toClassRadiostation">
+              <i class="fa fa-bars icon-color"></i>&nbsp;&nbsp;<span>分类歌单</span>
+            </li>
+            <li @click="toMV">
+              <i class="fa fa-video-camera icon-color">&nbsp;&nbsp;</i><span>视频MV</span>
+            </li>
+            <li @click="toAlbum">
+              <i class="fa fa-bullseye icon-color"></i>&nbsp;&nbsp;<span>数字专辑</span>
+            </li>
+          </ul>
+        </nav>
 
-      <three-col title="歌单推荐">
-        <ul class="col-3-cont">
-          <li v-for="item in newRecommendList" @click="toMusicList(item)">
-            <div class="i-mg">
-              <img :src="item.imgurl" />
-              <div class="i-msg">
-                <div class="i-msg-num">
-                  <i class="fa fa-music"></i>&nbsp;&nbsp;<span>{{item.listennum}}</span>
-                </div>
-                <div class="i-msg-play">
-                  <i class="fa fa-play-circle-o"></i>
+        <panel title="为你推荐歌单">
+          <ul class="col-3-cont">
+            <li v-for="item in newRecommendList" @click="toMusicList(item)">
+              <div class="i-mg">
+                <img v-lazy="item.imgurl" />
+                <div class="i-msg">
+                  <div class="i-msg-num">
+                    <i class="fa fa-music"></i>&nbsp;&nbsp;<span>{{item.listennum}}</span>
+                  </div>
+                  <div class="i-msg-play">
+                    <i class="fa fa-play-circle-o"></i>
+                  </div>
                 </div>
               </div>
-            </div>
-            <p>
-              {{item.dissname}}
-            </p>
-          </li>
-        </ul>
-      </three-col>
+              <p>
+                {{item.dissname}}
+              </p>
+            </li>
+          </ul>
+        </panel>
 
-      <three-col title="每日歌曲推荐">
-
-      </three-col>
-    </div>
-  </scroll>
-  <router-view></router-view>
-</section>
+        <new-albumlist :albums="newAlbumList"></new-albumlist>
+      </div>
+    </scroll>
+    <router-view></router-view>
+  </section>
 </template>
 
 <script>
 import Slider from 'base/slider/slider'
 import ThreeCol from 'base/three-col/three-col'
+import Panel from 'base/panel/panel'
 import Scroll from 'base/scroll/scroll'
+import NewAlbumlist from 'components/music-hall/new-albumlist'
 import {
   getSlideData,
   singerRecommend
 } from 'api/musichall'
+import { getIndexNewAlbum } from 'api/album'
 
 export default {
   data() {
     return {
       slideList: null,
-      newRecommendList: null
+      newRecommendList: null,
+      newAlbumList: null
     }
   },
   created() {
@@ -83,8 +85,19 @@ export default {
   },
   mounted() {
     this._getNewRecommend()
+    this._getIndexNewAlbum()
   },
   methods: {
+    _getIndexNewAlbum() {
+      getIndexNewAlbum().then((res) => {
+        let reg = new RegExp(`^recom41121723644638686\\(`)
+        let reg2 = new RegExp('\\)$')
+        res = res.replace(reg, '').replace(reg2, '')
+        res = JSON.parse(res)
+        this.newAlbumList = res.new_album.data.album_list
+        this.newAlbumList.length = 6
+      })
+    },
     toAlbum() {
       this.$router.push({
         path: `/album`
@@ -159,7 +172,9 @@ export default {
   components: {
     Slider,
     ThreeCol,
-    Scroll
+    Scroll,
+    Panel,
+    NewAlbumlist
   }
 }
 </script>
@@ -175,9 +190,8 @@ export default {
       background: #f4f4f4
       position: fixed
       left: 0
-      @include px2rem(top, 152px)
+      top: 152px
       bottom: 0
-      overflow: hidden
       .mh-cont
         position: absolute
         overflow: hidden
@@ -188,14 +202,17 @@ export default {
       .banner-li
         img
           width: 100%
+          max-height: 480px
     .music-category
       width: 100%
+      margin-top: 12px
       ul
         width: 100%
         display: flex
         flex-wrap: wrap
+        box-sizing: border-box
         li
-          @include px2rem(width, 250px)
+          width: 33.33%
           @include px2rem(height, 82px)
           display: flex
           justify-content: center
@@ -229,8 +246,8 @@ export default {
               font-size: 24px; /*px*/
               @include px2rem(margin-left, 20px)
             .i-msg-play
-              font-size: 40px; /*px*/
-              @include px2rem(margin-right, 20px)
+              font-size: 32px; /*px*/
+              margin-right: 10px
           img
             width: 100%
         p

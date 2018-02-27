@@ -1,5 +1,5 @@
 <template>
-  <section class="loading">
+  <section class="loading" v-show="showFlag">
     <div class="loading-cont">
       <i class="fa fa-spinner fa-spin"></i>
     </div>
@@ -8,6 +8,30 @@
 
 <script>
 export default {
+  data() {
+    return {
+      showFlag: false
+    }
+  },
+  props: {
+    isShow: {
+      type: Boolean,
+      default: false
+    }
+  },
+  mounted() {
+    if (this.isShow) {
+      this.showFlag = true
+    }
+  },
+  methods: {
+    show() {
+      this.showFlag = true
+    },
+    hide() {
+      this.showFlag = false
+    }
+  }
 }
 </script>
 

@@ -8,14 +8,14 @@
             <i class="fa fa-step-backward"></i>
       </li>
       <li ref="isPlay" @click="isPlaying">
-            <i class="fa fa-play"></i>
+            <i class="fa fa-pause"></i>
       </li>
       <li @click="next">
             <i class="fa fa-step-forward"></i>
       </li>
     </ul>
     <div class="pc-r" @click="openPlayList">
-      <i class="fa fa-file-text-o"></i>
+      <i class="fa fa-music"></i>
     </div>
   </section>
 </template>
@@ -23,6 +23,14 @@
 <script>
 import {playMode} from 'common/js/playmode'
 export default {
+  props: {
+    playing: {
+      type: Boolean,
+      default: false
+    }
+  },
+  mounted() {
+  },
   methods: {
     setModeStyle(mode) {
       if (mode === playMode.sequence) {
@@ -53,6 +61,15 @@ export default {
     },
     openPlayList() {
       this.$emit('openPlayList')
+    }
+  },
+  watch: {
+    playing(bool) {
+      if (bool) {
+        this.play()
+      } else {
+        this.stop()
+      }
     }
   }
 }

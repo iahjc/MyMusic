@@ -1,9 +1,9 @@
 <template>
-<section class="main" ref="main">
-  <m-header @search="search" @showNavbar="showNavbar"></m-header>
-  <router-view></router-view>
-  <bg ref="bg" @selectBg="selectBg"></bg>
-</section>
+  <section class="main" ref="main">
+    <m-header @search="search" @showNavbar="showNavbar"></m-header>
+    <router-view></router-view>
+    <bg ref="bg" @selectBg="selectBg"></bg>
+  </section>
 </template>
 
 <script>
@@ -66,7 +66,6 @@ export default {
     @import "../../common/scss/helpers/function.scss";
     @import "../../common/scss/helpers/mixins.scss";
     @import "../../common/scss/base/base.scss";
-
     section.mainW
       transform: translate3d(pxtorem(640px), 0, 0)
     .main

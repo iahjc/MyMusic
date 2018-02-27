@@ -1,6 +1,6 @@
 <template>
   <section class="singer-detail">
-    <header class="sl-h">
+    <header class="sl-h" ref="slh">
       <div class="sl-h-nav" @click="back">
         <i class="fa fa-angle-left"></i>
       </div>
@@ -10,8 +10,8 @@
       </div>
     </header>
 
-    <div class="sd-h">
-      <div class="sd-bg" :style="bgStyle">
+    <div class="sd-h" ref="sdh">
+      <div class="sd-bg" ref="sdbg" :style="bgStyle">
       </div>
       <div class="sd-cont">
         <div class="sd-title">
@@ -30,17 +30,30 @@
         </ul>
 
         <div class="sd-btn">
-          <div class="btn">
+          <div class="btn5">
             关注
           </div>
-          <div class="btn">
+          <div class="btn5">
             勋章
           </div>
         </div>
       </div>
     </div>
 
-    <scroll class="sd-wrapper">
+    <div :class="$style.bgLayer" ref="bgLayer">
+
+    </div>
+
+    <scroll class="sd-wrapper"
+      :data="songList"
+      @scroll="scroll"
+      :listen-scroll="listenScroll"
+      :probe-type="probeType"
+      @scrollToEnd="searchMore"
+      :pullup="pullup"
+      :beforeScroll="beforeScroll"
+      ref="list"
+    >
       <div>
         <div class="sd-nav-wrapper">
           <ul class="sd-nav" @click="selectLi($event)" ref="sdNav">
@@ -69,6 +82,10 @@
           </div>
         </div>
       </div>
+      <!-- 加载更多 -->
+      <div :class="$style.loading" v-show="loadingFlag">
+        <loading :isShow="true"></loading>&nbsp;&nbsp;<span>正在载入更多</span>
+      </div>
     </scroll>
   </section>
 </template>
@@ -85,14 +102,23 @@ import MvList from 'base/mv-list/mv-list'
 import SingerDetail from 'base/singer-detail/singer-detail'
 import Scroll from 'base/scroll/scroll'
 import {prefixStyle} from 'common/js/utils/dom'
+import SongApi from 'api/song'
+import { NUM } from 'common/js/config/page'
+import Loading from 'base/loading/loading'
+
+let songApi = new SongApi()
 let transform = prefixStyle('transform')
+let transform2 = prefixStyle('transform')
+const filter = prefixStyle('filter')
+let page = 1
 export default {
   components: {
     MusicList,
     AlbumList,
     MvList,
     SingerDetail,
-    Scroll
+    Scroll,
+    Loading
   },
   data() {
     return {
@@ -104,8 +130,21 @@ export default {
       mvList: [],
       desc: '',
       fansNum: 0,
-      items: []
+      pullup: true,
+      beforeScroll: true,
+      items: [],
+      hasMore: true,
+      listenScroll: true,
+      probeType: 3,
+      mid: '',
+      loadingFlag: false,
+      scrollY: 0,
+      headerH: 0,
+      sdHeight: 0
     }
+  },
+  created() {
+    this.mid = this.$route.params.id
   },
   computed: {
     bgStyle() {
@@ -121,8 +160,34 @@ export default {
     this.items.push(this.$refs.al)
     this.items.push(this.$refs.mv)
     this.items.push(this.$refs.sd)
+    this.headerH = this.$refs.slh.clientHeight
+    this.sdHeight = this.$refs.sdh.clientHeight
   },
   methods: {
+    searchMore() {
+      if (!this.hasMore) {
+        return
+      }
+      this.hasMore = false
+      let mid = this.mid = this.$route.params.id
+      songApi.getSongs({
+        page: page * 30,
+        mid: mid,
+        num: NUM
+      }).then((res) => {
+        let list = songApi.parseSongs(res)
+        this.songList = this.songList.concat(list)
+        this.$refs.list.refresh()
+        page++
+        this.hasMore = true
+      }).then((err) => {
+        console.log(err)
+        this.hasMore = true
+      })
+    },
+    scroll(pos) {
+      this.scrollY = pos.y
+    },
     selectItems(item, index) {
       this.selectSingerMusic({
         list: this.songList,
@@ -231,9 +296,59 @@ export default {
       let data = xmlDoc.getElementsByTagName('data')
       this.desc = data[0].innerHTML
     })
+  },
+  watch: {
+    scrollY(newVal) {
+      const percent = Math.abs(newVal / this.sdHeight)
+      this.$refs.bgLayer.style[transform2] = `translate3d(0, ${newVal}px, 0)`
+      let scale = 1
+      if (newVal <= 0) {
+        if (Math.abs(newVal) <= this.sdHeight - this.headerH) {
+          this.$refs.sdh.style.height = this.sdHeight - Math.abs(newVal) + 'px'
+        }
+
+        if (Math.abs(newVal) >= this.sdHeight - this.headerH) {
+          this.$refs.sdh.style.height = this.headerH + 'px'
+        }
+      } else {
+        scale = scale + percent
+        this.$refs.sdh.style[transform] = `scale(${scale})`
+      }
+
+
+      // if (Math.abs(newVal) >= this.sdHeight) {
+      //   this.$refs.sdh.style.height = this.sdHeight - Math.abs(newVal) + 'px'
+      // }
+      // if (newVal < 0) {
+      //   if (this.sdHeight - Math.abs(newVal) >= this.headerH) {
+      //     console.log(this.sdHeight)
+      //     this.$refs.sdh.style.height = this.sdHeight - Math.abs(newVal) + 'px'
+      //   }
+      // } else {
+      //   this.$refs.sdh.style.height = this.sdHeight + Math.abs(newVal) + 'px'
+      //   let scale = 1 + percent
+      //   this.$refs.sdbg.style[transform2] = `scale(${scale})`
+      // }
+    }
   }
 }
 </script>
+<style lang="sass" scoped="" type="text/css" module>
+  .bgLayer
+    width: 100%
+    position: absolute
+    top: 525px
+    height: 1000px
+    background: #fff
+  .loading
+    width: 100%
+    position: absolute
+    bottom: 0
+    display: flex
+    font-size: 24px; /*px*/
+    justify-content: center
+    bottom: 20px
+</style>
 
 <style lang="sass" scoped="" type="text/css">
   @import "../../common/scss/helpers/variables.scss";
@@ -275,22 +390,24 @@ export default {
           font-size: 40px; /*px*/
           color: #fff
     .sd-h
-      @include px2rem(height, 500px)
+      height: 525px
       position: relative
+      z-index: 3
+      overflow: hidden
       .sd-bg
-        @include px2rem(height, 500px)
+        height: 100%
       .sd-cont
         width: 100%
         @include px2rem(height, 150px)
         position: absolute
         left: 0
-        @include px2rem(bottom, 20px)
+        top: 320px
         display: flex
         flex-direction: column
         justify-content: space-around
         .sd-title
           color: #fff
-          font-size: 40px; /*px*/
+          font-size: 38px; /*px*/
           width: 100%
           text-align: center
         .sd-fs
@@ -305,7 +422,7 @@ export default {
           li:first-child,li:last-child
             @include px2rem(width, 130px)
             background-color: rgba(255, 255, 255, .7)
-            @include px2rem(height, 2px)
+            height: 1px; /*no*/
           li
             font-size: 32px; /*px*/
             color: #fff
@@ -313,31 +430,28 @@ export default {
           width: 100%
           display: flex
           justify-content: center
-          .btn
+          .btn5
             @include px2rem(margin-right, 30px)
           .btn:last-child
             margin-right: 0
     .sd-wrapper
       position: absolute
       left: 0
-      @include px2rem(top, 500px)
+      top: 525px
       width: 100%
       bottom: 0
-      overflow: hidden
       .sd-nav-wrapper
         width: 100%
         @include px2rem(height, 85px)
         box-sizing: border-box
-        border-style: solid
-        @include px2rem(border-bottom-width, 2px)
-        border-color: #eaeaea
+        border-bottom: 1px solid #eaeaea; /*no*/
         position: relative
         .sdcur
           width: 25%
           @include px2rem(height, 8px)
           background: #60c17e
           position: absolute
-          @include px2rem(bottom, 2px)
+          bottom: 0
           left: 0
           box-sizing: border-box
           overflow: hidden

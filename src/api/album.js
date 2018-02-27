@@ -18,9 +18,51 @@ export function getAlbumType() {
 
   let url = '/api/getAlbumType'
 
-  return axios.get(url, {
-    params: params
-  }).then((res) => {
+  return axios.get(url, {params: params}).then((res) => {
+    return Promise.resolve(res.data)
+  })
+}
+
+// 获取首页最新专辑
+export function getIndexNewAlbum() {
+  let _data = {
+    'comm': {
+      'ct': 24
+    },
+    'new_album': {
+      'module': 'QQMusic.MusichallServer',
+      'method': 'GetNewAlbum',
+      'param': {
+        'type': 1,
+        'category': '-1',
+        'genre': 0,
+        'year': 1,
+        'company': -1,
+        'sort': 1,
+        'start': 0,
+        'end': 39
+      }
+    }
+  }
+
+  let params = {
+    'callback': 'recom41121723644638686',
+    'g_tk': '5381',
+    'jsonpCallback': 'recom41121723644638686',
+    'loginUin': '0',
+    'hostUin': '0',
+    'format': 'jsonp',
+    'inCharset': 'utf8',
+    'outCharset': 'utf-8',
+    'notice': '0',
+    'platform': 'yqq',
+    'needNewCode': '0',
+    'data': _data
+  }
+
+  let url = '/api/getIndexNewAlbum'
+
+  return axios.get(url, {params: params}).then((res) => {
     return Promise.resolve(res.data)
   })
 }

@@ -47,7 +47,7 @@
 <script>
 import {mapMutations} from 'vuex'
 import Scroll from 'base/scroll/scroll'
-import { getRankList, getGlobalRank } from 'api/rank'
+import { getGlobalRank } from 'api/rank'
 
 export default {
   components: {

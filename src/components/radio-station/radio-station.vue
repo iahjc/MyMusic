@@ -42,7 +42,7 @@ export default {
     return {
       rsList: [],
       currentIndex: 0,
-      radioList:[]
+      radioList: []
     }
   },
   created() {

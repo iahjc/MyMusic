@@ -1,6 +1,6 @@
 <template>
   <section class="col-3">
-    <h3 class="col-3-t">{{title}} <i class="fa fa-angle-double-right icon-color"></i></h3>
+    <h3 class="col-3-t">{{title}} <i class="fa fa-chevron-right icon-color"></i></h3>
     <slot>
     </slot>
   </section>

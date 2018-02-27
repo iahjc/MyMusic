@@ -1,7 +1,9 @@
 <template>
 <div id="app">
-  <nav-slidebar ref="navSlidebar"></nav-slidebar>
-  <router-view></router-view>
+  <section class="main">
+    <nav-slidebar ref="navSlidebar"></nav-slidebar>
+    <router-view></router-view>
+  </section>
   <player></player>
 </div>
 </template>
@@ -44,4 +46,11 @@ export default {
     opacity: 0
   #app
     font-family: $global-font-family
+    .main
+      position: absolute
+      left: 0
+      bottom: 0
+      right: 0
+      top: 0
+      overflow: hidden
 </style>

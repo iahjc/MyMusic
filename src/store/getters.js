@@ -13,3 +13,4 @@ export const userInfo = state => state.userInfo
 export const catName = state => state.catName
 export const topList = state => state.topList
 export const keywords = state => state.keywords
+export const playHistory = state => state.playHistory

@@ -1,23 +1,25 @@
 <template>
-  <section class="confirm" v-show="showFlag">
-    <div class="confirm-cont">
-      <div class="c-c">
-        <p>{{options.title}}</p>
-        <p>{{options.msg}}</p>
-      </div>
-      <div class="c-btn">
-        <div v-for="item in options.btns" :style="{color: item.color}" @click="selectItem(item.click)">
-          {{item.title}}
-        </div>
+<section class="confirm" v-show="showFlag">
+  <div class="confirm-cont">
+    <div class="c-c">
+      <p>{{options.title}}</p>
+      <p>{{options.msg}}</p>
+    </div>
+    <div class="c-btn">
+      <div v-for="item in options.btns" :style="{color: item.color}" @click="selectItem(item.click)">
+        {{item.title}}
       </div>
     </div>
-    <bg ref="mask"></bg>
-  </section>
+  </div>
+  <bg ref="mask"></bg>
+</section>
 </template>
 
 <script>
 import Bg from 'base/bg/bg'
-import {DepthExtend} from 'common/js/utils/util'
+import {
+  DepthExtend
+} from 'common/js/utils/util'
 export default {
   components: {
     Bg
@@ -28,16 +30,15 @@ export default {
       options: {
         title: '删除自建歌单',
         msg: '确认要删除选中要删除选中要删除选中要删除选中的1个自建歌单吗?',
-        btns: [
-          {
-            title: '取消',
-            click: function() {},
-            color: "#1b1b1b"
+        btns: [{
+            'title': '取消',
+            'click': function() {},
+            'color': `#1b1b1b`
           },
           {
-             title: '删除',
-             click: function() {},
-             color: '#719e8a'
+            'title': '删除',
+            'click': function() {},
+            'color': '#719e8a'
           }
         ]
       }

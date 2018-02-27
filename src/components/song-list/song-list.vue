@@ -7,7 +7,7 @@
     <p>
       歌单
     </p>
-    <div class="sl-h-r">
+    <div class="sl-h-r" @click="showControl">
        <i class="fa fa-ellipsis-h"></i>
     </div>
   </header>
@@ -29,7 +29,7 @@
           </div><span>{{detas.nickname}}</span>
         </div>
         <p>
-          简介: {{detas.desc}}
+          简介: <span v-html="detas.desc"></span>
         </p>
       </div>
     </div>
@@ -40,16 +40,17 @@
       <li>
         <i class="fa fa-commenting-o"></i>&nbsp;&nbsp;<span>2</span>
       </li>
-      <li>
+      <li @click="showShare">
         <i class="fa fa-share-square-o"></i>&nbsp;&nbsp;<span>分享</span>
       </li>
     </ul>
   </div>
   <scroll class="sl-wrapper" :data="songList">
     <div>
-      <music-list :songList="songList" @selectSingerMusic="selectItems"></music-list>
+      <music-list @playAll="playAll" :count="songCount" :songList="songList" @selectSingerMusic="selectItems" @selectIconItem="selectIconItem"></music-list>
     </div>
   </scroll>
+  <layer-control ref="layerControl" :layerDatas="layerDatas"></layer-control>
 </section>
 </template>
 
@@ -62,17 +63,22 @@ import {
 } from 'api/musichall'
 import MusicList from 'components/music-list/music-list'
 import Scroll from 'base/scroll/scroll'
+import LayerControl from 'base/layer-control/layer-control'
+import { musicControl, share, rnav } from 'common/js/config/layer-control'
 
 export default {
   components: {
     MusicList,
-    Scroll
+    Scroll,
+    LayerControl
   },
   data() {
     return {
       detas: {},
       coll: {},
-      songList: null
+      songList: null,
+      layerDatas: [],
+      songCount: 0
     }
   },
   created() {
@@ -80,6 +86,30 @@ export default {
     this._getCollectionNum()
   },
   methods: {
+    playAll() {
+      this.selectSingerMusic({
+        list: this.songList,
+        index: 0
+      })
+    },
+    showControl() {
+      this.layerDatas = rnav
+      this.$refs.layerControl.show()
+    },
+    selectIconItem(item, index) {
+      this.layerDatas = musicControl
+      // 如果需要付费就要重新添加一个项
+      if (item.pay.pay_down !== 0) {
+        musicControl[3].showFlag = true
+      } else {
+        musicControl[3].showFlag = false
+      }
+      this.$refs.layerControl.show(item)
+    },
+    showShare() {
+      this.layerDatas = share
+      this.$refs.layerControl.show()
+    },
     back() {
       window.history.length > 1 ? this.$router.go(-1) : this.$router.push('/')
     },
@@ -125,6 +155,7 @@ export default {
         if (res.code === 0) {
           this.detas = res.cdlist[0]
           this.songList = this._initSongList(res.cdlist[0].songlist)
+          this.songCount = res.cdlist[0].cur_song_num
         }
       }).then((err) => {
         console.log(err)
@@ -163,7 +194,7 @@ export default {
           color: #fff
           font-size: 64px; /*px*/
       p
-        @include font-dpr(15px)
+        font-size: 35px; /*px*/
         color: #fffdfe
       .sl-h-r
         @include px2rem(width, 100px)
@@ -252,7 +283,7 @@ export default {
         color: #fcfcfe
         position: absolute
         bottom: 6%
-        z-index: 1000
+        z-index: 5
         width: 100%
         justify-content: space-between
         @include px2rem(width, 650px)

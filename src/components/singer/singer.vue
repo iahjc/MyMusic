@@ -1,20 +1,22 @@
 <template>
-<section class="singer">
-  <s-header></s-header>
-  <scroll ref="scroll" class="singer-wrapper"
-    @scroll="scroll"
-    :listen-scroll="listenScroll"
-    :probe-type="probeType"
-    :data="singerList"
-  >
-    <div>
-      <condition @searchSinger="searchSinger"></condition>
-      <singer-list :singerList="singerList" @selectItem="selectItem"></singer-list>
-    </div>
-  </scroll>
+<transition name="c">
+  <section class="singer">
+    <s-header></s-header>
+    <scroll ref="scroll" class="singer-wrapper"
+      @scroll="scroll"
+      :listen-scroll="listenScroll"
+      :probe-type="probeType"
+      :data="singerList"
+    >
+      <div>
+        <condition @searchSinger="searchSinger"></condition>
+        <singer-list :singerList="singerList" @selectItem="selectItem"></singer-list>
+      </div>
+    </scroll>
 
-  <prompt ref="prompt" :msg="msg" @closePrompt="closePrompt" :btnMsg="btnMsg"></prompt>
-</section>
+    <prompt ref="prompt" :msg="msg" @closePrompt="closePrompt" :btnMsg="btnMsg"></prompt>
+  </section>
+</transition>
 </template>
 
 <script>
@@ -104,6 +106,7 @@ export default {
   @import "../../common/scss/helpers/variables.scss";
   @import "../../common/scss/helpers/mixins.scss";
   @import "../../common/scss/base/base.scss";
+  @import "../../common/scss/components/animation.scss";
 
   .singer
     width: 100%

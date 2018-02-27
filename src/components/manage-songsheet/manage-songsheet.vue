@@ -62,7 +62,8 @@
 import Scroll from 'base/scroll/scroll'
 import Msg from 'base/msg/msg'
 import Confirm from 'base/confirm/confirm'
-import {deleteSongSheet} from 'db/songSheet'
+// import { deleteSongSheet } from 'db/songSheet'
+
 export default {
   data() {
     return {
@@ -92,7 +93,9 @@ export default {
           btns: [
             {
               title: '取消',
-              click: function(confirmThis) { confirmThis.hide()}
+              click: function(confirmThis) {
+                confirmThis.hide()
+              }
             }
           ]
         })

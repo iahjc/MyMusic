@@ -1,59 +1,67 @@
 <template>
   <section class="player" v-show="playList.length > 0">
-    <section class="screen-player" v-show="fullScreen">
-      <header class="sl-h">
-        <div class="sl-h-nav" @click="showMini">
-          <i class="fa fa-angle-left"></i>
-        </div>
-        <p>
-          {{currentSong.name}}
-        </p>
-        <div class="sl-h-r" @click="showMusicControl">
-           <i class="fa fa-ellipsis-h"></i>
-        </div>
-      </header>
+    <transition name="normal"
+                @enter="enter"
+                @after-enter="afterEnter"
+    >
+      <section class="screen-player" v-show="fullScreen">
+        <header class="sl-h top">
+          <div class="sl-h-nav" @click="back">
+            <i class="fa fa-angle-left"></i>
+          </div>
+          <p>
+            {{currentSong.name}}
+          </p>
+          <div class="sl-h-r" @click="showMusicControl">
+             <i class="fa fa-ellipsis-h"></i>
+          </div>
+        </header>
 
-      <div class="sp-bg">
-        <img :src="currentSong.image" />
-        <div></div>
-      </div>
+        <div class="sp-bg">
+          <img :src="currentSong.image" />
+          <div></div>
+        </div>
 
-      <div class="sp-t">
-        <p v-html="currentSong.singer"></p>
-        <div class="sp-t-yx">
-          <select-ui ref="selectUi"></select-ui>
-          <div class="sp-bz">
-            音效
+        <div class="sp-t">
+          <p v-html="currentSong.singer"></p>
+          <!-- <div class="sp-t-yx">
+            <select-ui ref="selectUi"></select-ui>
+            <div class="sp-bz">
+              音效
+            </div>
+          </div> -->
+        </div>
+
+        <div class="sp-m">
+          <player-mid :song="currentSong" :playing="playing" ref="playerMid"></player-mid>
+        </div>
+        <div class="bottom">
+          <div class="sp-process">
+            <player-process
+                  :song="currentSong"
+                  @toMusicTime="toMusicTime"
+                  ref="playerProcess"></player-process>
+          </div>
+          <div class="sp-control">
+            <player-control ref="playerControl"
+                  @setModeStyle="setModeStyle"
+                  @next="next"
+                  @prev="prev"
+                  @isPlaying="togglePlay"
+                  @openPlayList="openPlayList"
+                  :playing="playing"
+                  ></player-control>
+          </div>
+          <div class="sp-auxiliary">
+            <player-auxiliary></player-auxiliary>
           </div>
         </div>
-      </div>
-
-      <div class="sp-m">
-        <player-mid :song="currentSong" :playing="playing" ref="playerMid"></player-mid>
-      </div>
-      <div class="sp-process">
-        <player-process
-              :song="currentSong"
-              @toMusicTime="toMusicTime"
-              ref="playerProcess"></player-process>
-      </div>
-      <div class="sp-control">
-        <player-control ref="playerControl"
-              @setModeStyle="setModeStyle"
-              @next="next"
-              @prev="prev"
-              @isPlaying="togglePlay"
-              @openPlayList="openPlayList"
-              ></player-control>
-      </div>
-      <div class="sp-auxiliary">
-        <player-auxiliary></player-auxiliary>
-      </div>
-    </section>
+      </section>
+    </transition>
     <section class="mini-player" v-show="!fullScreen" @click="showFullScreen">
       <div class="mi-l">
         <div class="mi-l-img">
-          <img :src="currentSong.image" />
+          <img :src="currentSong.image" :class="cdCls" />
         </div>
         <div class="mi-l-c">
           <h2>{{currentSong.name}}</h2>
@@ -63,17 +71,21 @@
         </div>
       </div>
       <div class="mi-control">
-        <div class="mi-c-cont">
-          <i class="fa fa-pause"></i>
+        <div class="mi-c-cont" @click.stop="togglePlay">
+          <i :class="toggleIcon"></i>
         </div>
       </div>
       <div class="mi-his">
         <i class="fa fa-music"></i>
       </div>
     </section>
-    <play-list :playList="playList" @closePlayList="closePlayList" ref="pList"></play-list>
+    <play-list :playList="playList" @closePlayList="closePlayList" ref="pList" @selectItem="selectItem" :currentIndex="currentIndex"></play-list>
     <music-control ref="musicControl" @mcClose="closeBg"></music-control>
-    <audio ref="myAudio" :src="currentSong.url" @error="error" @ended="end" @timeupdate="updateTime" @play="ready"></audio>
+    <audio ref="myAudio" :src="currentSong.url"
+                         @error="error"
+                         @ended="end"
+                         @timeupdate="updateTime"
+                         @play="ready"></audio>
     <bg ref="bg" @selectBg="closeBg"></bg>
   </section>
 </template>
@@ -81,14 +93,22 @@
 <script>
 import {mapGetters, mapMutations} from 'vuex'
 import SelectUi from 'base/select-ui/select-ui'
-import PlayerMid from 'components/player-mid/player-mid'
-import PlayerProcess from 'components/player-process/player-process'
-import PlayerControl from 'components/player-control/player-control'
-import PlayerAuxiliary from 'components/player-auxiliary/player-auxiliary'
-import PlayList from 'components/play-list/play-list'
+import PlayerMid from 'components/player/player-mid'
+import PlayerProcess from 'components/player/player-process'
+import PlayerControl from 'components/player/player-control'
+import PlayerAuxiliary from 'components/player/player-auxiliary'
+import PlayList from 'components/player/play-list'
 import MusicControl from 'components/music-control/music-control'
 import Bg from 'base/bg/bg'
 import {playMode} from 'common/js/playmode'
+import animations from 'create-keyframe-animation'
+import Storage from 'db/storage'
+let storage = new Storage()
+// import { prefixStyle } from 'common/js/utils/dom'
+//
+// const transform = prefixStyle('transform')
+// const transitionDuration = prefixStyle('transitionDuration')
+
 export default {
   data() {
     return {
@@ -101,6 +121,12 @@ export default {
     }
   },
   computed: {
+    toggleIcon() {
+      return this.playing ? 'fa fa-pause' : 'fa fa-play'
+    },
+    cdCls() {
+      return this.playing ? 'play' : 'play pause'
+    },
     ...mapGetters([
       'fullScreen',
       'playList',
@@ -111,6 +137,65 @@ export default {
     ])
   },
   methods: {
+    selectItem(item, index) {
+      storage.savePlayHistory(item)
+      this.setCurrentIndex(index)
+    },
+    enter(el, done) {
+      const {x, y, scale} = this._getPosAndScale()
+
+      let animation = {
+        0: {
+          transform: `translate3d(${x}px, ${y}px, 0) scale(${scale})`
+        },
+        60: {
+          transform: `translate3d(0, 0, 0) scale(1.1)`
+        },
+        100: {
+          transform: `translate3d(0, 0, 0) scale(1)`
+        }
+      }
+
+      animations.registerAnimation({
+        name: 'move',
+        animation,
+        presets: {
+          duration: 400,
+          easing: 'linear'
+        }
+      })
+
+      animations.runAnimation(this.$refs.playerMid.getEl(), 'move', done)
+    },
+    afterEnter() {
+      animations.unregisterAnimation('move')
+      this.$refs.playerMid.getEl().style.animation = ''
+    },
+    leave(el, done) {
+      // this.$refs.playerMid.getEl().style.transition = 'all 0.4s'
+      // const {x, y, scale} = this._getPosAndScale()
+      // this.$refs.playerMid.getEl().style[transform] = `translate3d(${x}px,${y}px,0) scale(${scale})`
+      // this.$refs.playerMid.getEl().addEventListener('transitionend', done)
+    },
+    afterLeave() {
+      // this.$refs.playerMid.getEl().style.transition = ''
+      // this.$refs.playerMid.getEl().style[transform] = ''
+    },
+    _getPosAndScale() {
+      const targetWidth = 40
+      const paddingLeft = 40
+      const paddingBottom = 30
+      const paddingTop = 80
+      const width = window.innerWidth * 0.8
+      const scale = targetWidth / width
+      const x = -(window.innerWidth / 2 - paddingLeft)
+      const y = window.innerHeight - paddingTop -width / 2 - paddingBottom
+      return {
+        x,
+        y,
+        scale
+      }
+    },
     ...mapMutations({
       setFullScreen: 'SET_FULLSCREEN',
       setPlaying: 'SET_PLAYING',
@@ -118,6 +203,8 @@ export default {
       setCurrentIndex: 'SET_CURRENTINDEX'
     }),
     closePlayList() {
+      this.$refs.pList.hide()
+      this.closeBg()
     },
     // 设置播放模式
     setModeStyle() {
@@ -168,7 +255,7 @@ export default {
         this.setPlaying(true)
       }
     },
-    showMini() {
+    back() {
       this.setFullScreen(false)
     },
     showFullScreen() {
@@ -190,6 +277,7 @@ export default {
       }
     },
     error() {
+      this.songReady = true
     },
     openPlayList() {
       if (!this.playListFlag) {
@@ -237,23 +325,17 @@ export default {
       if (newSong.id === oldSong.id) {
         return
       }
-      this.$refs.myAudio.addEventListener('canplay', function() {
-        this.play()
-      })
+
+      clearTimeout(this.timer)
+      this.timer = setTimeout(() => {
+        this.$refs.myAudio.play()
+      }, 1000)
     },
     playing(newPlaying) {
       const audio = this.$refs.myAudio
       this.$nextTick(() => {
         newPlaying ? audio.play() : audio.pause()
       })
-
-      if (newPlaying) {
-        this.$refs.myAudio.play()
-        this.$refs.playerControl.play()
-      } else {
-        this.$refs.myAudio.pause()
-        this.$refs.playerControl.stop()
-      }
     }
   }
 }
@@ -263,6 +345,7 @@ export default {
   @import "../../common/scss/helpers/variables.scss";
   @import "../../common/scss/helpers/mixins.scss";
   @import "../../common/scss/base/base.scss";
+  @import "../../common/scss/components/animation.scss";
 
   .player
     .screen-player
@@ -346,15 +429,21 @@ export default {
           color: #f3ebe9
           text-align: center
       .sp-m
-        width: 100%
-        @include px2rem(margin-top, 32px)
+        position: absolute
+        top: 50%
+        left: 50%
+        transform: translate(-50%, -58%)
       .sp-process
-        @include px2rem(margin-top, 20px)
+        position: absolute
+        bottom: 240px
       .sp-control
-        @include px2rem(margin-top, 30px)
+        position: absolute
+        bottom: 100px
+        left: 50%
+        transform: translateX(-50%)
       .sp-auxiliary
         position: absolute
-        @include px2rem(bottom, 25px)
+        bottom: 15px
         width: 100%
     .mini-player
       position: fixed

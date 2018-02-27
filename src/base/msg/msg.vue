@@ -45,7 +45,7 @@ export default {
       if (this.timer) {
         clearTimeout(this.timer)
       }
-      this.timer = setTimeout(() =>{
+      this.timer = setTimeout(() => {
         this.hide()
       }, options.delay)
     },
