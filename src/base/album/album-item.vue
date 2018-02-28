@@ -1,5 +1,5 @@
 <template lang="html">
-  <div :class="[itemClass, cname]">
+  <div :class="[itemClass, cname]" @click="selectItem">
     <div class="item_bg">
       <img v-lazy="setImg(item.album.mid)" />
       <i class="fa fa-play-circle-o"></i>
@@ -20,11 +20,14 @@ export default {
   methods: {
     setImg(str) {
       return `https://y.gtimg.cn/music/photo_new/T002R300x300M000${str}.jpg?max_age=2592000`
+    },
+    selectItem() {
+      this.$emit('selectItem', this.item)
     }
   },
   data() {
     return {
-      itemClass: "item"
+      itemClass: 'item'
     }
   },
   props: {

@@ -66,3 +66,25 @@ export function getIndexNewAlbum() {
     return Promise.resolve(res.data)
   })
 }
+
+export function getAlbumInfo(albummid) {
+  let params = {
+    'albummid': albummid,
+    'g_tk': '5381',
+    'jsonpCallback': 'albuminfoCallback',
+    'loginUin': '0',
+    'hostUin': '0',
+    'format': 'jsonp',
+    'inCharset': 'utf8',
+    'outCharset': 'utf-8',
+    'notice': '0',
+    'platform': 'yqq',
+    'needNewCode': '0'
+  }
+
+  let url = '/api/getAlbumInfo'
+
+  return axios.get(url, {params: params}).then((res) => {
+    return Promise.resolve(res.data)
+  })
+}

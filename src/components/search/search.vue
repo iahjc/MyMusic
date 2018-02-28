@@ -102,7 +102,7 @@ export default {
             click: function(el) {
               el.hide()
             },
-            color: "#1b1b1b"
+            color: '#1b1b1b'
           },
           {
              title: '清空',

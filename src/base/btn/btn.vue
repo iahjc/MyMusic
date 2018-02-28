@@ -9,12 +9,12 @@ export default {
   props: {
     cname: {
       type: String,
-      default: ""
+      default: ''
     }
   },
   data() {
     return {
-      btnClass: "button"
+      btnClass: 'button'
     }
   },
   methods: {

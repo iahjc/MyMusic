@@ -81,6 +81,8 @@
   - github: https://github.com/hilongjw/vue-lazyload
   - npm install vue-lazyload --save-dev
 
+## 路由懒加载
+
 ## 配置vuex状态管理
   - Vuex官方中文网址: https://vuex.vuejs.org/zh-cn/
   - Vuex是一个专为vue.js应用程序开发的状态管理模式。他采用集中式存储管理应用的所有组件的状态，并以相应的规则保证状态以一种可预测的方式发生变化。Vuex也集成到vue的官方调试工具devtools extension,提供了诸如零配置的time-travel调试，状态快照导入导出等高级调试功能。

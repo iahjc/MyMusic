@@ -1,17 +1,17 @@
 <template>
   <section class="player-control">
     <div class="pc-cr" @click="playMode" ref="pcCr">
-      <i class="fa fa-refresh"></i>
+      <i :class="addModeCls"><span v-show="single">1</span></i>
     </div>
     <ul class="pc-main">
       <li @click="prev">
-            <i class="fa fa-step-backward"></i>
+        <i class="fa fa-step-backward"></i>
       </li>
       <li ref="isPlay" @click="isPlaying">
-            <i class="fa fa-pause"></i>
+        <i class="fa fa-pause"></i>
       </li>
       <li @click="next">
-            <i class="fa fa-step-forward"></i>
+        <i class="fa fa-step-forward"></i>
       </li>
     </ul>
     <div class="pc-r" @click="openPlayList">
@@ -27,6 +27,29 @@ export default {
     playing: {
       type: Boolean,
       default: false
+    },
+    mode: {
+      type: Number,
+      default: 0
+    }
+  },
+  data() {
+    return {
+      single: false
+    }
+  },
+  computed: {
+    addModeCls() {
+      if (this.mode === playMode.sequence) {
+        this.single = false
+        return 'fa fa-exchange'
+      } else if (this.mode === playMode.loop) {
+        this.single = true
+        return 'fa fa-circle-o-notch'
+      } else {
+        this.single = false
+        return 'fa fa-random'
+      }
     }
   },
   mounted() {
@@ -34,9 +57,9 @@ export default {
   methods: {
     setModeStyle(mode) {
       if (mode === playMode.sequence) {
-        this.$refs.pcCr.children[0].className = 'fa fa-refresh'
+        this.$refs.pcCr.children[0].className = 'fa fa-exchange'
       } else if (mode === playMode.loop) {
-        this.$refs.pcCr.children[0].className = 'fa fa-power-off'
+        this.$refs.pcCr.children[0].className = 'fa fa-circle-o-notch'
       } else {
         this.$refs.pcCr.children[0].className = 'fa fa-random'
       }
@@ -92,8 +115,15 @@ export default {
         display: flex
         justify-content: center
         i
+          position: relative
           font-size: 38px; /*px*/
           color: #d3cfcc
+          span
+            position: absolute
+            left: 50%
+            top: 50%
+            transform: translate(-50%, -50%)
+            font-size: 24px; /*px*/
       .pc-main
         display: flex
         color: #5fc289

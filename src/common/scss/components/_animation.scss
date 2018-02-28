@@ -63,3 +63,16 @@
     transform: rotate(360deg)
   }
 }
+
+.playlist-enter,
+.playlist-leave-to {
+  transform: translateY(100%);
+}
+
+.playlist-enter-active {
+  transition: all .3s cubic-bezier(1.0, 0.5, 0.8, 1.0);
+}
+
+.playlist-leave-active {
+  transition: all .3s cubic-bezier(1.0, 0.5, 0.8, 1.0);
+}

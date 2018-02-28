@@ -95,10 +95,14 @@ export function createSong(musicData) {
 }
 
 function setIsMv(mv) {
-  if (mv === '' || mv.vid === '') {
-    return false
+  if (mv) {
+    if (mv === '' || mv.vid === '') {
+      return false
+    } else {
+      return true
+    }
   } else {
-    return true
+    return false
   }
 }
 

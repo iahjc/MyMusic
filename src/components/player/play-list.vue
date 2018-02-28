@@ -1,43 +1,45 @@
 <template>
-  <section class="play-list" v-show="showFlag">
-    <div class="pl-t">
-      <div class="pl-t-mode">
-        <i class="fa fa-refresh"></i>&nbsp;&nbsp;<span>单曲循环</span>
-      </div>
-      <ul class="pl-c">
-        <li>
-          <i class="fa fa-download"></i>
-        </li>
-        <li>
-          <i class="fa fa-plus"></i>
-        </li>
-        <li>
-          <i class="fa fa-trash-o"></i>
-        </li>
-      </ul>
-    </div>
-    <scroll class="pl-cur" :data="playList">
-      <div>
-        <div class="pl-li" v-for="(item, index) in playList" :class="{active: currentIndex === index}">
-          <div class="pl-li-t" @click="selectItem(item, index)">
-            <span>{{item.name}}</span>&nbsp;&nbsp;-&nbsp;&nbsp;<span>{{item.singer}}</span>&nbsp;&nbsp;<img v-show="currentIndex === index" src="./wave.gif"/>
-          </div>
-          <ul class="pl-cor">
-            <li>
-              <i class="fa fa-heart-o"></i>
-            </li>
-            <li>
-              <i class="fa fa-times"></i>
-            </li>
-          </ul>
+  <transition name="playlist">
+    <section class="play-list" v-show="showFlag">
+      <div class="pl-t">
+        <div class="pl-t-mode">
+          <i class="fa fa-refresh"></i>&nbsp;&nbsp;<span>单曲循环</span>
         </div>
+        <ul class="pl-c">
+          <li>
+            <i class="fa fa-download"></i>
+          </li>
+          <li>
+            <i class="fa fa-plus"></i>
+          </li>
+          <li>
+            <i class="fa fa-trash-o"></i>
+          </li>
+        </ul>
       </div>
-    </scroll>
+      <scroll class="pl-cur" :data="playList">
+        <div>
+          <div class="pl-li" v-for="(item, index) in playList" :class="{active: currentIndex === index}">
+            <div class="pl-li-t" @click="selectItem(item, index)">
+              <span>{{item.name}}</span>&nbsp;&nbsp;-&nbsp;&nbsp;<span>{{item.singer}}</span>&nbsp;&nbsp;<img v-show="currentIndex === index" src="./wave.gif"/>
+            </div>
+            <ul class="pl-cor">
+              <li>
+                <i class="fa fa-heart-o"></i>
+              </li>
+              <li>
+                <i class="fa fa-times"></i>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </scroll>
 
-    <div class="pl-close" @click="closePlayList">
-      关闭
-    </div>
-  </section>
+      <div class="pl-close" @click="closePlayList">
+        关闭
+      </div>
+    </section>
+  </transition>
 </template>
 
 <script>
@@ -86,10 +88,11 @@ export default {
     @import "../../common/scss/helpers/variables.scss";
     @import "../../common/scss/helpers/mixins.scss";
     @import "../../common/scss/base/base.scss";
+    @import "../../common/scss/components/animation.scss";
 
     .play-list
       position: absolute
-      @include px2rem(height, 930px)
+      @include px2rem(height, 900px)
       background: rgba(0, 0, 0, .9)
       width: 100%
       bottom: 0

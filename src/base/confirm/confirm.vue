@@ -20,6 +20,7 @@ import Bg from 'base/bg/bg'
 import {
   DepthExtend
 } from 'common/js/utils/util'
+
 export default {
   components: {
     Bg
@@ -32,12 +33,14 @@ export default {
         msg: '确认要删除选中要删除选中要删除选中要删除选中的1个自建歌单吗?',
         btns: [{
             'title': '取消',
-            'click': function() {},
-            'color': `#1b1b1b`
+            'click': function() {
+            },
+            'color': '#1b1b1b'
           },
           {
             'title': '删除',
-            'click': function() {},
+            'click': function() {
+            },
             'color': '#719e8a'
           }
         ]

@@ -21,9 +21,7 @@ export function getRadioStationList() {
     'needNewCode': '0'
   }
   let url = '/api/getRadioStationList'
-  return axios.get(url, {
-    params: params
-  }).then((res) => {
+  return axios.get(url, {params: params}).then((res) => {
     return Promise.resolve(res.data)
   })
 }
@@ -43,9 +41,7 @@ export function getClassRs() {
   }
 
   let url = '/api/getClassRs'
-  return axios.get(url, {
-    params: params
-  }).then((res) => {
+  return axios.get(url, {params: params}).then((res) => {
     return Promise.resolve(res.data)
   })
 }
@@ -71,9 +67,50 @@ export function getClassRsList(catid) {
   }
 
   let url = '/api/getClassRsList'
-  return axios.get(url, {
-    params: params
-  }).then((res) => {
+  return axios.get(url, {params: params}).then((res) => {
+    return Promise.resolve(res.data)
+  })
+}
+
+export function getSongs(catid) {
+  let data = {
+    'songlist': {
+      'module': 'pf.radiosvr',
+      'method': 'GetRadiosonglist',
+      'param': {
+        'id': catid,
+        'firstplay': 1,
+        'num': 50
+      }
+    },
+    'radiolist': {
+      'module': 'pf.radiosvr',
+      'method': 'GetRadiolist',
+      'param': {
+        'ct': '24'
+      }
+    },
+    'comm': {
+      'ct': '24'
+    }
+  }
+  let params = {
+    'callback': 'getradiosonglist7732631040990154',
+    'g_tk': '5381',
+    'jsonpCallback': 'getradiosonglist7732631040990154',
+    'loginUin': '0',
+    'hostUin': '0',
+    'format': 'jsonp',
+    'inCharset': 'utf8',
+    'outCharset': 'utf-8',
+    'notice': '0',
+    'platform': 'yqq',
+    'needNewCode': '0',
+    'data': data
+  }
+
+  let url = '/api/getRadioSongs'
+  return axios.get(url, {params: params}).then((res) => {
     return Promise.resolve(res.data)
   })
 }

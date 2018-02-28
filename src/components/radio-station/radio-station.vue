@@ -14,7 +14,7 @@
         <li :class="{cur: currentIndex === index}" v-for="(item, index) in rsList" @click="selectItem(index)">{{item.name}}</li>
       </ul>
         <div class="cw-c">
-        <div class="cw-c-li" v-for="item in radioList">
+        <div class="cw-c-li" v-for="item in radioList" @click="_getSongs(item.radioId)">
           <div class="cwc-img">
             <img :src="item.radioImg" />
           </div>
@@ -22,7 +22,7 @@
             {{item.radioName}}
           </p>
           <p>
-            播放量：{{item.listenNum}} 万
+            播放量：{{Math.round((item.listenNum / 10000) * 100) / 100}} 万
           </p>
         </div>
       </div>
@@ -33,7 +33,9 @@
 
 <script>
 import Scroll from 'base/scroll/scroll'
-import {getRadioStationList} from 'api/radiostation'
+import {getRadioStationList, getSongs} from 'api/radiostation'
+import { createSong } from 'domain/song'
+import {mapActions} from 'vuex'
 export default {
   components: {
     Scroll
@@ -42,13 +44,46 @@ export default {
     return {
       rsList: [],
       currentIndex: 0,
-      radioList: []
+      radioList: [],
+      songs: []
     }
   },
   created() {
     this._getRadioStationList()
   },
   methods: {
+    ...mapActions([
+      'selectSingerMusic'
+    ]),
+    initSongs(list) {
+      let ret = []
+      list.forEach((musicData) => {
+        if (musicData.mid) {
+          ret.push(createSong(musicData))
+        }
+      })
+      return ret
+    },
+    _getSongs(catid) {
+      catid = parseInt(catid)
+      getSongs(catid).then((res) => {
+        let reg = new RegExp(`^getradiosonglist7732631040990154\\(`)
+        let reg2 = new RegExp('\\)$')
+        res = res.replace(reg, '').replace(reg2, '')
+        res = JSON.parse(res)
+        this.songs = res.songlist.data.track_list
+        console.log(this.songs)
+        if (this.songs) {
+          this.songs = this.initSongs(this.songs)
+          this.selectSingerMusic({
+            list: this.songs,
+            index: 0
+          })
+        }
+      }).then((err) => {
+        console.log(err)
+      })
+    },
     selectItem(index) {
       this.currentIndex = index
     },

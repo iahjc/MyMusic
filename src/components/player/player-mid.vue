@@ -70,8 +70,8 @@ export default {
             @include px2rem(margin-top, 20px)
             text-align: center
           .spm-img
-            @include px2rem(width, 676px)
-            @include px2rem(height, 676px)
+            width: 600px
+            height: 600px
             border-radius: 100%
             overflow: hidden
             box-sizing: border-box

@@ -38,7 +38,7 @@
                 <img v-lazy="item.imgurl" />
                 <div class="i-msg">
                   <div class="i-msg-num">
-                    <i class="fa fa-music"></i>&nbsp;&nbsp;<span>{{item.listennum}}</span>
+                    <i class="fa fa-music"></i>&nbsp;&nbsp;<span>{{Math.round((item.listennum / 10000) * 100) / 100}}万</span>
                   </div>
                   <div class="i-msg-play">
                     <i class="fa fa-play-circle-o"></i>
@@ -52,7 +52,7 @@
           </ul>
         </panel>
 
-        <new-albumlist :albums="newAlbumList"></new-albumlist>
+        <new-albumlist :albums="newAlbumList" @selectItem="selectItem"></new-albumlist>
       </div>
     </scroll>
     <router-view></router-view>
@@ -88,6 +88,12 @@ export default {
     this._getIndexNewAlbum()
   },
   methods: {
+    selectItem(item) {
+      // console.log()
+      this.$router.push({
+        path: `/album/${item.album.mid}`
+      })
+    },
     _getIndexNewAlbum() {
       getIndexNewAlbum().then((res) => {
         let reg = new RegExp(`^recom41121723644638686\\(`)
@@ -235,7 +241,7 @@ export default {
           .i-msg
             position: absolute
             left: 0
-            bottom: 2%
+            bottom: 0px
             z-index: 2
             @include px2rem(height, 56px)
             display: flex
@@ -244,7 +250,7 @@ export default {
             align-items: center
             .i-msg-num
               font-size: 24px; /*px*/
-              @include px2rem(margin-left, 20px)
+              margin-left: 10px
             .i-msg-play
               font-size: 32px; /*px*/
               margin-right: 10px

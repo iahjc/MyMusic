@@ -44,6 +44,7 @@
           </div>
           <div class="sp-control">
             <player-control ref="playerControl"
+                  :mode="mode"
                   @setModeStyle="setModeStyle"
                   @next="next"
                   @prev="prev"
@@ -80,13 +81,13 @@
       </div>
     </section>
     <play-list :playList="playList" @closePlayList="closePlayList" ref="pList" @selectItem="selectItem" :currentIndex="currentIndex"></play-list>
-    <music-control ref="musicControl" @mcClose="closeBg"></music-control>
     <audio ref="myAudio" :src="currentSong.url"
                          @error="error"
                          @ended="end"
                          @timeupdate="updateTime"
                          @play="ready"></audio>
     <bg ref="bg" @selectBg="closeBg"></bg>
+    <layer-control :layerDatas="datas" :bg="rgba" ref="layerControl"></layer-control>
   </section>
 </template>
 
@@ -98,11 +99,12 @@ import PlayerProcess from 'components/player/player-process'
 import PlayerControl from 'components/player/player-control'
 import PlayerAuxiliary from 'components/player/player-auxiliary'
 import PlayList from 'components/player/play-list'
-import MusicControl from 'components/music-control/music-control'
 import Bg from 'base/bg/bg'
 import {playMode} from 'common/js/playmode'
 import animations from 'create-keyframe-animation'
+import LayerControl from 'base/layer-control/layer-control'
 import Storage from 'db/storage'
+import { musicControl } from 'common/js/config/layer-control'
 let storage = new Storage()
 // import { prefixStyle } from 'common/js/utils/dom'
 //
@@ -117,7 +119,9 @@ export default {
       currentTime: 0,
       songReady: false,
       playListFlag: false,
-      musicControlFlag: false
+      musicControlFlag: false,
+      datas: null,
+      rgba: 'rgba(0, 0, 0, .7)'
     }
   },
   computed: {
@@ -189,7 +193,7 @@ export default {
       const width = window.innerWidth * 0.8
       const scale = targetWidth / width
       const x = -(window.innerWidth / 2 - paddingLeft)
-      const y = window.innerHeight - paddingTop -width / 2 - paddingBottom
+      const y = window.innerHeight - paddingTop - width / 2 - paddingBottom
       return {
         x,
         y,
@@ -299,11 +303,15 @@ export default {
       }
     },
     showMusicControl() {
-      if (!this.musicControlFlag) {
-        this.$refs.musicControl.show()
-        this.$refs.bg.show()
-        this.musicControlFlag = true
-      }
+      this.datas = musicControl
+      let song = this.playList[this.currentIndex]
+      this.$refs.layerControl.show({
+        name: song.name,
+        singer: song.singer,
+        pay: {
+          pay_down: 0
+        }
+      })
     }
   },
   components: {
@@ -313,7 +321,7 @@ export default {
     PlayerControl,
     PlayerAuxiliary,
     PlayList,
-    MusicControl,
+    LayerControl,
     Bg
   },
   watch: {
@@ -433,18 +441,21 @@ export default {
         top: 50%
         left: 50%
         transform: translate(-50%, -58%)
-      .sp-process
+      .bottom
         position: absolute
-        bottom: 240px
-      .sp-control
-        position: absolute
-        bottom: 100px
-        left: 50%
-        transform: translateX(-50%)
-      .sp-auxiliary
-        position: absolute
-        bottom: 15px
+        bottom: 0
         width: 100%
+        .sp-process
+          position: absolute
+          bottom: 240px
+        .sp-control
+          position: absolute
+          bottom: 100px
+          width: 100%
+        .sp-auxiliary
+          position: absolute
+          bottom: 15px
+          width: 100%
     .mini-player
       position: fixed
       bottom: 0

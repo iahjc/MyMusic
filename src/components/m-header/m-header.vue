@@ -2,6 +2,7 @@
   <header class="header">
     <section class="mh-t">
       <div class="mh-t-navbar" @click="showNavbar">
+        <i class="fa fa-navicon"></i>
       </div>
       <nav class="mh-t-nav">
         <ul>
@@ -11,7 +12,7 @@
         </ul>
       </nav>
       <div class="mh-t-cr">
-
+        <i class="fa fa-plus"></i>
       </div>
     </section>
 
@@ -52,24 +53,19 @@ export default {
     top: 0
     .mh-t
       display: flex
-      width: 90%
+      width: 100%
       justify-content: space-between
       @include px2rem(height, 80px)
       align-items: center
       .mh-t-navbar
-        @include px2rem(width, 34px)
-        @include px2rem(height, 4px)
-        background-color: $h-nav-bg
-        position: relative
-        &::after,&::before
-          content: ' '
-          background-color: $h-nav-bg
-          @include px2rem(width, 34px)
-          @include px2rem(height, 4px)
-          position: absolute
-          @include px2rem(bottom, -10px)
-        &::after
-          @include px2rem(top, -10px)
+        width: 100px
+        display: flex
+        justify-content: center
+        padding-top: 10px
+        padding-bottom: 10px
+        i
+          font-size: 38px; /*px*/
+          color: #fff
       .mh-t-nav
         ul
           display: flex
@@ -90,17 +86,12 @@ export default {
           a:last-child
             margin-right: 0
       .mh-t-cr
-        @include px2rem(width, 34px)
-        @include px2rem(height, 4px)
-        background-color: $h-nav-bg
-        position: relative
-        &::before
-          content: ' '
-          @include px2rem(width, 34px)
-          @include px2rem(height, 4px)
-          background-color: $h-nav-bg
-          position: absolute
-          transform: rotate(90deg)
+        display: flex
+        justify-content: center
+        width: 100px
+        i
+          color: #fff
+          font-size: 38px; /*px*/
   .mh-search
     width: 90%
     @include px2rem(height, 60px)

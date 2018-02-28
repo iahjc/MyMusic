@@ -1,7 +1,7 @@
 <template lang="html">
   <panel title="最新专辑" :class="$style.panel">
     <section :class="$style.list">
-      <album-item v-for="item in albums" :item="item" :cname="$style.item"></album-item>
+      <album-item v-for="item in albums" :item="item" :cname="$style.item" @selectItem="selectItem"></album-item>
     </section>
   </panel>
 </template>
@@ -18,6 +18,11 @@ export default {
     albums: {
       type: Array,
       default: []
+    }
+  },
+  methods: {
+    selectItem(item) {
+      this.$emit('selectItem', item)
     }
   }
 }

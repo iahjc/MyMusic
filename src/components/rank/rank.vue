@@ -14,7 +14,7 @@
       <div class="rh-cont">
         <div class="rh-li" v-for="item in rankList" @click="selectItem(item)">
           <div class="rh-l">
-            <img :src="item.pic_v12"/>
+            <img v-lazy="item.pic_v12"/>
           </div>
           <ul class="rh-m">
             <li v-for="(item2, index) in item.songlist">
@@ -31,7 +31,7 @@
         <div class="gl-li" v-for="item in golbalRank">
           <div class="gl-li-t">
             <div class="gl-t-bg">
-              <img :src="item.pic_v12"/>
+              <img v-lazy="item.pic_v12"/>
             </div>
           </div>
           <p>

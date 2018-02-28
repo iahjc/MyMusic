@@ -1,11 +1,11 @@
 <template>
-<section class="song-list" v-show="detas">
+<section class="song-list" v-show="album">
   <header class="sl-h">
     <div class="sl-h-nav" @click="back">
       <i class="fa fa-angle-left"></i>
     </div>
     <p>
-      歌单
+      专辑
     </p>
     <div class="sl-h-r" @click="showControl">
        <i class="fa fa-ellipsis-h"></i>
@@ -13,23 +13,23 @@
   </header>
   <div class="sl-c">
     <div class="sl-c-bg">
-      <img :src="detas.logo" />
+      <img :src="getAlbumImg(album.mid)" />
       <div></div>
     </div>
     <div class="sl-z">
       <div class="sl-z-img">
-        <img :src="detas.logo" />
+        <img :src="getAlbumImg(album.mid)" />
       </div>
       <div class="sl-z-c">
-        <h2>{{detas.dissname}}</h2>
+        <h2>{{album.name}}</h2>
         <div class="sl-z-a">
           <div class="sl-z-a-i">
-            <img :src="detas.headurl" />
-            <img :src="detas.ifpicurl" />
-          </div><span>{{detas.nickname}}</span>
+            <img :src="getAuthorImg(album.singermid)"  />
+            <img :src="getAuthorImg(album.singermid)" style="opacity: 0"/>
+          </div><span>{{album.singername}}</span>
         </div>
         <p>
-          简介: <span v-html="detas.desc"></span>
+          简介: <span v-html="album.desc"></span>
         </p>
       </div>
     </div>
@@ -48,9 +48,6 @@
   <scroll class="sl-wrapper" :data="songList">
     <div>
       <music-list @playAll="playAll" :count="songCount" :songList="songList" @selectSingerMusic="selectItems" @selectIconItem="selectIconItem"></music-list>
-      <div class="musicLoading" v-show="songList.length <= 0">
-        <loading :isShow="true"></loading>&nbsp;&nbsp;<span>正在载入......</span>
-      </div>
     </div>
   </scroll>
   <layer-control ref="layerControl" :layerDatas="layerDatas"></layer-control>
@@ -59,7 +56,7 @@
 
 <script>
 import {mapActions} from 'vuex'
-import { createSong } from 'domain/song'
+import { createSingerSong } from 'domain/song'
 import {
   getSongList,
   getCollectionNum
@@ -68,18 +65,17 @@ import MusicList from 'components/music-list/music-list'
 import Scroll from 'base/scroll/scroll'
 import LayerControl from 'base/layer-control/layer-control'
 import { musicControl, share, rnav } from 'common/js/config/layer-control'
-import Loading from 'base/loading/loading'
+import { getAlbumInfo } from 'api/album'
 
 export default {
   components: {
     MusicList,
     Scroll,
-    LayerControl,
-    Loading
+    LayerControl
   },
   data() {
     return {
-      detas: {},
+      album: {},
       coll: {},
       songList: null,
       layerDatas: [],
@@ -87,10 +83,31 @@ export default {
     }
   },
   created() {
-    this._getSongList()
+    this.getAlbumInfo()
     this._getCollectionNum()
   },
   methods: {
+    getAuthorImg(singermid) {
+      return `https://y.gtimg.cn/music/photo_new/T001R300x300M000${singermid}.jpg?max_age=2592000`
+    },
+    getAlbumImg(albummid) {
+      return `https://y.gtimg.cn/music/photo_new/T002R300x300M000${albummid}.jpg?max_age=2592000`
+    },
+    getAlbumInfo() {
+      getAlbumInfo(this.$route.params.id).then((res) => {
+        let reg = new RegExp(`^ albuminfoCallback\\(`)
+        let reg2 = new RegExp('\\)$')
+        res = res.replace(reg, '').replace(reg2, '')
+        res = JSON.parse(res)
+        this.album = res.data
+        this.songList = this._initSongList(res.data.list)
+        console.log(res.data.list)
+        this.songCount = res.data.cur_song_num
+        console.log(res)
+      }).then((err) => {
+        console.log(err)
+      })
+    },
     playAll() {
       this.selectSingerMusic({
         list: this.songList,
@@ -98,7 +115,7 @@ export default {
       })
     },
     showControl() {
-      // this.layerDatas = rnav
+      this.layerDatas = rnav
       this.$refs.layerControl.show()
     },
     selectIconItem(item, index) {
@@ -125,8 +142,8 @@ export default {
     _initSongList(list) {
       let ret = []
       list.forEach((musicData) => {
-        if (musicData.id && musicData.album.id) {
-          ret.push(createSong(musicData))
+        if (musicData.albummid && musicData.songmid) {
+          ret.push(createSingerSong(musicData))
         }
       })
       return ret
@@ -158,7 +175,6 @@ export default {
         res = res.replace(reg, '').replace(reg2, '')
         res = JSON.parse(res)
         if (res.code === 0) {
-          console.log(res)
           this.detas = res.cdlist[0]
           this.songList = this._initSongList(res.cdlist[0].songlist)
           this.songCount = res.cdlist[0].cur_song_num
@@ -305,12 +321,4 @@ export default {
       width: 100%
       bottom: 0
       overflow: hidden
-      .musicLoading
-        display: flex
-        justify-content: center
-        position: absolute
-        left: 50%
-        top: 240px
-        transform: translate(-50%, -50%)
-        z-index: 10
 </style>
