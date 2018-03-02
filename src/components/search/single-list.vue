@@ -3,7 +3,7 @@
     <div class="sl-fast" v-if="zhida.zhida_album">
       <p class="sl-title">最佳匹配</p>
       <ul class="sm-zp">
-        <li class="album">
+        <li class="album" @click="toAlbum(zhida)">
           <div class="album-l">
             <img :src="zhida.zhida_album.albumPic" />
           </div>
@@ -25,44 +25,54 @@
       </ul>
     </div>
     <div class="sl-songs" v-show="songs.length > 0">
-      <div class="sl-songs-li" v-for="item in songs">
+      <div class="sl-songs-li" v-for="(item, index) in songs" @click="selectItem(item, index)">
         <div class="sls-l">
           <p>
-            <span>{{item.title}}</span>
+            <span>{{item.name}}</span>&nbsp;&nbsp;<span class="icon1">SQ</span>&nbsp;&nbsp;<span class="icon1" v-show="item.isOnly === 1">独家</span>
           </p>
           <p>
-            <span v-for="(singer, index) in item.singer">{{singer.name}}<em v-if="item.singer.length !== (index + 1)">/</em></span>
-            &nbsp;&nbsp;-&nbsp;&nbsp;<span>{{item.album.name}}</span>
+            <span v-html="item.singer"></span> · <span v-show="item.album">{{item.album}}</span>
           </p>
-          <p>
-            {{item.desc}}
+          <p v-show="item.description">
+            {{item.description}}
           </p>
         </div>
         <div class="sls-m">
-          <span v-show="item.mv.id" class="icon2">MV</span>
+          <span v-show="item.isMv" class="icon2">MV</span>
         </div>
         <div class="sls-r">
           <i class="fa fa-ellipsis-h"></i>
         </div>
       </div>
     </div>
+    <div class="sl-loading" v-show="songs.length <= 0">
+      <loading :isShow="true" :msg="msg"></loading>
+    </div>
   </section>
 </template>
 
 <script>
 import {searchKeyList} from 'api/search'
-import {mapGetters} from 'vuex'
+import {mapGetters, mapActions} from 'vuex'
+import Loading from 'base/loading/loading'
+import {createSong} from 'domain/song'
 export default {
+  components: {
+    Loading
+  },
   data() {
     return {
       zhida: {},
-      songs: []
+      songs: [],
+      msg: ''
     }
   },
   mounted() {
   },
   created() {
+    this.msg = `正在搜索 '${this.keywords}'`
     if (this.keywords !== '') {
+      this.msg = `正在搜索 '${this.keywords}'`
       this._searchKeyList(this.keywords)
     }
   },
@@ -72,6 +82,29 @@ export default {
     ])
   },
   methods: {
+    selectItem(item, index) {
+      this.selectSingerMusic({
+        list: this.songs,
+        index: index
+      })
+    },
+    ...mapActions([
+      'selectSingerMusic'
+    ]),
+    _initSongs(list) {
+      let ret = []
+      list.forEach((musicData) => {
+        if (musicData.id && musicData.album.id) {
+          ret.push(createSong(musicData))
+        }
+      })
+      return ret
+    },
+    toAlbum(item) {
+      this.$router.push({
+        path: `/album/${item.zhida_album.albumMID}`
+      })
+    },
     _searchKeyList(keywords) {
       searchKeyList(keywords).then((res) => {
         let reg = new RegExp(`^MusicJsonCallback5987696727295411\\(`)
@@ -79,8 +112,8 @@ export default {
         res = res.replace(reg, '').replace(reg2, '')
         res = JSON.parse(res)
         this.zhida = res.data.zhida
-        this.songs = res.data.song.list
-        console.log(this.zhida)
+        this.songs = this._initSongs(res.data.song.list)
+        console.log(this._initSongs(res.data.song.list))
         console.log(res)
       })
     }
@@ -103,9 +136,7 @@ export default {
       .sl-fast
         width: 95%
         margin: 0 auto
-        @include px2rem(border-bottom-width, 2px)
-        border-style: solid
-        border-color: #efefef
+        border-bottom: 1px solid #efefef; /*px*/
         @include px2rem(padding-bottom, 20px)
         p.sl-title
           @include px2rem(height, 60px)
@@ -139,13 +170,17 @@ export default {
                 @include px2rem(margin-top, 16px)
                 font-size: 20px; /*px*/
                 color: #666666
+      .sl-loading
+        width: 100%
+        position: absolute
+        top: 400px
+        display: flex
+        justify-content: center
       .sl-songs
         width: 100%
         .sl-songs-li
           display: flex
-          @include px2rem(border-bottom-width, 2px)
-          border-style: solid
-          border-color: #f2f2f2
+          border-bottom: 1px solid #f2f2f2; /*px*/
           @include px2rem(padding-top, 20px)
           @include px2rem(padding-bottom, 20px)
           box-sizing: border-box

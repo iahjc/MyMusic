@@ -16,7 +16,7 @@
         <div class="cw-c">
         <div class="cw-c-li" v-for="item in radioList" @click="_getSongs(item.radioId)">
           <div class="cwc-img">
-            <img :src="item.radioImg" />
+            <img v-lazy="item.radioImg" />
           </div>
           <p>
             {{item.radioName}}

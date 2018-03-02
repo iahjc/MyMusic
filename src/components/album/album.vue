@@ -56,8 +56,6 @@ export default {
         res = JSON.parse(res)
         this.area = res.albumlib.data.tags.area
         this.albumList = res.albumlib.data.list
-        console.log(this.area)
-        console.log(this.albumList)
       })
     },
     ...mapMutations({
@@ -65,7 +63,7 @@ export default {
     }),
     selectItem(item, index) {
       this.$router.push({
-        path: `/songlist/${item.dissid}`
+        path: `/album/${item.album_mid}`
       })
     },
     back() {

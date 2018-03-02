@@ -81,7 +81,7 @@ export default {
     return {
       detas: {},
       coll: {},
-      songList: null,
+      songList: [],
       layerDatas: [],
       songCount: 0
     }

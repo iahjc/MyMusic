@@ -58,4 +58,28 @@ export default class SongApi {
       return Promise.resolve(res.data)
     })
   }
+
+  getLyric(mid) {
+    let params = {
+      callback: 'MusicJsonCallback_lrc',
+      pcachetime: +new Date(),
+      songmid: mid,
+      g_tk: '5381',
+      jsonpCallback: 'MusicJsonCallback_lrc',
+      loginUin: 0,
+      hostUin: 0,
+      format: 'json',
+      inCharset: 'utf8',
+      outCharset: 'utf-8',
+      notice: 0,
+      platform: 'yqq',
+      needNewCode: 0
+    }
+    let url = '/api/lyric'
+    return axios.get(url, {
+      params: params
+    }).then((res) => {
+      return Promise.resolve(res.data)
+    })
+  }
 }

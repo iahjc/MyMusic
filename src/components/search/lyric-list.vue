@@ -1,22 +1,28 @@
 <template>
   <section class="lyric-list">
+    <div class="lyric-loading" v-show="songs.length <= 0">
+      <loading :isShow="true" :msg="msg"></loading>
+    </div>
     <div class="lyric-songs">
-      <div class="lyric-songs-li" v-for="item in lyricList">
+      <div class="lyric-songs-li" v-for="(item, index) in songs" :key="index">
         <div class="sls-l">
           <p>
-            <span>{{item.songname}}</span>
+            <span>{{item.name}}</span>
           </p>
           <p>
-            <span v-for="(singer, index) in item.singer">{{singer.name}}<em v-if="item.singer.length !== (index + 1)">/</em></span>
-            &nbsp;&nbsp;-&nbsp;&nbsp;<span>{{item.albumname}}</span>
-          </p>
-          <p>
-            {{item.desc}}
+            {{item.des}}
           </p>
 
-          <div class="lyric-cont">
-            <div v-html="glLyric(item.lyric)" class="lc-t"></div>
+          <div class="lyric-cont" ref="lyric">
+            <div v-html="glLyric(item.lyricTitle)" v-show="currentIndex !== index" class="lc-t"></div>
 
+            <div class="lyric-wrapper" v-show="currentIndex === index" v-html="glLyric(item.lyricContent)">
+
+            </div>
+
+            <div class="lyric-show" @click="lookLyric(index)">
+              <span>展开歌词</span> <i class="fa fa-caret-down"></i>
+            </div>
           </div>
         </div>
         <div class="sls-m">
@@ -33,7 +39,12 @@
 <script>
 import {searchLyricList} from 'api/search'
 import {mapGetters} from 'vuex'
+import Loading from 'base/loading/loading'
+import {createSingerSong} from 'domain/song'
 export default {
+  components: {
+    Loading
+  },
   computed: {
     ...mapGetters([
       'keywords'
@@ -42,16 +53,32 @@ export default {
   data() {
     return {
       showFlag: true,
-      lyricList: []
+      songs: [],
+      currentIndex: -1
     }
   },
   created() {
-    this._searchLyricList(this.keywords)
+    if (this.keywords) {
+      this.msg = `正在搜索 '${this.keywords}'`
+      this._searchLyricList(this.keywords)
+    }
   },
   methods: {
     glLyric(str) {
       let ly = str.replace(/\\n/g, '<br />')
       return ly
+    },
+    _initSongs(list) {
+      let ret = []
+      list.forEach((musicData) => {
+        if (musicData.albummid && musicData.songmid) {
+          ret.push(createSingerSong(musicData))
+        }
+      })
+      return ret
+    },
+    lookLyric(index) {
+      this.currentIndex = index
     },
     _searchLyricList(key) {
       searchLyricList(key).then((res) => {
@@ -59,7 +86,7 @@ export default {
         let reg2 = new RegExp('\\)$')
         res = res.replace(reg, '').replace(reg2, '')
         res = JSON.parse(res)
-        this.lyricList = res.data.lyric.list
+        this.songs = this._initSongs(res.data.lyric.list)
         console.log(res)
       })
     }
@@ -73,6 +100,12 @@ export default {
     @import "../../common/scss/base/base.scss";
     @import "../../common/scss/components/buttons.scss";
     .lyric-list
+      .lyric-loading
+        width: 100%
+        position: absolute
+        top: 400px
+        display: flex
+        justify-content: center
       .lyric-songs
         width: 100%
         .lyric-songs-li
@@ -102,6 +135,14 @@ export default {
               color: #666666
             .lyric-cont
               @include px2rem(margin-top, 32px)
+              .lyric-wrapper
+                margin-top: 36px
+                font-size: 20px; /*px*/
+                line-height: 36px; /*px*/
+              .lyric-show
+                font-size: 20px; /*px*/
+                color: #b4b4b4
+                margin-top: 36px
               .lc-t
                 @include px2rem(line-height, 38px)
           .sls-r

@@ -12,7 +12,7 @@
     <ul class="gd-ul">
       <li v-for="(item, index) in rsList.list" @click="selectItem(item, index)">
         <div class="gd-img">
-          <img :src="item.imgurl" />
+          <img v-lazy="item.imgurl" />
         </div>
         <p>
           {{item.dissname}}

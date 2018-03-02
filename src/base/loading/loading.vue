@@ -1,7 +1,7 @@
 <template>
   <section class="loading" v-show="showFlag">
     <div class="loading-cont">
-      <i class="fa fa-spinner fa-spin"></i>
+      <i class="fa fa-spinner fa-spin"></i>&nbsp;&nbsp;<span v-if="msg">{{msg}}</span>
     </div>
   </section>
 </template>
@@ -17,6 +17,10 @@ export default {
     isShow: {
       type: Boolean,
       default: false
+    },
+    msg: {
+      type: String,
+      default: ''
     }
   },
   mounted() {
@@ -42,4 +46,5 @@ export default {
 
   .loading
     position: relative
+    display: inline-block
 </style>

@@ -1,4 +1,7 @@
 import {getExpressSong} from 'api/musichall'
+import {Base64} from 'js-base64'
+import SongApi from 'api/song'
+let songApi = new SongApi()
 /**
  * 歌曲实体类
  * @type {[type]}
@@ -17,7 +20,10 @@ export default class Song {
     isMv,
     isOnly,
     pay,
-    count
+    count,
+    lyricContent,
+    lyricTitle,
+    description
   }) {
     this.id = id
     this.mid = mid
@@ -32,6 +38,26 @@ export default class Song {
     this.isOnly = isOnly
     this.pay = pay
     this.count = count
+    this.lyricContent = lyricContent
+    this.lyricTitle = lyricTitle
+    this.description = description
+  }
+
+  getLyric() {
+    if (this.lyric) {
+      return Promise.resolve(this.lyric)
+    }
+    return new Promise((resolve, reject) => {
+      songApi.getLyric(this.mid).then((res) => {
+        if (res.retcode === 0) {
+          this.lyric = Base64.decode(res.lyric)
+          resolve(this.lyric)
+        } else {
+          let err = 'no lyric'
+          reject(err)
+        }
+      })
+    })
   }
 }
 
@@ -50,7 +76,10 @@ export function createSingerSong(musicData) {
     isOnly: musicData.isonly,
     duration: musicData.interval,
     isMv: setIsMv(musicData.vid),
-    image: `https://y.gtimg.cn/music/photo_new/T002R300x300M000${musicData.albummid}.jpg?max_age=2592000`
+    image: `https://y.gtimg.cn/music/photo_new/T002R300x300M000${musicData.albummid}.jpg?max_age=2592000`,
+    lyricContent: musicData.content,
+    lyricTitle: musicData.lyric,
+    description: musicData.desc
   })
   let callbackName = 'jb' + Math.random(10000) + 'jb'
   getExpressSong(song.mid, 'C400' + musicData.songmid + '.m4a', callbackName).then((res) => {
@@ -71,7 +100,7 @@ export function createSingerSong(musicData) {
 export function createSong(musicData) {
   let song = new Song({
     id: musicData.id,
-    mid: musicData.mid,
+    mid: getMid(musicData),
     singer: filterSinger(musicData.singer),
     des: setDes(musicData.singer[0].name, musicData.album.name),
     name: musicData.name,
@@ -81,7 +110,9 @@ export function createSong(musicData) {
     isMv: setIsMv(musicData.mv),
     image: `https://y.gtimg.cn/music/photo_new/T002R300x300M000${musicData.album.mid}.jpg?max_age=2592000`,
     pay: musicData.pay,
-    count: musicData.cur_song_num
+    count: musicData.cur_song_num,
+    lyricContent: musicData.content,
+    description: musicData.desc
   })
   let callbackName = 'jb' + Math.random(10000) + 'jb'
   getExpressSong(song.mid, 'C400' + musicData.mid + '.m4a', callbackName).then((res) => {
@@ -92,6 +123,14 @@ export function createSong(musicData) {
     song.url = `http://dl.stream.qqmusic.qq.com/${res.data.items[0].filename}?vkey=${res.data.items[0].vkey}&guid=8707000960&uin=0&fromtag=66`
   })
   return song
+}
+
+function getMid(musicData) {
+  if (musicData.mid) {
+    return musicData.mid
+  } else if (musicData.ksong) {
+    return musicData.ksong.mid
+  }
 }
 
 function setIsMv(mv) {

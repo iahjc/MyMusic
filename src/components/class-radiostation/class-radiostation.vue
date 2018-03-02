@@ -29,7 +29,7 @@
 <script>
 import {mapMutations} from 'vuex'
 import {getClassRs, getClassRsList} from 'api/radiostation'
-import GdList from 'components/gd-list/gd-list'
+import GdList from 'components/class-radiostation/gd-list'
 import Scroll from 'base/scroll/scroll'
 import CategoryList from 'components/category-list/category-list'
 export default {

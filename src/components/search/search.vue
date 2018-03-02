@@ -27,15 +27,17 @@
             </ul>
           </div>
         </div>
-
         <div class="sh-c2" v-show="scFlag">
-          <ul class="sd-nav">
-            <li @click="goSingle">单曲</li>
-            <li><router-link :to="{ path: '/search/searchmvlist' }">MV</router-link></li>
-            <li><router-link :to="{ path: '/search/searchalbumlist' }">专辑</router-link></li>
-            <li><router-link :to="{ path: '/search/searchsongsheetlist'}">歌单</router-link></li>
-            <li><router-link :to="{ path: '/search/searchlyriclist' }">歌词</router-link></li>
-          </ul>
+          <div class="sd-wrapper">
+            <ul class="sd-nav" ref="sdnav">
+              <li  v-for="(item, index) in navs" :key="index" @click="toSearch(index)">
+                <router-link :to="{ path: item.to }">{{item.title}}</router-link>
+              </li>
+            </ul>
+            <div class="cur" ref="cur">
+
+            </div>
+          </div>
           <router-view></router-view>
         </div>
       </div>
@@ -51,7 +53,10 @@ import {hotSearchList} from 'api/search'
 import Confirm from 'base/confirm/confirm'
 import {debounce} from 'common/js/utils/util'
 import {mapMutations} from 'vuex'
+import {prefixStyle} from 'common/js/utils/dom'
 
+let transform = prefixStyle('transform')
+let l = 100
 let sh = new SearchHistory()
 export default {
   components: {
@@ -67,7 +72,30 @@ export default {
       historyList: [],
       showFlag: true,
       scFlag: false,
-      zhida: {}
+      zhida: {},
+      w: 0,
+      navs: [
+        {
+          to: '/search/',
+          title: '单曲'
+        },
+        {
+          to: '/search/searchmvlist',
+          title: 'MV'
+        },
+        {
+          to: '/search/searchalbumlist',
+          title: '专辑'
+        },
+        {
+          to: '/search/searchsongsheetlist',
+          title: '歌单'
+        },
+        {
+          to: '/search/searchlyriclist',
+          title: '歌词'
+        }
+      ]
     }
   },
   created() {
@@ -77,16 +105,14 @@ export default {
     this._hotSearchList()
     this._getSearchHistoryList()
   },
+  mounted() {
+    this.w = window.document.body.clientWidth / 5
+  },
   methods: {
-    goSingle() {
-      this.$router.push({
-        path: `/search/`
-      })
-    },
-    goMv() {
-      this.$router.push({
-        path: `/search/mvList`
-      })
+    toSearch(index) {
+      let w = this.w * index
+      this.$refs.cur.style.transition = 'all .3s'
+      this.$refs.cur.style[transform] = `translate3d(${w}px, 0, 0)`
     },
     ...mapMutations({
       'setKeywords': 'SET_KEYWORDS'
@@ -201,22 +227,31 @@ export default {
         overflow: hidden
         width: 100%
         .sh-c2
-          .sd-nav
-            display: flex
-            width: 100%
-            @include px2rem(height, 85px)
+          .sd-wrapper
+            position: relative
             box-sizing: border-box
-            border-style: solid
-            @include px2rem(border-bottom-width, 2px)
-            border-color: #eaeaea
-            li
+            .cur
               width: 20%
-              box-sizing: border-box
-              color: #7f7f7f
-              font-size: 30px; /*px*/
+              height: 5px
+              position: absolute
+              left: 0
+              bottom: 0
+              background: #5ac47a
+            .sd-nav
               display: flex
-              justify-content: center
-              align-items: center
+              width: 100%
+              @include px2rem(height, 85px)
+              box-sizing: border-box
+              border-bottom: 1px solid #eaeaea; /*px*/
+              flex-direction: row
+              li
+                width: 20%
+                box-sizing: border-box
+                color: #7f7f7f
+                font-size: 30px; /*px*/
+                display: flex
+                justify-content: center
+                align-items: center
         .hot-search
           width: 92%
           margin: 0 auto

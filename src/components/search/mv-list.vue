@@ -3,7 +3,7 @@
     <div class="mv-li" v-for="item in mvList">
       <ul>
         <li>
-          <img :src="item.mv_pic_url" />
+          <img v-lazy="item.mv_pic_url" />
         </li>
         <li>
           <p v-html="item.mv_name">
@@ -14,13 +14,20 @@
         </li>
       </ul>
     </div>
+    <div class="mv-loading" v-show="mvList.length <= 0">
+      <loading :isShow="true" :msg="msg"></loading>
+    </div>
   </section>
 </template>
 
 <script>
 import {searchMvList} from 'api/search'
 import {mapGetters} from 'vuex'
+import Loading from 'base/loading/loading'
 export default {
+  components: {
+    Loading
+  },
   computed: {
     ...mapGetters([
       'keywords'
@@ -29,11 +36,15 @@ export default {
   data() {
     return {
       showFlag: true,
-      mvList: []
+      mvList: [],
+      msg: ''
     }
   },
   created() {
-    this._searchMvList(this.keywords)
+    if (this.keywords) {
+      this.msg = `正在搜索 '${this.keywords}'`
+      this._searchMvList(this.keywords)
+    }
   },
   methods: {
     _searchMvList(key) {
@@ -57,11 +68,16 @@ export default {
     @import "../../common/scss/components/buttons.scss";
     .mv-list
       width: 100%
+      position: relative
+      .mv-loading
+        width: 100%
+        position: absolute
+        top: 400px
+        display: flex
+        justify-content: center
       .mv-li
         @include px2rem(height, 128px)
-        @include px2rem(border-bottom-width, 2px)
-        border-style: solid
-        border-color: #efefef
+        border-bottom: 1px solid #efefef; /*px*/
         box-sizing: border-box
         ul
           display: flex

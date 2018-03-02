@@ -18,16 +18,19 @@
       <img :src="setBg" />
     </div>
   </div>
-  <div class="gd-detail-cont">
-    <gd-list :rsList="rsList" :title="catName" @selectItem="selectItem"></gd-list>
-  </div>
+  <scroll class="gd-detail-cont">
+    <div>
+      <gd-list :rsList="rsList" :title="catName" @selectItem="selectItem"></gd-list>
+    </div>
+  </scroll>
 </section>
 </template>
 
 <script>
 import {mapGetters} from 'vuex'
 import {getClassRsList} from 'api/radiostation'
-import GdList from 'components/gd-list/gd-list'
+import GdList from 'components/class-radiostation/gd-list'
+import Scroll from 'base/scroll/scroll'
 export default {
   computed: {
     setBg() {
@@ -38,7 +41,8 @@ export default {
     ])
   },
   components: {
-    GdList
+    GdList,
+    Scroll
   },
   data() {
     return {
@@ -51,6 +55,9 @@ export default {
       window.history.length > 1 ? this.$router.go(-1) : this.$router.push('/')
     },
     selectItem(item, index) {
+      this.$router.push({
+        path: `/songlist/${item.dissid}`
+      })
     }
   },
   created() {
@@ -111,6 +118,11 @@ export default {
       .gd-detail-cont
         width: 95%
         margin: 0 auto
+        position: absolute
+        bottom: 0
+        left: 2.5%
+        top: 400px
+        overflow: hidden
       .gd-t
         width: 100%
         @include px2rem(height, 400px)
