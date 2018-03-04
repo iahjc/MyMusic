@@ -1,56 +1,16 @@
 <template>
 <section class="song-list" v-show="album">
-  <header class="sl-h">
-    <div class="sl-h-nav" @click="back">
-      <i class="fa fa-angle-left"></i>
-    </div>
-    <p>
-      专辑
-    </p>
-    <div class="sl-h-r" @click="showControl">
-       <i class="fa fa-ellipsis-h"></i>
-    </div>
-  </header>
-  <div class="sl-c">
-    <div class="sl-c-bg">
-      <img :src="getAlbumImg(album.mid)" />
-      <div></div>
-    </div>
-    <div class="sl-z">
-      <div class="sl-z-img">
-        <img :src="getAlbumImg(album.mid)" />
-      </div>
-      <div class="sl-z-c">
-        <h2>{{album.name}}</h2>
-        <div class="sl-z-a">
-          <div class="sl-z-a-i">
-            <img :src="getAuthorImg(album.singermid)"  />
-            <img :src="getAuthorImg(album.singermid)" style="opacity: 0"/>
-          </div><span>{{album.singername}}</span>
-        </div>
-        <p>
-          简介: <span v-html="album.desc"></span>
-        </p>
-      </div>
-    </div>
-    <ul class="sl-b">
-      <li>
-        <i class="fa fa-heart-o"></i>&nbsp;&nbsp;<span>{{coll.totalnum}}</span>
-      </li>
-      <li>
-        <i class="fa fa-commenting-o"></i>&nbsp;&nbsp;<span>2</span>
-      </li>
-      <li @click="showShare">
-        <i class="fa fa-share-square-o"></i>&nbsp;&nbsp;<span>分享</span>
-      </li>
-    </ul>
-  </div>
+  <t-header :title="title"></t-header>
+  <single-top :detas="album"></single-top>
   <scroll class="sl-wrapper" :data="songList">
     <div>
-      <music-list @playAll="playAll" :count="songCount" :songList="songList" @selectSingerMusic="selectItems" @selectIconItem="selectIconItem"></music-list>
+      <song-menu @playAll="playAll"></song-menu>
+      <div class="sl-list">
+        <song-item :item="item" v-for="(item, index) in songList" :key="index" :index="index" @selectItem="selectItems"></song-item>
+      </div>
     </div>
   </scroll>
-  <layer-control ref="layerControl" :layerDatas="layerDatas"></layer-control>
+  <!-- <layer-control ref="layerControl" :layerDatas="layerDatas"></layer-control> -->
 </section>
 </template>
 
@@ -63,15 +23,22 @@ import {
 } from 'api/musichall'
 import MusicList from 'components/music-list/music-list'
 import Scroll from 'base/scroll/scroll'
-import LayerControl from 'base/layer-control/layer-control'
+// import LayerControl from 'base/layer-control/layer-control'
 import { musicControl, share, rnav } from 'common/js/config/layer-control'
 import { getAlbumInfo } from 'api/album'
+import THeader from 'base/t-header/t-header'
+import SingleTop from 'components/single-top/single-top'
+import SongMenu from 'base/song-menu/song-menu'
+import SongItem from 'base/song-item/song-item'
 
 export default {
   components: {
     MusicList,
     Scroll,
-    LayerControl
+    SongMenu,
+    SongItem,
+    SingleTop,
+    THeader
   },
   data() {
     return {
@@ -79,7 +46,8 @@ export default {
       coll: {},
       songList: null,
       layerDatas: [],
-      songCount: 0
+      songCount: 0,
+      title: '专辑'
     }
   },
   created() {
@@ -87,12 +55,6 @@ export default {
     this._getCollectionNum()
   },
   methods: {
-    getAuthorImg(singermid) {
-      return `https://y.gtimg.cn/music/photo_new/T001R300x300M000${singermid}.jpg?max_age=2592000`
-    },
-    getAlbumImg(albummid) {
-      return `https://y.gtimg.cn/music/photo_new/T002R300x300M000${albummid}.jpg?max_age=2592000`
-    },
     getAlbumInfo() {
       getAlbumInfo(this.$route.params.id).then((res) => {
         let reg = new RegExp(`^ albuminfoCallback\\(`)
@@ -113,24 +75,6 @@ export default {
         list: this.songList,
         index: 0
       })
-    },
-    showControl() {
-      this.layerDatas = rnav
-      this.$refs.layerControl.show()
-    },
-    selectIconItem(item, index) {
-      this.layerDatas = musicControl
-      // 如果需要付费就要重新添加一个项
-      if (item.pay.pay_down !== 0) {
-        musicControl[3].showFlag = true
-      } else {
-        musicControl[3].showFlag = false
-      }
-      this.$refs.layerControl.show(item)
-    },
-    showShare() {
-      this.layerDatas = share
-      this.$refs.layerControl.show()
     },
     back() {
       window.history.length > 1 ? this.$router.go(-1) : this.$router.push('/')

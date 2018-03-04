@@ -1,59 +1,19 @@
-<template>
-<section class="song-list" v-show="detas">
-  <header class="sl-h">
-    <div class="sl-h-nav" @click="back">
-      <i class="fa fa-angle-left"></i>
-    </div>
-    <p>
-      歌单
-    </p>
-    <div class="sl-h-r" @click="showControl">
-       <i class="fa fa-ellipsis-h"></i>
-    </div>
-  </header>
-  <div class="sl-c">
-    <div class="sl-c-bg">
-      <img :src="detas.logo" />
-      <div></div>
-    </div>
-    <div class="sl-z">
-      <div class="sl-z-img">
-        <img :src="detas.logo" />
-      </div>
-      <div class="sl-z-c">
-        <h2>{{detas.dissname}}</h2>
-        <div class="sl-z-a">
-          <div class="sl-z-a-i">
-            <img :src="detas.headurl" />
-            <img :src="detas.ifpicurl" />
-          </div><span>{{detas.nickname}}</span>
-        </div>
-        <p>
-          简介: <span v-html="detas.desc"></span>
-        </p>
-      </div>
-    </div>
-    <ul class="sl-b">
-      <li>
-        <i class="fa fa-heart-o"></i>&nbsp;&nbsp;<span>{{coll.totalnum}}</span>
-      </li>
-      <li>
-        <i class="fa fa-commenting-o"></i>&nbsp;&nbsp;<span>2</span>
-      </li>
-      <li @click="showShare">
-        <i class="fa fa-share-square-o"></i>&nbsp;&nbsp;<span>分享</span>
-      </li>
-    </ul>
-  </div>
+<template lang="html">
+<section class="song-list">
+  <t-header></t-header>
+  <single-top :detas="detas"></single-top>
   <scroll class="sl-wrapper" :data="songList">
     <div>
-      <music-list @playAll="playAll" :count="songCount" :songList="songList" @selectSingerMusic="selectItems" @selectIconItem="selectIconItem"></music-list>
+      <song-menu @playAll="playAll"></song-menu>
+      <div class="sl-list">
+        <song-item :item="item" v-for="(item, index) in songList" :key="index" :index="index" @selectItem="selectItems"></song-item>
+      </div>
       <div class="musicLoading" v-show="songList.length <= 0">
         <loading :isShow="true"></loading>&nbsp;&nbsp;<span>正在载入......</span>
       </div>
     </div>
   </scroll>
-  <layer-control ref="layerControl" :layerDatas="layerDatas"></layer-control>
+  <!-- <layer-control ref="layerControl" :layerDatas="layerDatas"></layer-control> -->
 </section>
 </template>
 
@@ -64,17 +24,22 @@ import {
   getSongList,
   getCollectionNum
 } from 'api/musichall'
+import SongMenu from 'base/song-menu/song-menu'
 import MusicList from 'components/music-list/music-list'
+import SongItem from 'base/song-item/song-item'
 import Scroll from 'base/scroll/scroll'
-import LayerControl from 'base/layer-control/layer-control'
-import { musicControl, share, rnav } from 'common/js/config/layer-control'
+import THeader from 'base/t-header/t-header'
+import SingleTop from 'components/single-top/single-top'
 import Loading from 'base/loading/loading'
 
 export default {
   components: {
+    SongMenu,
     MusicList,
+    SongItem,
     Scroll,
-    LayerControl,
+    THeader,
+    SingleTop,
     Loading
   },
   data() {
@@ -99,7 +64,6 @@ export default {
     },
     showControl() {
       // this.layerDatas = rnav
-      this.$refs.layerControl.show()
     },
     selectIconItem(item, index) {
       this.layerDatas = musicControl
@@ -109,11 +73,9 @@ export default {
       } else {
         musicControl[3].showFlag = false
       }
-      this.$refs.layerControl.show(item)
     },
     showShare() {
       this.layerDatas = share
-      this.$refs.layerControl.show()
     },
     back() {
       window.history.length > 1 ? this.$router.go(-1) : this.$router.push('/')
@@ -183,125 +145,9 @@ export default {
     bottom: 0
     overflow: hidden
     top: 0
-    .sl-h
-      width: 100%
-      position: absolute
-      left: 0
-      @include px2rem(height, 80px)
-      display: flex
-      justify-content: space-between
-      align-items: center
-      z-index: 10
-      .sl-h-nav
-        @include px2rem(width, 100px)
-        display: flex
-        justify-content: center
-        i
-          color: #fff
-          font-size: 64px; /*px*/
-      p
-        font-size: 35px; /*px*/
-        color: #fffdfe
-      .sl-h-r
-        @include px2rem(width, 100px)
-        display: flex
-        justify-content: center
-        i
-          font-size: 40px; /*px*/
-          color: #fff
-    .sl-c
-      @include px2rem(height, 520px)
-      display: flex
-      justify-content: center
-      align-items: center
-      flex-direction: column
-      position: relative
-      overflow: hidden
-      .sl-c-bg
-        width: 100%
-        height: 100%
-        position: absolute
-        img
-          width: 100%
-          height: 100%
-          filter: blur(90px)
-        div
-          width: 100%
-          height: 100%
-          background-color: rgba(0, 0, 0, .2)
-          position: absolute
-          left: 0
-          top: 0
-          z-index: 1
-      .sl-z
-        position: relative
-        z-index: 10
-        display: flex
-        align-items: center
-        overflow: hidden
-        @include px2rem(height, 250px)
-        .sl-z-img
-          @include px2rem(width, 250px)
-          @include px2rem(height, 250px)
-          img
-            width: 100%
-            height: 100%
-        .sl-z-c
-          @include px2rem(width, 382px)
-          @include px2rem(margin-left, 24px)
-          h2
-            font-size: 34px; /*px*/
-            @include px2rem(line-height, 38px)
-            @include px2rem(width, 320px)
-            color: #fff3f7
-          .sl-z-a
-            @include px2rem(height, 52px)
-            display: flex
-            align-items: center
-            @include px2rem(margin-top, 24px)
-            @include px2rem(margin-bottom, 24px)
-            .sl-z-a-i
-              @include px2rem(width, 52px)
-              @include px2rem(height, 52px)
-              @include px2rem(margin-right, 10px)
-              position: relative
-              img
-                width: 100%
-                border-radius: 300px
-              img:last-child
-                @include px2rem(width, 15px)
-                @include px2rem(height, 16px)
-                position: absolute
-                right: 0
-                bottom: 0
-            span
-              font-size: 24px; /*px*/
-              color: #f9f1ef
-        p
-          text-overflow: ellipsis
-          @include px2rem(height, 32px)
-          @include px2rem(line-height, 32px)
-          overflow: hidden
-          font-size: 26px; /*px*/
-          color: #fff8f0
-      .sl-b
-        display: flex
-        color: #fcfcfe
-        position: absolute
-        bottom: 6%
-        z-index: 5
-        width: 100%
-        justify-content: space-between
-        @include px2rem(width, 650px)
-        li
-          @include px2rem(height, 36px)
-          display: flex
-          align-items: center
-          i
-            font-size: 36px; /*px*/
     .sl-wrapper
       position: absolute
-      @include px2rem(top, 520px)
+      @include px2rem(top, 495px)
       width: 100%
       bottom: 0
       overflow: hidden

@@ -1,13 +1,6 @@
 <template>
 <section class="rank">
-  <header class="rank-header">
-    <div class="r-h-nav" @click="back">
-      <i class="fa  fa-chevron-left"></i>
-    </div>
-    <p class="r-h-title">
-      排行
-    </p>
-  </header>
+  <t-header :title="title" :bgColor="bgColor" :rFlag="false"></t-header>
   <scroll class="rank-main">
     <div>
       <h2>QQ音乐巅峰榜</h2>
@@ -48,15 +41,19 @@
 import {mapMutations} from 'vuex'
 import Scroll from 'base/scroll/scroll'
 import { getGlobalRank } from 'api/rank'
+import THeader from 'base/t-header/t-header'
 
 export default {
   components: {
-    Scroll
+    Scroll,
+    THeader
   },
   data() {
     return {
       rankList: [],
-      golbalRank: []
+      golbalRank: [],
+      title: '排行',
+      bgColor: '#61bf81'
     }
   },
   created() {
@@ -101,31 +98,6 @@ export default {
     left: 0
     top: 0
     bottom: 0
-    .rank-header
-      background-color: #61bf81
-      @include px2rem(height, 86px)
-      width: 100%
-      display: flex
-      justify-content: space-between
-      align-items: center
-      position: absolute
-      top: 0
-      z-index: 10
-      .r-h-title
-        height: 100%
-        width: 100%
-        font-size: 30px; /*px*/
-        display: flex
-        justify-content: center
-        align-items: center
-        color: #fff
-      .r-h-nav
-        position: absolute
-        color: #fff
-        @include px2rem(width, 80px)
-        text-align: center
-        i
-          font-size: 36px; /*px*/
     .rank-main
       position: absolute
       @include px2rem(top, 86px)

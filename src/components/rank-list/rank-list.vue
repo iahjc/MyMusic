@@ -1,26 +1,16 @@
 <template>
-<section class="song-list" v-show="detas">
-  <header class="sl-h">
-    <div class="sl-h-nav" @click="back">
-      <i class="fa fa-angle-left"></i>
+<section :class="$style.rankList" v-show="detas">
+  <t-header :title="topList.ListName"></t-header>
+  <div :class="$style.content">
+    <div :class="$style.background" :style="bgStyle">
     </div>
-    <p>
-      {{topList.ListName}}
-    </p>
-    <div class="sl-h-r">
-       <i class="fa fa-ellipsis-h"></i>
-    </div>
-  </header>
-  <div class="sl-c">
-    <div class="sl-c-bg">
-      <img :src="topList.pic_v12" />
-    </div>
-    <div class="sl-z">
+    <div :class="$style.title">
       {{topList.update_key}} 更新
     </div>
   </div>
-  <scroll class="sl-wrapper" :data="songList">
+  <scroll :class="$style.rankWrapper" :data="songList">
     <div>
+      <song-menu></song-menu>
       <music-list :songList="songList" @selectSingerMusic="selectItems"></music-list>
     </div>
   </scroll>
@@ -35,13 +25,20 @@ import {
 } from 'api/rank'
 import MusicList from 'components/music-list/music-list'
 import Scroll from 'base/scroll/scroll'
+import THeader from 'base/t-header/t-header'
+import SongMenu from 'base/song-menu/song-menu'
 
 export default {
   components: {
     MusicList,
-    Scroll
+    Scroll,
+    THeader,
+    SongMenu
   },
   computed: {
+    bgStyle() {
+      return `background-image:url(${this.topList.pic_v12})`
+    },
     ...mapGetters([
       'topList'
     ])
@@ -117,95 +114,38 @@ export default {
 }
 </script>
 
-<style lang="sass" scoped="" type="text/css">
-  @import "../../common/scss/helpers/variables.scss";
-  @import "../../common/scss/helpers/mixins.scss";
-  @import "../../common/scss/helpers/function.scss";
-  @import "../../common/scss/base/base.scss";
-
-  .song-list
+<style lang="sass" scoped="" type="text/css" module>
+  .rankList
     width: 100%
     position: fixed
     bottom: 0
     overflow: hidden
     top: 0
-    .sl-h
-      width: 100%
-      position: absolute
-      left: 0
-      @include px2rem(height, 80px)
-      display: flex
-      justify-content: space-between
-      align-items: center
-      z-index: 10
-      .sl-h-nav
-        @include px2rem(width, 100px)
-        display: flex
-        justify-content: center
-        i
-          color: #fff
-          font-size: 64px; /*px*/
-      p
-        font-size: 30px; /*px*/
-        color: #fffdfe
-      .sl-h-r
-        @include px2rem(width, 100px)
-        display: flex
-        justify-content: center
-        i
-          font-size: 40px; /*px*/
-          color: #fff
-    .sl-c
-      @include px2rem(height, 520px)
+    .content
+      height: 500px
       display: flex
       justify-content: center
       align-items: center
       flex-direction: column
       position: relative
       overflow: hidden
-      .sl-c-bg
+      .background
         width: 100%
         height: 100%
         position: absolute
-        img
-          width: 100%
-          height: 100%
-        div
-          width: 100%
-          height: 100%
-          background-color: rgba(0, 0, 0, .2)
-          position: absolute
-          left: 0
-          top: 0
-          z-index: 1
-      .sl-z
+        background-size: cover
+        background-position: center
+      .title
         position: absolute
         z-index: 10
         display: flex
         align-items: center
         overflow: hidden
-        @include px2rem(bottom, 30px)
+        bottom: 30px
         font-size: 28px; /*px*/
         color: #fff
-      .sl-b
-        display: flex
-        color: #fcfcfe
-        position: absolute
-        bottom: 6%
-        z-index: 1000
-        width: 100%
-        justify-content: space-between
-        @include px2rem(width, 650px)
-        li
-          @include px2rem(height, 36px)
-          display: flex
-          align-items: center
-          i
-            font-size: 36px; /*px*/
-    .sl-wrapper
-      position: absolute
-      @include px2rem(top, 520px)
+    .rankWrapper
+      position: relative
       width: 100%
-      bottom: 0
       overflow: hidden
 </style>

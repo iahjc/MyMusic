@@ -1,31 +1,14 @@
 <template>
   <section class="radio-station">
-    <header class="rs-header">
-      <div class="r-h-nav" @click="back">
-        <i class="fa  fa-chevron-left"></i>
-      </div>
-      <p class="r-h-title">
-        电台
-      </p>
-    </header>
+    <t-header :title="title" :bgColor="bgColor" :rFlag="false"></t-header>
     <scroll class="rs-cont">
       <div>
         <ul class="c-w-lis">
-        <li :class="{cur: currentIndex === index}" v-for="(item, index) in rsList" @click="selectItem(index)">{{item.name}}</li>
-      </ul>
+          <li :class="{cur: currentIndex === index}" v-for="(item, index) in rsList" @click="selectItem(index)">{{item.name}}</li>
+        </ul>
         <div class="cw-c">
-        <div class="cw-c-li" v-for="item in radioList" @click="_getSongs(item.radioId)">
-          <div class="cwc-img">
-            <img v-lazy="item.radioImg" />
-          </div>
-          <p>
-            {{item.radioName}}
-          </p>
-          <p>
-            播放量：{{Math.round((item.listenNum / 10000) * 100) / 100}} 万
-          </p>
+          <radio-item :item="item" v-for="(item, index) in radioList" :key="index" @selectItem="playSongs" :cname="$style.cname"></radio-item>
         </div>
-      </div>
       </div>
     </scroll>
   </section>
@@ -36,16 +19,22 @@ import Scroll from 'base/scroll/scroll'
 import {getRadioStationList, getSongs} from 'api/radiostation'
 import { createSong } from 'domain/song'
 import {mapActions} from 'vuex'
+import RadioItem from 'base/radio-item/radio-item'
+import THeader from 'base/t-header/t-header'
 export default {
   components: {
-    Scroll
+    Scroll,
+    RadioItem,
+    THeader
   },
   data() {
     return {
       rsList: [],
       currentIndex: 0,
       radioList: [],
-      songs: []
+      songs: [],
+      title: '电台',
+      bgColor: '#61bf81'
     }
   },
   created() {
@@ -64,7 +53,7 @@ export default {
       })
       return ret
     },
-    _getSongs(catid) {
+    playSongs(catid) {
       catid = parseInt(catid)
       getSongs(catid).then((res) => {
         let reg = new RegExp(`^getradiosonglist7732631040990154\\(`)
@@ -110,6 +99,11 @@ export default {
 }
 </script>
 
+  <style lang="sass" scoped="" type="text/css" module>
+    .cname
+      width: 240px
+  </style>
+
   <style lang="sass" scoped="" type="text/css">
     @import "../../common/scss/helpers/variables.scss";
     @import "../../common/scss/helpers/mixins.scss";
@@ -122,31 +116,6 @@ export default {
       right: 0
       bottom: 0
       top: 0
-      .rs-header
-        background-color: #61bf81
-        @include px2rem(height, 86px)
-        width: 100%
-        display: flex
-        justify-content: space-between
-        align-items: center
-        position: absolute
-        top: 0
-        z-index: 10
-        .r-h-title
-          height: 100%
-          width: 100%
-          font-size: 30px; /*px*/
-          display: flex
-          justify-content: center
-          align-items: center
-          color: #fff
-        .r-h-nav
-          position: absolute
-          color: #fff
-          @include px2rem(width, 80px)
-          text-align: center
-          i
-            font-size: 36px; /*px*/
       .rs-cont
         position: absolute
         @include px2rem(top, 86px)

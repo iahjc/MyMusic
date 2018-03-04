@@ -701,8 +701,8 @@ export default {
       display: flex
       align-items: center
       box-sizing: border-box
-      left: 25px
-      right: 25px
+      padding-left: 2.5%
+      padding-right: 2.5%
       justify-content: space-between
       .mi-l
         display: flex

@@ -1,0 +1,12 @@
+@charset "UTF-8";
+
+@mixin icon($size:12px, $color:#cba872, $bgcolor:#c1b26f, $padding:5px, $radius:5px) {
+  padding: $padding;
+  border-radius: $radius;
+  border: 1px solid $bgcolor; /*no*/
+  font-size: $size; /*px*/
+  color: $color;
+  text-align: center;
+  line-height: 1;
+  display: inline-block;
+}

@@ -1,47 +1,8 @@
 <template>
   <section class="singer-detail">
-    <header class="sl-h" ref="slh">
-      <div class="sl-h-nav" @click="back">
-        <i class="fa fa-angle-left"></i>
-      </div>
-      <p></p>
-      <div class="sl-h-r">
-         <i class="fa fa-ellipsis-h"></i>
-      </div>
-    </header>
-
-    <div class="sd-h" ref="sdh">
-      <div class="sd-bg" ref="sdbg" :style="bgStyle">
-      </div>
-      <div class="sd-cont">
-        <div class="sd-title">
-          {{singer.name}}
-        </div>
-        <ul class="sd-fs">
-          <li>
-
-          </li>
-          <li>
-            粉丝数: {{fansNum}} 万
-          </li>
-          <li>
-
-          </li>
-        </ul>
-
-        <div class="sd-btn">
-          <div class="btn5">
-            关注
-          </div>
-          <div class="btn5">
-            勋章
-          </div>
-        </div>
-      </div>
-    </div>
-
+    <t-header :title="title"></t-header>
+    <author-detail :singer="singer"></author-detail>
     <div :class="$style.bgLayer" ref="bgLayer">
-
     </div>
 
     <scroll class="sd-wrapper"
@@ -105,6 +66,8 @@ import {prefixStyle} from 'common/js/utils/dom'
 import SongApi from 'api/song'
 import { NUM } from 'common/js/config/page'
 import Loading from 'base/loading/loading'
+import THeader from 'base/t-header/t-header'
+import AuthorDetail from 'components/singer-detail/author-detail'
 
 let songApi = new SongApi()
 let transform = prefixStyle('transform')
@@ -117,11 +80,14 @@ export default {
     AlbumList,
     MvList,
     SingerDetail,
+    AuthorDetail,
     Scroll,
-    Loading
+    Loading,
+    THeader
   },
   data() {
     return {
+      title: '',
       songList: null,
       total: 0,
       albumTotal: 0,
@@ -363,32 +329,6 @@ export default {
     left: 0
     top: 0
     bottom: 0
-    .sl-h
-      width: 100%
-      position: absolute
-      left: 0
-      @include px2rem(height, 80px)
-      display: flex
-      justify-content: space-between
-      align-items: center
-      z-index: 10
-      .sl-h-nav
-        @include px2rem(width, 100px)
-        display: flex
-        justify-content: center
-        i
-          color: #fff
-          font-size: 64px; /*px*/
-      p
-        font-size: 20px; /*px*/
-        color: #fffdfe
-      .sl-h-r
-        @include px2rem(width, 100px)
-        display: flex
-        justify-content: center
-        i
-          font-size: 40px; /*px*/
-          color: #fff
     .sd-h
       height: 525px
       position: relative
