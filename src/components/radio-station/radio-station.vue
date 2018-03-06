@@ -1,6 +1,6 @@
 <template>
   <section class="radio-station">
-    <t-header :title="title" :bgColor="bgColor" :rFlag="false"></t-header>
+    <t-header :title="title" :bgColor="bgColor" @back="back" :rFlag="false"></t-header>
     <scroll class="rs-cont">
       <div>
         <ul class="c-w-lis">
@@ -44,6 +44,9 @@ export default {
     ...mapActions([
       'selectSingerMusic'
     ]),
+    back() {
+      this.$router.back()
+    },
     initSongs(list) {
       let ret = []
       list.forEach((musicData) => {

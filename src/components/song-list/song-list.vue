@@ -1,6 +1,6 @@
 <template lang="html">
 <section class="song-list">
-  <t-header></t-header>
+  <t-header @back="back"></t-header>
   <single-top :detas="detas"></single-top>
   <scroll class="sl-wrapper" :data="songList">
     <div>
@@ -25,7 +25,6 @@ import {
   getCollectionNum
 } from 'api/musichall'
 import SongMenu from 'base/song-menu/song-menu'
-import MusicList from 'components/music-list/music-list'
 import SongItem from 'base/song-item/song-item'
 import Scroll from 'base/scroll/scroll'
 import THeader from 'base/t-header/t-header'
@@ -35,7 +34,6 @@ import Loading from 'base/loading/loading'
 export default {
   components: {
     SongMenu,
-    MusicList,
     SongItem,
     Scroll,
     THeader,
@@ -56,6 +54,9 @@ export default {
     this._getCollectionNum()
   },
   methods: {
+    back() {
+      this.$router.back()
+    },
     playAll() {
       this.selectSingerMusic({
         list: this.songList,

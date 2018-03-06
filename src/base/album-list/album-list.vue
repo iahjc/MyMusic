@@ -1,6 +1,6 @@
-<template>
-  <section class="album-list" v-show="showFlag">
-    <div class="al-li" v-for="item in albumList">
+<template lang="html">
+  <section :class="$style.albumList" v-show="showFlag">
+    <div :class="$style.alLi" v-for="(item, index) in albumList" :key="index" @click="selectItem(item, index)">
       <ul>
         <li>
           <img :src="item.headimg" />
@@ -35,6 +35,9 @@ export default {
     }
   },
   methods: {
+    selectItem(item, index) {
+      this.$emit('selectAlbumItem', item, index)
+    },
     show() {
       this.showFlag = true
     },
@@ -45,31 +48,24 @@ export default {
 }
 </script>
 
-  <style lang="sass" scoped="" type="text/css">
-    @import "../../common/scss/helpers/variables.scss";
-    @import "../../common/scss/helpers/mixins.scss";
-    @import "../../common/scss/base/base.scss";
-    @import "../../common/scss/components/buttons.scss";
-
-    .album-list
+  <style lang="sass" scoped="" type="text/css" module>
+    .albumList
       width: 100%
-      .al-li
+      .alLi
         width: 100%
-        @include px2rem(height, 125px)
-        @include px2rem(border-width, 2px)
-        border-style: solid
-        border-color: #f0f0f0
+        height: 125px
+        border-bottom: 1px solid #f0f0f0; /*no*/
         ul
           width: 100%
           height: 100%
           display: flex
           li:first-child
-            @include px2rem(width, 125px)
-            @include px2rem(height, 125px)
+            width: 125px
+            height: 125px
             img
               width: 100%
           li:nth-child(2)
-            @include px2rem(margin-left, 28px)
+            margin-left: 28px
             display: flex
             flex-direction: column
             justify-content: center
@@ -77,11 +73,11 @@ export default {
             p:first-child
               font-size: 28px; /*px*/
             p:last-child
-              @include px2rem(margin-top, 18px)
+              margin-top: 18px
               font-size: 20px; /*px*/
               color: #7f7f7f
           li:nth-child(3)
-            @include px2rem(width, 70px)
+            width: 70px
             display: flex
             justify-content: center
             align-items: center

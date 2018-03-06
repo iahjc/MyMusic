@@ -91,7 +91,7 @@ const Search = (resolve) => {
 }
 
 const GdDetail = (resolve) => {
-  import('components/gd-detail/gd-detail').then((gdDetail) => {
+  import('components/class-radiostation/gd-detail').then((gdDetail) => {
     resolve(gdDetail)
   })
 }

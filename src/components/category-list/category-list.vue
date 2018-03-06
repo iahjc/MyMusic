@@ -1,42 +1,35 @@
 <template>
 <transition name="catelist">
   <section class="category-list" v-show="showFlag">
-    <header class="crt-header">
-      <div class="r-h-nav" @click="back">
-        <i class="fa  fa-chevron-left"></i>
-      </div>
-      <p class="r-h-title">
-        全部分类
-      </p>
-    </header>
-    <scroll class="cli-wrapper" :data="categories">
-      <div>
-        <div class="cli-cates">
-          <div v-for="item in categories" class="cates-ul">
-            <div class="cates-title">
-              <span>{{item.categoryGroupName}}</span>
-            </div>
-            <ul class="cates-lis">
-              <li v-for="cate in item.items" v-html="cate.categoryName">
-              </li>
-            </ul>
-          </div>
+    <t-header :title="title" :bgColor="bgColor" @back="back" :rFlag="false"></t-header>
+    <div class="cli-cates">
+      <div v-for="item in categories" class="cates-ul">
+        <div class="cates-title">
+          <span>{{item.categoryGroupName}}</span>
         </div>
+        <ul class="cates-lis">
+          <li v-for="cate in item.items" v-html="cate.categoryName" @click="selectItem(cate)">
+          </li>
+        </ul>
       </div>
-    </scroll>
+    </div>
   </section>
 </transition>
 </template>
 
 <script>
 import Scroll from 'base/scroll/scroll'
+import THeader from 'base/t-header/t-header'
 export default {
   components: {
-    Scroll
+    Scroll,
+    THeader
   },
   data() {
     return {
-      showFlag: false
+      showFlag: false,
+      title: '全部分类',
+      bgColor: '#64be81'
     }
   },
   props: {
@@ -49,6 +42,9 @@ export default {
     console.log(this.categories)
   },
   methods: {
+    selectItem(cate) {
+      this.$emit('selectCate', cate)
+    },
     show() {
       this.showFlag = true
     },
@@ -67,7 +63,7 @@ export default {
     @import "../../common/scss/components/buttons.scss"
 
     .catelist-enter,.catelist-leave-to
-      transform: translateY(100%)
+      transform: translateX(100%)
     .catelist-enter-active
       transition: all .2s cubic-bezier(1.0, 0.5, 0.8, 1.0)
     .catelist-leave-active
@@ -84,7 +80,7 @@ export default {
       overflow: hidden
       .crt-header
         background-color: #61bf81
-        @include px2rem(height, 86px)
+        height: 86px
         width: 100%
         display: flex
         justify-content: space-between
@@ -103,28 +99,24 @@ export default {
         .r-h-nav
           position: absolute
           color: #fff
-          @include px2rem(width, 80px)
+          width: 80px
           text-align: center
           i
             font-size: 36px; /*px*/
-      .cli-wrapper
-        @include px2rem(top, 86px)
-        position: absolute
-        height: 800px
-        left: 0
+      .cli-cates
         width: 100%
-        overflow: hidden
-        .cli-cates
-        @include px2rem(top, 86px)
         position: absolute
+        top: 86px
+        bottom: 0
+        overflow-y: scroll
         .cates-ul
           width: 100%
           display: flex
-          @include px2rem(margin-top, 12px)
+          margin-top: 12px
           .cates-title
-            @include px2rem(width,  168px)
+            width: 168px
             background: #fff
-            @include px2rem(margin-right, 2px)
+            margin-right: 2px
             display: flex
             justify-content: center
             align-items: center
@@ -140,8 +132,8 @@ export default {
               justify-content: center
               align-items: center
               width: 33%
-              @include px2rem(margin-bottom, 2px)
-              @include px2rem(height, 82px)
+              margin-bottom: 2px
+              height: 82px
               background: #fff
               font-size: 28px; /*px*/
               color: #000000

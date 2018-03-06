@@ -2,7 +2,7 @@
  * 搜索历史管理类
  * @type {[type]}
  */
-export default class SearchHistory {
+export default class SearchHistoryDb {
   constructor() {
     this.storage = window.localStorage
     this.history = []

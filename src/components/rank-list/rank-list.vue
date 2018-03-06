@@ -1,6 +1,6 @@
 <template>
 <section :class="$style.rankList" v-show="detas">
-  <t-header :title="topList.ListName"></t-header>
+  <t-header :title="topList.ListName" @back="back"></t-header>
   <div :class="$style.content">
     <div :class="$style.background" :style="bgStyle">
     </div>
@@ -11,7 +11,7 @@
   <scroll :class="$style.rankWrapper" :data="songList">
     <div>
       <song-menu></song-menu>
-      <music-list :songList="songList" @selectSingerMusic="selectItems"></music-list>
+      <song-item :item="item" v-for="(item, index) in songList" :key="index" :index="index" @selectItem="selectItems"></song-item>
     </div>
   </scroll>
 </section>
@@ -23,17 +23,18 @@ import { createSingerSong } from 'domain/song'
 import {
   getRankList
 } from 'api/rank'
-import MusicList from 'components/music-list/music-list'
 import Scroll from 'base/scroll/scroll'
 import THeader from 'base/t-header/t-header'
 import SongMenu from 'base/song-menu/song-menu'
+import SongItem from 'base/song-item/song-item'
 
 export default {
   components: {
-    MusicList,
+    // MusicList,
     Scroll,
     THeader,
-    SongMenu
+    SongMenu,
+    SongItem
   },
   computed: {
     bgStyle() {
@@ -53,6 +54,14 @@ export default {
   },
   created() {
     this._getRankList()
+
+    getRankList('26', '2018_8').then((res) => {
+      let reg = new RegExp(`^ MusicJsonCallbacktoplist\\(`)
+      let reg2 = new RegExp('\\)$')
+      res = res.replace(reg, '').replace(reg2, '')
+      res = JSON.parse(res)
+      console.log(res)
+    })
   },
   methods: {
     back() {
@@ -145,7 +154,10 @@ export default {
         font-size: 28px; /*px*/
         color: #fff
     .rankWrapper
-      position: relative
+      position: absolute
       width: 100%
+      bottom: 0
+      top: 500px
+      left: 0
       overflow: hidden
 </style>

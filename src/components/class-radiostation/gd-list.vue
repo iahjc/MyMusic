@@ -1,16 +1,8 @@
 <template>
   <section class="gd-list">
-    <div class="gd-t">
-      <div class="gd-t-title">
-        {{title}}
-      </div>
-      <div class="gd-t-r">
-        <span>最新</span>&nbsp;&nbsp;|&nbsp;&nbsp;<span>最热</span>
-      </div>
-    </div>
-
+    <top-menu @selectMenuItem="selectMenuItem"></top-menu>
     <ul class="gd-ul">
-      <li v-for="(item, index) in rsList.list" @click="selectItem(item, index)">
+      <li v-for="(item, index) in rsList" @click="selectItem(item, index)">
         <div class="gd-img">
           <img v-lazy="item.imgurl" />
         </div>
@@ -26,18 +18,25 @@
 </template>
 
 <script>
+import TopMenu from 'base/top-menu/top-menu'
 export default {
+  components: {
+    TopMenu
+  },
   props: {
     title: {
       type: String,
       default: '精选歌单'
     },
     rsList: {
-      type: Object,
-      default: {}
+      type: Array,
+      default: []
     }
   },
   methods: {
+    selectMenuItem(item, index, ev) {
+      this.$emit('selectMenuItem', item, index, ev)
+    },
     selectItem(item, index) {
       this.$emit('selectItem', item, index)
     }

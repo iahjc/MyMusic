@@ -8,7 +8,7 @@
 
           </li>
           <li :class="$style.fans">
-            粉丝数: {{Math.round((fansNum / 10000) * 100) / 100}}
+            粉丝数: {{Math.round((fansNum / 10000) * 100) / 100}} 万
           </li>
           <li>
 
@@ -53,22 +53,24 @@ export default {
     width: 100%
     height: 520px
     overflow: hidden
+    position: relative
     .background
       width: 100%
-      padding-top: 66%
+      height: 100%
       background-size: cover
       .content
         width: 100%
+        position: absolute
+        bottom: 100px
         display: flex
-        flex-direction: column
         align-items: center
-        justify-content: flex-end
+        flex-direction: column
         ul
           display: flex
           height: 50px
           align-items: center
           .fans
-            width: 160px
+            width: 200px
             text-align: center
             font-size: 22px; /*px*/
             color: #fff

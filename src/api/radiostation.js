@@ -46,7 +46,7 @@ export function getClassRs() {
   })
 }
 
-export function getClassRsList(catid) {
+export function getClassRsList(catid, sortId, sin, ein) {
   let params = {
     'picmid': '1',
     'rnd': '0.12473363325887754',
@@ -61,9 +61,9 @@ export function getClassRsList(catid) {
     'platform': 'yqq',
     'needNewCode': '0',
     'categoryId': catid,
-    'sortId': '5',
-    'sin': '0',
-    'ein': '29'
+    'sortId': sortId,
+    'sin': sin,
+    'ein': ein
   }
 
   let url = '/api/getClassRsList'

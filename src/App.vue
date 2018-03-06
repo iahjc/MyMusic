@@ -4,14 +4,15 @@
     <nav-slidebar ref="navSlidebar"></nav-slidebar>
     <router-view></router-view>
   </section>
-  <player></player>
+  <play></play>
 </div>
 </template>
 <script>
 import {mapGetters} from 'vuex'
 import NavSlidebar from 'components/nav-slidebar/nav-slidebar'
-import Player from 'components/player/player'
+// import Player from 'components/player/player'
 // import Main from 'components/main/main'
+import Play from 'components/player/play'
 export default {
   name: 'app',
   computed: {
@@ -21,7 +22,7 @@ export default {
   },
   components: {
     NavSlidebar,
-    Player
+    Play
   },
   watch: {
     navFlag(newFlag) {
@@ -39,11 +40,6 @@ export default {
   @import "common/scss/helpers/variables.scss";
   @import "common/scss/helpers/function.scss";
 
-  .app-enter-active, .app-leave-active
-    transition: all .3s ease
-  .app-enter, .app-leave-to
-    transform: translate3d(pxtorem(-640px), 0, 0)
-    opacity: 0
   #app
     font-family: $global-font-family
     .main

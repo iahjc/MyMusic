@@ -1,6 +1,6 @@
 <template lang="html">
   <section :class="[panelClass, cname]">
-    <h4>{{title}}<i class="fa fa-chevron-right icon-color"></i></h4>
+    <h4 @click="selectItem">{{title}}<i class="fa fa-chevron-right icon-color"></i></h4>
     <slot/>
   </section>
 </template>
@@ -20,6 +20,11 @@ export default {
   data() {
     return {
       panelClass: 'panel'
+    }
+  },
+  methods: {
+    selectItem() {
+      this.$emit('selectItem')
     }
   }
 }

@@ -1,7 +1,7 @@
 <template>
   <section class="singer-detail">
-    <t-header :title="title"></t-header>
-    <author-detail :singer="singer"></author-detail>
+    <t-header :title="title" @back="back"></t-header>
+    <author-detail :singer="singer" :fansNum="fansNum"></author-detail>
     <div :class="$style.bgLayer" ref="bgLayer">
     </div>
 
@@ -17,23 +17,17 @@
     >
       <div>
         <div class="sd-nav-wrapper">
-          <ul class="sd-nav" @click="selectLi($event)" ref="sdNav">
-            <li class="cur">单曲 {{total}}</li>
-            <li>专辑 {{albumTotal}}</li>
-            <li>MV {{mvTotal}}</li>
-            <li>详情</li>
-          </ul>
-          <div ref="sdcur" class="sdcur"></div>
+          <nav-menu @selectMenuItem="selectMenuItem" :navs="navs"></nav-menu>
         </div>
 
         <div class="sd-cont">
           <div class="sd-c-1">
             <div class="sd-c-search">
             </div>
-            <music-list :songList="songList" @selectSingerMusic="selectItems" ref="ml"></music-list>
+            <music-list :songList="songList" @selectItem="selectItem" ref="ml"></music-list>
           </div>
           <div class="sd-c-2">
-            <album-list :albumList="albumList" ref="al"></album-list>
+            <album-list :albumList="albumList" ref="al" @selectAlbumItem="selectAlbumItem"></album-list>
           </div>
           <div class="sd-c-3">
             <mv-list :mvList="mvList" ref="mv"></mv-list>
@@ -58,7 +52,6 @@ import {mapGetters} from 'vuex'
 import { createSingerSong } from 'domain/song'
 import { createAlbum } from 'domain/album'
 import AlbumList from 'base/album-list/album-list'
-import MusicList from 'components/music-list/music-list'
 import MvList from 'base/mv-list/mv-list'
 import SingerDetail from 'base/singer-detail/singer-detail'
 import Scroll from 'base/scroll/scroll'
@@ -68,6 +61,8 @@ import { NUM } from 'common/js/config/page'
 import Loading from 'base/loading/loading'
 import THeader from 'base/t-header/t-header'
 import AuthorDetail from 'components/singer-detail/author-detail'
+import MusicList from 'components/singer-detail/music-list'
+import NavMenu from 'base/nav-menu/nav-menu'
 
 let songApi = new SongApi()
 let transform = prefixStyle('transform')
@@ -76,23 +71,39 @@ const filter = prefixStyle('filter')
 let page = 1
 export default {
   components: {
-    MusicList,
     AlbumList,
     MvList,
     SingerDetail,
     AuthorDetail,
+    MusicList,
     Scroll,
     Loading,
-    THeader
+    THeader,
+    NavMenu
   },
   data() {
     return {
+      navs: [
+        {
+          title: '单曲',
+          count: 0
+        },
+        {
+          title: '专辑',
+          count: 0
+        },
+        {
+          title: 'MV',
+          count: 0
+        },
+        {
+          title: '详情',
+          count: 0
+        }
+      ],
       title: '',
       songList: null,
-      total: 0,
-      albumTotal: 0,
       albumList: [],
-      mvTotal: 0,
       mvList: [],
       desc: '',
       fansNum: 0,
@@ -126,10 +137,23 @@ export default {
     this.items.push(this.$refs.al)
     this.items.push(this.$refs.mv)
     this.items.push(this.$refs.sd)
-    this.headerH = this.$refs.slh.clientHeight
-    this.sdHeight = this.$refs.sdh.clientHeight
   },
   methods: {
+    selectAlbumItem(item, index) {
+      this.$router.push({
+        path: `/album/${item.albumMID}`
+      })
+    },
+    back() {
+      this.$router.back()
+    },
+    selectMenuItem(item, index, el) {
+      this.items.forEach((menuItem) => {
+        console.log(11)
+        menuItem.hide()
+      })
+     this.items[index].show()
+    },
     searchMore() {
       if (!this.hasMore) {
         return
@@ -154,7 +178,7 @@ export default {
     scroll(pos) {
       this.scrollY = pos.y
     },
-    selectItems(item, index) {
+    selectItem(item, index) {
       this.selectSingerMusic({
         list: this.songList,
         index: index
@@ -163,32 +187,6 @@ export default {
     ...mapActions([
       'selectSingerMusic'
     ]),
-    selectLi(ev) {
-      let target = ev.target || ev.srcElement
-      if (target.nodeName.toLowerCase() === 'li') {
-        this._toggleSdNav(target)
-      }
-    },
-    _toggleSdNav(obj) {
-      let currentIndex = -1
-      let lis = this.$refs.sdNav.children
-      lis = Array.from(lis)
-      lis.forEach((item, index) => {
-        if (item === obj) {
-          currentIndex = index
-        }
-        item.className = ''
-
-        this.items[index].hide()
-      })
-      obj.className = 'cur'
-      this.$refs.sdcur.style.transition = 'transform .3s ease'
-      let w = this.$refs.sdcur.clientWidth
-      w = w * currentIndex
-      this.$refs.sdcur.style[transform] = `translateX(${w}px)`
-
-      this.items[currentIndex].show()
-    },
     back() {
       this.$router.go(-1)
     },
@@ -213,74 +211,83 @@ export default {
         }
       })
       return ret
+    },
+    _getSongs(mid) {
+      getSingerDetail(mid).then((res) => {
+        let reg = new RegExp(`^ MusicJsonCallbacksinger_track\\(`)
+        let reg2 = new RegExp('\\)$')
+        res = res.replace(reg, '').replace(reg2, '')
+        res = JSON.parse(res)
+        this.navs[0].count = res.data.total
+        this.songList = this._initSongList(res.data.list)
+      })
+    },
+    _getFsNum(mid) {
+      getFSNum(mid).then((res) => {
+        res = res.replace(/(^\s*)|(\s*$)/g, '')
+        let reg = new RegExp(`^orderNum0025NhlN2yWrP41516324279689\\(`)
+        let reg2 = new RegExp('\\)$')
+        res = res.replace(reg, '').replace(reg2, '')
+        res = JSON.parse(res)
+        this.fansNum = res.num
+      })
+    },
+    _getAlbum(mid) {
+      console.log(2222)
+      getAlbum(mid).then((res) => {
+        let reg = new RegExp(`^ singeralbumlistJsonCallback\\(`)
+        let reg2 = new RegExp('\\)$')
+        res = res.replace(reg, '').replace(reg2, '')
+        res = JSON.parse(res)
+        this.albumList = this._initAlbumList(res.data.list)
+        this.navs[1].count = res.data.total
+      })
+    },
+    _getMV(mid) {
+      getMV(mid).then((res) => {
+        res = res.replace(/(^\s*)|(\s*$)/g, '')
+        let reg = new RegExp(`^singermvlistJsonCallback\\(`)
+        let reg2 = new RegExp('\\)$')
+        res = res.replace(reg, '').replace(reg2, '')
+        res = JSON.parse(res)
+        this.mvList = res.data.list
+        this.navs[2].count = res.data.total
+      })
+    },
+    _getSinger(mid) {
+      getSinger(mid).then((res) => {
+        let parser = new DOMParser()
+        let xmlDoc = parser.parseFromString(res, 'text/xml')
+        let data = xmlDoc.getElementsByTagName('data')
+        this.desc = data[0].innerHTML
+      })
     }
   },
   created() {
     let mid = this.$route.params.id
-
-    getFSNum(mid).then((res) => {
-      res = res.replace(/(^\s*)|(\s*$)/g, '')
-      let reg = new RegExp(`^orderNum0025NhlN2yWrP41516324279689\\(`)
-      let reg2 = new RegExp('\\)$')
-      res = res.replace(reg, '').replace(reg2, '')
-      res = JSON.parse(res)
-      this.fansNum = Math.round((res.num / 10000) * 100) / 100
-    })
-
-    getAlbum(mid).then((res) => {
-      let reg = new RegExp(`^ singeralbumlistJsonCallback\\(`)
-      let reg2 = new RegExp('\\)$')
-      res = res.replace(reg, '').replace(reg2, '')
-      res = JSON.parse(res)
-      this.albumList = this._initAlbumList(res.data.list)
-      this.albumTotal = res.data.total
-    })
-
-    getMV(mid).then((res) => {
-      res = res.replace(/(^\s*)|(\s*$)/g, '')
-      let reg = new RegExp(`^singermvlistJsonCallback\\(`)
-      let reg2 = new RegExp('\\)$')
-      res = res.replace(reg, '').replace(reg2, '')
-      res = JSON.parse(res)
-      this.mvList = res.data.list
-      this.mvTotal = res.data.total
-    })
-
-    getSingerDetail(mid).then((res) => {
-      let reg = new RegExp(`^ MusicJsonCallbacksinger_track\\(`)
-      let reg2 = new RegExp('\\)$')
-      res = res.replace(reg, '').replace(reg2, '')
-      res = JSON.parse(res)
-      this.total = res.data.total
-      console.log(res.data.list)
-      this.songList = this._initSongList(res.data.list)
-    })
-
-    getSinger(mid).then((res) => {
-      let parser = new DOMParser()
-      let xmlDoc = parser.parseFromString(res, 'text/xml')
-      let data = xmlDoc.getElementsByTagName('data')
-      this.desc = data[0].innerHTML
-    })
+    this._getSongs(mid)
+    this._getFsNum(mid)
+    this._getAlbum(mid)
+    this._getMV(mid)
+    this._getSinger(mid)
   },
   watch: {
     scrollY(newVal) {
-      const percent = Math.abs(newVal / this.sdHeight)
-      this.$refs.bgLayer.style[transform2] = `translate3d(0, ${newVal}px, 0)`
-      let scale = 1
-      if (newVal <= 0) {
-        if (Math.abs(newVal) <= this.sdHeight - this.headerH) {
-          this.$refs.sdh.style.height = this.sdHeight - Math.abs(newVal) + 'px'
-        }
-
-        if (Math.abs(newVal) >= this.sdHeight - this.headerH) {
-          this.$refs.sdh.style.height = this.headerH + 'px'
-        }
-      } else {
-        scale = scale + percent
-        this.$refs.sdh.style[transform] = `scale(${scale})`
-      }
-
+      // const percent = Math.abs(newVal / this.sdHeight)
+      // this.$refs.bgLayer.style[transform2] = `translate3d(0, ${newVal}px, 0)`
+      // let scale = 1
+      // if (newVal <= 0) {
+      //   if (Math.abs(newVal) <= this.sdHeight - this.headerH) {
+      //     this.$refs.sdh.style.height = this.sdHeight - Math.abs(newVal) + 'px'
+      //   }
+      //
+      //   if (Math.abs(newVal) >= this.sdHeight - this.headerH) {
+      //     this.$refs.sdh.style.height = this.headerH + 'px'
+      //   }
+      // } else {
+      //   scale = scale + percent
+      //   this.$refs.sdh.style[transform] = `scale(${scale})`
+      // }
 
       // if (Math.abs(newVal) >= this.sdHeight) {
       //   this.$refs.sdh.style.height = this.sdHeight - Math.abs(newVal) + 'px'

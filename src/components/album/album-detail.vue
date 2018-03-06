@@ -1,6 +1,6 @@
 <template>
 <section class="song-list" v-show="album">
-  <t-header :title="title"></t-header>
+  <t-header :title="title" @back="back"></t-header>
   <single-top :detas="album"></single-top>
   <scroll class="sl-wrapper" :data="songList">
     <div>
@@ -21,7 +21,6 @@ import {
   getSongList,
   getCollectionNum
 } from 'api/musichall'
-import MusicList from 'components/music-list/music-list'
 import Scroll from 'base/scroll/scroll'
 // import LayerControl from 'base/layer-control/layer-control'
 import { musicControl, share, rnav } from 'common/js/config/layer-control'
@@ -33,7 +32,6 @@ import SongItem from 'base/song-item/song-item'
 
 export default {
   components: {
-    MusicList,
     Scroll,
     SongMenu,
     SongItem,
@@ -55,6 +53,9 @@ export default {
     this._getCollectionNum()
   },
   methods: {
+    back() {
+      this.$router.back()
+    },
     getAlbumInfo() {
       getAlbumInfo(this.$route.params.id).then((res) => {
         let reg = new RegExp(`^ albuminfoCallback\\(`)

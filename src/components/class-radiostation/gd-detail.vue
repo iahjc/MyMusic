@@ -1,14 +1,6 @@
 <template>
 <section class="gd-detail">
-  <header class="sl-h">
-    <div class="sl-h-nav" @click="back">
-      <i class="fa fa-angle-left"></i>
-    </div>
-    <p></p>
-    <div class="sl-h-r">
-      <i class="fa fa-share-alt"></i>
-    </div>
-  </header>
+  <t-header :title="catName" @back="back"></t-header>
   <div class="gd-t">
     <p>{{catName}}</p>
     <div class="btn4">
@@ -31,6 +23,7 @@ import {mapGetters} from 'vuex'
 import {getClassRsList} from 'api/radiostation'
 import GdList from 'components/class-radiostation/gd-list'
 import Scroll from 'base/scroll/scroll'
+import THeader from 'base/t-header/t-header'
 export default {
   computed: {
     setBg() {
@@ -42,12 +35,17 @@ export default {
   },
   components: {
     GdList,
-    Scroll
+    Scroll,
+    THeader
   },
   data() {
     return {
-      rsList: {},
-      index: 0
+      rsList: [],
+      index: 0,
+      catid: 0,
+      sortId: 5,
+      sin: 0,
+      ein: 29
     }
   },
   methods: {
@@ -58,18 +56,28 @@ export default {
       this.$router.push({
         path: `/songlist/${item.dissid}`
       })
+    },
+    _getClassRsList(catid, sortId, sin, ein, type) {
+      getClassRsList(catid, sortId, sin, ein).then((res) => {
+        let reg = new RegExp(`^getPlaylist\\(`)
+        let reg2 = new RegExp('\\)$')
+        res = res.replace(reg, '').replace(reg2, '')
+        res = JSON.parse(res)
+        if (type === 'search') {
+          this.rsList = res.data.list
+        } else if (type === 'searchMore') {
+          this.rsList = this.rsList.concat(res.data.list)
+        }
+        this.sin = res.data.sin
+        this.ein = res.data.ein
+        this.hasMore = false
+        console.log(this.rsList)
+      })
     }
   },
   created() {
-    let catid = this.$route.params.id
-    getClassRsList(catid).then((res) => {
-      let reg = new RegExp(`^getPlaylist\\(`)
-      let reg2 = new RegExp('\\)$')
-      res = res.replace(reg, '').replace(reg2, '')
-      res = JSON.parse(res)
-      console.log(res)
-      this.rsList = res.data
-    })
+    this.catid = this.$route.params.id
+    this._getClassRsList(this.catid, this.sortId, this.sin, this.ein, 'search')
   }
 }
 </script>

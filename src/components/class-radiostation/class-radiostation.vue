@@ -1,14 +1,14 @@
 <template>
   <section class="crt-gd">
-    <header class="crt-header">
-      <div class="r-h-nav" @click="back">
-        <i class="fa  fa-chevron-left"></i>
-      </div>
-      <p class="r-h-title">
-        分类歌单
-      </p>
-    </header>
-    <scroll class="crt-cont">
+    <t-header :title="title" :bgColor="bgColor" :rFlag="false" @back="back"></t-header>
+    <scroll class="crt-cont"
+            ref="scroll"
+            :data="rsList"
+            :pullup="pullup"
+            :beforeScroll="beforeScroll"
+            @scrollToEnd="searchMore"
+            @beforeScroll="listScroll"
+    >
       <div>
         <h2>{{theme.categoryGroupName}}</h2>
         <ul class="crt-cat">
@@ -19,10 +19,13 @@
         <div class="btn3" @click="showCateList">
           查看全部分类 >
         </div>
-        <gd-list :rsList="rsList" @selectItem="selectItem"></gd-list>
+        <gd-list :rsList="rsList" @selectMenuItem="selectMenuItem" @selectItem="selectItem"></gd-list>
+        <div :class="$style.loading" v-show="hasMore">
+          <loading :isShow="true" :msg="msg"></loading>
+        </div>
       </div>
     </scroll>
-    <category-list :categories="categories" ref="catelist"></category-list>
+    <category-list :categories="categories" ref="catelist" @selectCate="toGdDetail"></category-list>
   </section>
 </template>
 
@@ -32,26 +35,59 @@ import {getClassRs, getClassRsList} from 'api/radiostation'
 import GdList from 'components/class-radiostation/gd-list'
 import Scroll from 'base/scroll/scroll'
 import CategoryList from 'components/category-list/category-list'
+import THeader from 'base/t-header/t-header'
+import Loading from 'base/loading/loading'
+
+const perpage = 30
 export default {
   components: {
     GdList,
     Scroll,
-    CategoryList
+    CategoryList,
+    THeader,
+    Loading
   },
   data() {
     return {
       categories: [],
       theme: {},
-      rsList: {}
+      rsList: [],
+      title: '分类歌单',
+      bgColor: '#5fba7f',
+      msg: '正在载入....',
+      pullup: true,
+      beforeScroll: true,
+      hasMore: false,
+      sin: 0,
+      ein: 29,
+      sortId: 5,
+      categoryId: 10000000
     }
   },
   created() {
     this._getClassRs()
-    this._getClassRsList()
+    this.hasMore = true
+    this._getClassRsList(this.categoryId, this.sortId, this.sin, this.ein, 'search')
   },
   methods: {
+    refresh() {
+      this.$refs.scroll.refresh()
+    },
+    selectMenuItem(item, index, ev) {
+      if (this.sortId !== item.sortid) {
+        this.sortId = item.sortid
+      }
+    },
     showCateList() {
       this.$refs.catelist.show()
+    },
+    searchMore() {
+      this.hasMore = false
+
+      this._getClassRsList(this.categoryId, this.sortId, this.ein, this.ein + 30, 'searchMore')
+
+    },
+    listScroll() {
     },
     ...mapMutations({
       'setCatName': 'SET_CATNAME'
@@ -82,20 +118,38 @@ export default {
         console.log(res)
       })
     },
-    _getClassRsList() {
-      let catid = 165
-      getClassRsList(catid).then((res) => {
+    _getClassRsList(catid, sortId, sin, ein, type) {
+      getClassRsList(catid, sortId, sin, ein).then((res) => {
         let reg = new RegExp(`^getPlaylist\\(`)
         let reg2 = new RegExp('\\)$')
         res = res.replace(reg, '').replace(reg2, '')
         res = JSON.parse(res)
-        this.rsList = res.data
+        if (type === 'search') {
+          this.rsList = res.data.list
+        } else if (type === 'searchMore') {
+          this.rsList = this.rsList.concat(res.data.list)
+        }
+        this.sin = res.data.sin
+        this.ein = res.data.ein
+        this.hasMore = false
         console.log(this.rsList)
       })
+    }
+  },
+  watch: {
+    sortId(newSortId) {
+      this.rsList = []
+      this._getClassRsList(this.categoryId, newSortId, 0, 29, 'search')
     }
   }
 }
 </script>
+<style lang="sass" scoped="" type="text/css" module>
+  .loading
+    width: 100%
+    display: flex
+    justify-content: center
+  </style>
 
   <style lang="sass" scoped="" type="text/css">
     @import "../../common/scss/helpers/variables.scss";
@@ -111,7 +165,7 @@ export default {
       right: 0
       .crt-header
         background-color: #61bf81
-        @include px2rem(height, 86px)
+        height: 86px
         width: 100%
         display: flex
         justify-content: space-between
@@ -130,7 +184,7 @@ export default {
         .r-h-nav
           position: absolute
           color: #fff
-          @include px2rem(width, 80px)
+          width: 80px
           text-align: center
           i
             font-size: 36px; /*px*/
@@ -138,11 +192,11 @@ export default {
         width: 95%
         left: 2.5%
         position: absolute
-        @include px2rem(top, 86px)
+        top: 86px
         bottom: 0
         overflow: hidden
         h2
-          @include px2rem(height, 100px)
+          height: 100px
           font-size: 32px; /*px*/
           display: flex
           align-items: center
@@ -156,7 +210,7 @@ export default {
             display: flex
             align-items: center
             justify-content: center
-            @include px2rem(height, 72px)
-            @include px2rem(margin-bottom, 12px)
+            height: 72px
+            margin-bottom: 12px
             background: #f7f7f7
 </style>

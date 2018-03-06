@@ -60,12 +60,11 @@ import {
   getSongList,
   getCollectionNum
 } from 'api/musichall'
-import MusicList from 'components/music-list/music-list'
+// import MusicList from 'components/music-list/music-list'
 import Scroll from 'base/scroll/scroll'
 
 export default {
   components: {
-    MusicList,
     Scroll
   },
   data() {

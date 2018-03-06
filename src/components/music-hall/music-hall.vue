@@ -31,7 +31,7 @@
           </ul>
         </nav>
 
-        <panel title="为你推荐歌单">
+        <panel title="为你推荐歌单" @selectItem="toClassRadiostation">
           <ul class="col-3-cont">
             <li v-for="item in newRecommendList" @click="toMusicList(item)">
               <div class="i-mg">
@@ -70,8 +70,10 @@ import {
   singerRecommend
 } from 'api/musichall'
 import { getIndexNewAlbum } from 'api/album'
+import {playlistMixin} from 'common/js/mixin'
 
 export default {
+  mixins: [playlistMixin],
   data() {
     return {
       slideList: null,
@@ -88,6 +90,11 @@ export default {
     this._getIndexNewAlbum()
   },
   methods: {
+    handlePlayList(playList) {
+      const bottom = playList.length > 0 ? `1.3333333rem` : ''
+      this.$refs.musicHall.style.bottom = bottom
+      this.$refs.scroll.refresh()
+    },
     selectItem(item) {
       // console.log()
       this.$router.push({
