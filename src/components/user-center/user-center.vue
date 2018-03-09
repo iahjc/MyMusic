@@ -60,7 +60,7 @@ export default {
   },
   methods: {
     selectSongSheet(item, index) {
-      let id = `${item.id},,,${item.songSheetName}`
+      let id = `${item.id}`
       this.$router.push({
         path: `/songsheet/${id}`
       })

@@ -20,17 +20,71 @@ export function insertSongSheet(songSheet) {
 }
 
 /**
+ * 根据id获取自建歌单
+ * @param  {[type]} id [description]
+ * @return {[type]}    [description]
+ */
+export function findSongSheet(id) {
+  let songSheets = JSON.parse(storage.getItem('songSheets'))
+  let songSheet = null
+  if (songSheets && songSheets.length > 0) {
+    songSheets.forEach((item) => {
+      console.log(item.id + '  ' + id)
+      if (parseInt(item.id) === parseInt(id)) {
+        songSheet = item
+        return false
+      }
+    })
+  }
+  return songSheet
+}
+
+/**
+ * 根据自建歌单 添加歌曲
+ * @param {[type]} id [description]
+ */
+export function addSongs(id, song) {
+  let songSheets = JSON.parse(storage.getItem('songSheets'))
+  let bool = true
+  if (songSheets && songSheets.length > 0) {
+    songSheets.forEach((item) => {
+      if (parseInt(item.id) === parseInt(id)) {
+        if (item.songs && item.songs.length >= 0) {
+          if (findIndexSongs(item.songs, song.mid)) {
+            item.songs.push(song)
+            item.songsNum = item.songs.length
+          }
+        } else {
+          bool = false
+        }
+      }
+    })
+    if (bool) {
+      storage.setItem('songSheets', JSON.stringify(songSheets))
+    }
+    return bool
+  }
+//  return false
+}
+
+function findIndexSongs(songs, mid) {
+  return songs.every((item) => {
+    return item.mid !== mid
+  })
+}
+
+/**
  * 获取下一个ID
  * @type {[type]}
  */
 export function getNextSongSheetId() {
-  let songSheets = getSongSheet()
-  let size = songSheets.length
-  if (size > 0) {
-    let lastId = songSheets[size - 1]
-    return lastId + 1
-  }
-  return 0
+  // let songSheets = getSongSheet()
+  // let size = songSheets.length
+  // if (size > 0) {
+  //   let lastId = songSheets[size - 1]
+  //   return lastId + 1
+  // }
+  return new Date().getTime()
 }
 
 /**

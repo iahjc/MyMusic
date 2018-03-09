@@ -58,7 +58,9 @@ export default {
         let songSheet = new SongSheet({
           id: getNextSongSheetId(),
           songSheetName: title,
-          songsNum: 0
+          desc: title,
+          songsNum: 0,
+          songs: []
         })
         insertSongSheet(songSheet.getJson(songSheet))
       } else {

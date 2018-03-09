@@ -7,7 +7,7 @@
 
         </div>
         <div :class="$style.contentR">
-          <h2>{{detas.dissname || detas.name}}</h2>
+          <h2>{{detas.dissname || detas.name || detas.songSheetName}}</h2>
           <div :class="$style.author">
             <div :class="$style.authorImg" :style="authorBgStyle">
               <img :src="detas.ifpicurl"  v-if="detas.ifpicurl" />
@@ -50,6 +50,9 @@ export default {
         }
       }
     }
+  },
+  created() {
+    console.log(this.detas)
   }
 }
 </script>
@@ -78,6 +81,7 @@ export default {
         left: 0
         top: 0
         filter: blur(40px)
+        background: rgba(0, 0, 0, .5)
       .content
         position: relative
         z-index: 2

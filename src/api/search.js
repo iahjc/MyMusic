@@ -1,4 +1,5 @@
 import axios from 'axios'
+import jsonp from 'common/js/utils/jsonp'
 /**
  * 热门搜索
  */
@@ -193,4 +194,37 @@ export function searchKeyList(keywords) {
   }).then((res) => {
     return Promise.resolve(res.data)
   })
+}
+
+export function search(query, page, zhida, perpage) {
+  const url = 'https://c.y.qq.com/soso/fcgi-bin/search_for_qq_cp'
+  let params = {
+    g_tk: 1928093487,
+    inCharset: 'utf-8',
+    outCharset: 'utf-8',
+    notice: 0,
+    format: 'jsonp',
+    w: query,
+    p: page,
+    perpage,
+    n: perpage,
+    catZhida: zhida ? 1 : 0,
+    zhidaqu: 1,
+    t: 0,
+    flag: 1,
+    ie: 'utf-8',
+    sem: 1,
+    aggr: 0,
+    remoteplace: 'txt.mqq.all',
+    uin: 0,
+    needNewCode: 1,
+    platform: 'h5'
+  }
+
+  const options = {
+    param: 'jsonpCallback',
+    prefix: 'jp'
+  }
+
+  return jsonp(url, params, options)
 }

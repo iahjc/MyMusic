@@ -6,16 +6,16 @@ export default class SongSheet {
   constructor({
     id,
     songSheetName,
-    songList,
-    des,
+    songs,
+    desc,
     creater,
     headimg,
     songsNum
   }) {
     this.id = id
     this.songSheetName = songSheetName
-    this.songList = songList
-    this.des = des
+    this.songs = songs
+    this.desc = desc
     this.creater = creater
     this.headimg = headimg
     this.songsNum = songsNum
@@ -25,8 +25,8 @@ export default class SongSheet {
     return {
       'id': songSheet.id,
       'songSheetName': songSheet.songSheetName,
-      'songList': songSheet.songList,
-      'des': songSheet.des,
+      'songs': songSheet.songs,
+      'desc': songSheet.desc,
       'creater': songSheet.creater,
       'headimg': songSheet.headimg,
       'songsNum': songSheet.songsNum

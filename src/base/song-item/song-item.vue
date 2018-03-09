@@ -8,7 +8,7 @@
       <span :class="$style.icon">MV</span>
     </div>
     <div :class="$style.control">
-      <i class="fa fa-ellipsis-h"></i>
+      <i :class="actions.icon"></i>
     </div>
   </div>
 </template>
@@ -21,6 +21,12 @@ export default {
     }
   },
   props: {
+    actions: {
+      type: Object,
+      default: {
+        icon: 'fa fa-ellipsis-h'
+      }
+    },
     item: {
       type: Object,
       default: {}

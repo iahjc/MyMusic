@@ -9,12 +9,6 @@
         <li v-for="(item, index) in menu" :key="index" @click="selectItem(item, index)">
           <i :class="item.icon"></i>
         </li>
-        <!-- <li @click="createNewGd">
-          <i class="fa fa-plus"></i>
-        </li>
-        <li @click="manageSongSheets">
-          <i class="fa fa-th-list"></i>
-        </li> -->
       </ul>
     </div>
     <section :class="$style.content">
