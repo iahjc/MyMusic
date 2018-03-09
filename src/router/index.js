@@ -120,9 +120,9 @@ const Main = (resolve) => {
   })
 }
 
-const MyMusic = (resolve) => {
-  import('components/my-music/my-music').then((myMusic) => {
-    resolve(myMusic)
+const UserCenter = (resolve) => {
+  import('components/user-center/user-center').then((userCenter) => {
+    resolve(userCenter)
   })
 }
 
@@ -168,8 +168,8 @@ export default new Router({
           component: MusicHall
         },
         {
-          path: '/main/mymusic',
-          component: MyMusic
+          path: '/main/userCenter',
+          component: UserCenter
         },
         {
           path: '/main/musichall',
@@ -275,9 +275,9 @@ export default new Router({
       component: Rank
     },
     {
-      path: '/mymusic',
-      name: 'MyMusic',
-      component: MyMusic
+      path: '/userCenter',
+      name: 'UserCenter',
+      component: UserCenter
     }
   ]
 })

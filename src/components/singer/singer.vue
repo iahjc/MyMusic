@@ -1,8 +1,7 @@
 <template>
-<transition name="c">
-  <section class="singer">
+  <section :class="$style.singer" ref="singer">
     <s-header></s-header>
-    <scroll ref="scroll" class="singer-wrapper"
+    <scroll ref="scroll" :class="$style.singerWrapper"
       @scroll="scroll"
       :listen-scroll="listenScroll"
       :probe-type="probeType"
@@ -13,10 +12,8 @@
         <singer-list :singerList="singerList" @selectItem="selectItem"></singer-list>
       </div>
     </scroll>
-
     <prompt ref="prompt" :msg="msg" @closePrompt="closePrompt" :btnMsg="btnMsg"></prompt>
   </section>
-</transition>
 </template>
 
 <script>
@@ -30,7 +27,9 @@ import Condition from 'components/condition/condition'
 import SingerList from 'components/singer-list/singer-list'
 import Scroll from 'base/scroll/scroll'
 import Prompt from 'base/prompt/prompt'
+import {playlistMixin} from 'common/js/mixin'
 export default {
+  mixins: [playlistMixin],
   data() {
     return {
       scrollY: 0,
@@ -53,6 +52,12 @@ export default {
     this.getSingerList(condtion)
   },
   methods: {
+    handlePlayList(playList) {
+      const bottom = playList.length > 0 ? `1.3333333rem` : ''
+      console.log(11111111111111111)
+      this.$refs.singer.style.bottom = bottom
+      this.$refs.scroll.refresh()
+    },
     scroll(pos) {
       this.scrollY = pos.y
     },
@@ -102,12 +107,7 @@ export default {
 }
 </script>
 
-<style lang="sass" scoped="" type="text/css">
-  @import "../../common/scss/helpers/variables.scss";
-  @import "../../common/scss/helpers/mixins.scss";
-  @import "../../common/scss/base/base.scss";
-  @import "../../common/scss/components/animation.scss";
-
+<style lang="sass" scoped="" type="text/css" module>
   .singer
     width: 100%
     position: fixed
@@ -115,10 +115,10 @@ export default {
     top: 0
     bottom: 0
     overflow: hidden
-    .singer-wrapper
+    .singerWrapper
       width: 100%
       position: absolute
-      @include px2rem(top, 86px)
+      top: 86px
       bottom: 0
       overflow: hidden
 </style>

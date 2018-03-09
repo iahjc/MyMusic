@@ -1,6 +1,6 @@
 <template>
 <section :class="$style.rank">
-  <t-header :title="title" :bgColor="bgColor" :rFlag="false"></t-header>
+  <t-header :title="title" :bgColor="bgColor" @back="back" :rFlag="false"></t-header>
   <scroll :class="$style.rankMain">
     <div>
       <h2>QQ音乐巅峰榜</h2>

@@ -19,7 +19,7 @@
 
 <script>
 import {mapActions, mapGetters} from 'vuex'
-import { createSingerSong } from 'domain/song'
+import { createSingerSong, processSongsUrl } from 'domain/song'
 import {
   getRankList
 } from 'api/rank'
@@ -100,24 +100,11 @@ export default {
           res = res.replace(reg, '').replace(reg2, '')
           res = JSON.parse(res)
           this.songs = res
-          this.songList = this._initSongList(res.songlist)
-          console.log(res)
+          processSongsUrl(this._initSongList(res.songlist)).then((songs) => {
+            this.songList = songs
+          })
         })
       }
-      // _getRankList(disstid).then((res) => {
-      //   let reg = new RegExp(`^playlistinfoCallback\\(`)
-      //   let reg2 = new RegExp('\\)$')
-      //   res = res.replace(reg, '').replace(reg2, '')
-      //   res = JSON.parse(res)
-      //   if (res.code === 0) {
-      //     console.log(res)
-      //     this.detas = res.cdlist[0]
-      //     this.songList = this._initSongList(res.cdlist[0].songlist)
-      //     console.log(this.songList)
-      //   }
-      // }).then((err) => {
-      //   console.log(err)
-      // })
     }
   }
 }

@@ -16,7 +16,7 @@
 
 <script>
 import {mapActions} from 'vuex'
-import { createSingerSong } from 'domain/song'
+import { createSingerSong, processSongsUrl } from 'domain/song'
 import {
   getSongList,
   getCollectionNum
@@ -63,10 +63,10 @@ export default {
         res = res.replace(reg, '').replace(reg2, '')
         res = JSON.parse(res)
         this.album = res.data
-        this.songList = this._initSongList(res.data.list)
-        console.log(res.data.list)
+        processSongsUrl(this._initSongList(res.data.list)).then((songs) => {
+          this.songList = songs
+        })
         this.songCount = res.data.cur_song_num
-        console.log(res)
       }).then((err) => {
         console.log(err)
       })

@@ -1,4 +1,4 @@
-import {getExpressSong} from 'api/musichall'
+// import {getExpressSong} from 'api/musichall'
 import {Base64} from 'js-base64'
 import SongApi from 'api/song'
 let songApi = new SongApi()
@@ -79,15 +79,8 @@ export function createSingerSong(musicData) {
     image: `https://y.gtimg.cn/music/photo_new/T002R300x300M000${musicData.albummid}.jpg?max_age=2592000`,
     lyricContent: musicData.content,
     lyricTitle: musicData.lyric,
-    description: musicData.desc
-  })
-  let callbackName = 'jb' + Math.random(10000) + 'jb'
-  getExpressSong(song.mid, 'C400' + musicData.songmid + '.m4a', callbackName).then((res) => {
-    let reg = new RegExp(`^${callbackName}\\(`)
-    let reg2 = new RegExp('\\)$')
-    res = res.replace(reg, '').replace(reg2, '')
-    res = JSON.parse(res)
-    song.url = `http://dl.stream.qqmusic.qq.com/${res.data.items[0].filename}?vkey=${res.data.items[0].vkey}&guid=8707000960&uin=0&fromtag=66`
+    description: musicData.desc,
+    url: musicData.url
   })
   return song
 }
@@ -112,15 +105,8 @@ export function createSong(musicData) {
     pay: musicData.pay,
     count: musicData.cur_song_num,
     lyricContent: musicData.content,
-    description: musicData.desc
-  })
-  let callbackName = 'jb' + Math.random(10000) + 'jb'
-  getExpressSong(song.mid, 'C400' + musicData.mid + '.m4a', callbackName).then((res) => {
-    let reg = new RegExp(`^${callbackName}\\(`)
-    let reg2 = new RegExp('\\)$')
-    res = res.replace(reg, '').replace(reg2, '')
-    res = JSON.parse(res)
-    song.url = `http://dl.stream.qqmusic.qq.com/${res.data.items[0].filename}?vkey=${res.data.items[0].vkey}&guid=8707000960&uin=0&fromtag=66`
+    description: musicData.desc,
+    url: musicData.url
   })
   return song
 }
@@ -158,4 +144,21 @@ function filterSinger(singer) {
     ret.push(s.name)
   })
   return ret.join('/')
+}
+
+export function processSongsUrl(songs) {
+  if (!songs.length) {
+    return Promise.resolve(songs)
+  }
+
+  return songApi.getSongsUrl(songs).then((res) => {
+    if (res.code === 0) {
+      let midUrlInfo = res.url_mid.data.midurlinfo
+      midUrlInfo.forEach((info, index) => {
+        let song = songs[index]
+        song.url = `http://dl.stream.qqmusic.qq.com/${info.purl}`
+      })
+    }
+    return songs
+  })
 }

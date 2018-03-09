@@ -36,16 +36,19 @@ export default {
       if (this.detas.logo) {
         return `background-image:url(${this.detas.logo})`
       } else {
-        return `background-image:url(https://y.gtimg.cn/music/photo_new/T002R300x300M000${this.detas.mid}.jpg?max_age=2592000)`
+        if (this.detas.mid) {
+          return `background-image:url(https://y.gtimg.cn/music/photo_new/T002R300x300M000${this.detas.mid}.jpg?max_age=2592000)`
+        }
       }
     },
     authorBgStyle() {
       if (this.detas.headurl) {
         return `background-image:url(${this.detas.headurl})`
       } else {
-        return `background-image:url(https://y.gtimg.cn/music/photo_new/T001R300x300M000${this.detas.singermid}.jpg?max_age=2592000)`
+        if (this.detas.mid) {
+          return `background-image:url(https://y.gtimg.cn/music/photo_new/T001R300x300M000${this.detas.singermid}.jpg?max_age=2592000)`
+        }
       }
-
     }
   }
 }

@@ -6,7 +6,7 @@
       </div>
       <nav class="mh-t-nav">
         <ul>
-          <router-link :to="{ path: '/main/mymusic' }"><li>我的</li></router-link>
+          <router-link :to="{ path: '/main/userCenter' }"><li>我的</li></router-link>
           <router-link :to="{ path: '/main/musichall' }"><li>音乐馆</li></router-link>
           <a href="#"><li>发现</li></a>
         </ul>
