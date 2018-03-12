@@ -62,7 +62,6 @@ export default {
         res = res.replace(reg, '').replace(reg2, '')
         res = JSON.parse(res)
         this.songSheetsList = res.data.list
-        console.log(res)
       })
     }
   }

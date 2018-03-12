@@ -68,7 +68,7 @@ export default {
       transition: all .5s cubic-bezier(1.0, 0.5, 0.8, 1.0)
     .msg
       position: fixed
-      @include px2rem(height, 86px)
+      height: 80px
       width: 100%
       top: 0
       background: #61bf81

@@ -1,6 +1,6 @@
 <template lang="html">
   <ul :class="$style.userItems">
-    <li v-for="(item, index) in navs" :key="index">
+    <li v-for="(item, index) in navs" :key="index" @click="selectUserMenu(item, index)">
       <i :class="item.icon"></i>
       <p>{{item.title}}</p>
       <p>{{item.count}}</p>
@@ -53,6 +53,11 @@ export default {
           }
         ]
       }
+    }
+  },
+  methods: {
+    selectUserMenu(item, index) {
+      this.$emit('selectUserMenu', item, index)
     }
   }
 }

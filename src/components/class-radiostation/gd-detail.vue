@@ -10,7 +10,7 @@
       <img :src="setBg" />
     </div>
   </div>
-  <scroll class="gd-detail-cont">
+  <scroll class="gd-detail-cont" ref="songSheet">
     <div>
       <gd-list :rsList="rsList" :title="catName" @selectItem="selectItem"></gd-list>
     </div>
@@ -24,7 +24,9 @@ import {getClassRsList} from 'api/radiostation'
 import GdList from 'components/class-radiostation/gd-list'
 import Scroll from 'base/scroll/scroll'
 import THeader from 'base/t-header/t-header'
+import {playlistMixin} from 'common/js/mixin'
 export default {
+  mixins: [playlistMixin],
   computed: {
     setBg() {
       return ''
@@ -49,6 +51,11 @@ export default {
     }
   },
   methods: {
+    handlePlayList(playList) {
+      const bottom = playList.length > 0 ? `1.3333333rem` : ''
+      this.$refs.songSheet.$el.style.bottom = bottom
+      this.$refs.songSheet.refresh()
+    },
     back() {
       window.history.length > 1 ? this.$router.go(-1) : this.$router.push('/')
     },
@@ -71,7 +78,6 @@ export default {
         this.sin = res.data.sin
         this.ein = res.data.ein
         this.hasMore = false
-        console.log(this.rsList)
       })
     }
   },

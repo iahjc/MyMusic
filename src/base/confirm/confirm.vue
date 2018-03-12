@@ -1,11 +1,11 @@
 <template>
-<section class="confirm" v-show="showFlag">
-  <div class="confirm-cont">
-    <div class="c-c">
+<section :class="$style.confirm" v-show="showFlag">
+  <div :class="$style.content">
+    <div :class="$style.title">
       <p>{{options.title}}</p>
       <p>{{options.msg}}</p>
     </div>
-    <div class="c-btn">
+    <div :class="$style.btn">
       <div v-for="item in options.btns" :style="{color: item.color}" @click="selectItem(item.click)">
         {{item.title}}
       </div>
@@ -31,17 +31,16 @@ export default {
       options: {
         title: '删除自建歌单',
         msg: '确认要删除选中要删除选中要删除选中要删除选中的1个自建歌单吗?',
-        btns: [{
-            'title': '取消',
-            'click': function() {
-            },
-            'color': '#1b1b1b'
+        btns: [
+          {
+            title: '取消',
+            click: function() {},
+            color: '#1b1b1b'
           },
           {
-            'title': '删除',
-            'click': function() {
-            },
-            'color': '#719e8a'
+            title: '删除',
+            click: function() {},
+            color: '#719e8a'
           }
         ]
       }
@@ -49,11 +48,10 @@ export default {
   },
   methods: {
     selectItem(callback) {
-      callback(this)
+      callback.call(this, this)
     },
     show(option) {
       DepthExtend(this.options, option)
-      console.log(this.options)
       this.$refs.mask.show()
       this.showFlag = true
     },
@@ -64,7 +62,7 @@ export default {
 }
 </script>
 
-  <style lang="sass" scoped="" type="text/css">
+  <style lang="sass" scoped="" type="text/css" module>
     @import "../../common/scss/helpers/variables.scss";
     @import "../../common/scss/helpers/mixins.scss";
     @import "../../common/scss/base/base.scss";
@@ -79,16 +77,16 @@ export default {
       display: flex
       justify-content: center
       align-items: center
-      .confirm-cont
-        @include px2rem(width, 540px)
-        @include px2rem(height, 305px)
+      .content
+        width: 540px
+        height: 305px
         background: #fff
         position: relative
         z-index: 15
-        @include px2rem(border-radius, 12px)
-        .c-c
+        border-radius: 12px
+        .title
           width: 100%
-          @include px2rem(height, 224px)
+          height: 224px
           display: flex
           justify-content: center
           align-items: center
@@ -98,31 +96,27 @@ export default {
             justify-content: center
           p:first-child
             font-size: 32px; /*px*/
-            @include px2rem(line-height, 32px)
+            line-height: 32px
             color: #444
           p:nth-child(2)
-            @include px2rem(margin-top, 20px)
+            margin-top: 20px
             width: 90%
             font-size: 28px; /*px*/
-            @include px2rem(line-height,32px)
+            line-height: 32px
             color: #4a4a4a
-        .c-btn
-          @include px2rem(height, 80px)
+        .btn
+          height: 80px
           display: flex
           box-sizing: border-box
           width: 100%
-          @include px2rem(border-top-width, 2px)
-          border-style: solid
-          border-color: #e1e1e1
+          border-top: 1px solid #e1e1e1; /*no*/
           position: absolute
           bottom: 0
           left: 0
           div.b-sx
             color: #719e8a
           div:first-child
-            @include px2rem(border-right-width, 2px)
-            border-style: solid
-            border-color: #e1e1e1
+            border-right: 1px solid #e1e1e1; /*no*/
           div
             width: 50%
             display: flex

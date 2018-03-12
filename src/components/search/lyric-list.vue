@@ -87,7 +87,6 @@ export default {
         res = res.replace(reg, '').replace(reg2, '')
         res = JSON.parse(res)
         this.songs = this._initSongs(res.data.lyric.list)
-        console.log(res)
       })
     }
   }

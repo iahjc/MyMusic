@@ -53,16 +53,31 @@ export default {
           })
           return false
         }
-
+        let songSheetId = getNextSongSheetId()
         // 判断歌单是否重复
         let songSheet = new SongSheet({
-          id: getNextSongSheetId(),
+          id: songSheetId,
           songSheetName: title,
           desc: title,
           songsNum: 0,
-          songs: []
+          nickname: '演绎',
+          ifpicurl: `https://thirdwx.qlogo.cn/mmopen/vi_32/DYAIOgq83erhcicLoxbj5wL72I628xYe4EMgNLVQpLdibvMgEIza6zVM2MCJFazRQbn1HeaH2t72MuwUhiaiag4OGg/132`,
+          songs: [],
+          logo: `https://y.gtimg.cn/music/photo_new/T002R300x300M0000020dl8E3hsQqj.jpg?max_age=2592000`
         })
         insertSongSheet(songSheet.getJson(songSheet))
+
+        this.$refs.msg.show({
+          msg: '成功创建歌单!',
+          msgType: 'success',
+          delay: 900
+        })
+
+        setTimeout(() => {
+          this.$router.push({
+            path: `/songsheet/${songSheetId}`
+          })
+        }, 900)
       } else {
         this.$refs.msg.show({
           msg: '请输入歌单标题!',
@@ -79,6 +94,7 @@ export default {
       this.title = ''
     },
     show() {
+      this.removeTitle()
       this.showFlag = true
     },
     hide() {

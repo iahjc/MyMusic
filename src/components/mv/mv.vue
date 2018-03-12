@@ -54,8 +54,6 @@ export default {
         res = JSON.parse(res)
         this.categories = res.data.taglist.area
         this.mvList = res.data.mvlist
-        console.log(this.mvList)
-        console.log(res)
       })
     },
     ...mapMutations({

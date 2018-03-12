@@ -1,7 +1,7 @@
 <template>
 <section :class="$style.rank">
   <t-header :title="title" :bgColor="bgColor" @back="back" :rFlag="false"></t-header>
-  <scroll :class="$style.rankMain">
+  <scroll :class="$style.rankMain" ref="rank">
     <div>
       <h2>QQ音乐巅峰榜</h2>
       <rank-item :ranks="rankList" @selectRankItem="selectItem"></rank-item>
@@ -19,8 +19,10 @@ import { getGlobalRank } from 'api/rank'
 import THeader from 'base/t-header/t-header'
 import RankItem from 'components/rank/rank-item'
 import RankGlobal from 'components/rank/rank-global'
+import {playlistMixin} from 'common/js/mixin'
 
 export default {
+  mixins: [playlistMixin],
   components: {
     Scroll,
     THeader,
@@ -39,6 +41,11 @@ export default {
     this._getRank()
   },
   methods: {
+    handlePlayList(playList) {
+      const bottom = playList.length > 0 ? `1.3333333rem` : ''
+      this.$refs.rank.$el.style.bottom = bottom
+      this.$refs.rank.refresh()
+    },
     ...mapMutations({
       'setTopList': 'SET_TOPLIST'
     }),
@@ -59,7 +66,6 @@ export default {
         res = res.replace(reg, '').replace(reg2, '')
         res = JSON.parse(res)
         this.rankList = res[0].List
-        console.log(res)
         this.golbalRank = res[1].List
       })
     }

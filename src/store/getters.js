@@ -4,7 +4,6 @@ export const currentIndex = state => state.currentIndex
 export const sequenceList = state => state.sequenceList
 export const fullScreen = state => state.fullScreen
 export const currentSong = (state) => {
-  console.log(233232)
   return state.playList[state.currentIndex] || {}
 }
 export const playing = state => state.playing

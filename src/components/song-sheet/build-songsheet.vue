@@ -94,8 +94,7 @@ export default {
   },
   methods: {
     selectItem(item, index) {
-      console.log(item.action)
-      if (typeof(item.action) === 'function') {
+      if (typeof (item.action) === 'function') {
         item.action()
       }
     },
@@ -233,9 +232,13 @@ export default {
               font-size: 30px; /*px*/
               line-height: 45px
               color: #444
+              height: 45px
+              width: 460px
+              text-overflow: ellipsis
+              overflow: hidden
+              white-space: nowrap
             p:last-child
               font-size: 24px; /*px*/
-
               line-height: 38px
               color: #bdbdbd
           .r

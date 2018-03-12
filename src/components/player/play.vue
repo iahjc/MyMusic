@@ -60,7 +60,7 @@
                 <i class="fa fa-step-backward"></i>
               </li>
               <li>
-                <i @click="togglePlay" class="fa fa-pause"></i>
+                <i @click="togglePlay" :class="toggleCls"></i>
               </li>
               <li @click="next">
                 <i class="fa fa-step-forward"></i>
@@ -144,6 +144,9 @@ export default {
     PlayList
   },
   computed: {
+    toggleCls() {
+      return this.playing ? 'fa fa-pause' : 'fa fa-play'
+    },
     miniIcon() {
       return this.playing ? 'fa fa-pause' : 'fa fa-play'
     },
@@ -398,11 +401,11 @@ export default {
     },
     prev() {
       if (!this.songReady) {
-        return
+        return false
       }
       if (this.playList.length === 1) {
         this.loop()
-        return
+        return false
       } else {
         let index = this.currentIndex - 1
         if (index === -1) {
@@ -416,11 +419,11 @@ export default {
     },
     next() {
       if (!this.songReady) {
-        return
+        return false
       }
       if (this.playList.length === 1) {
         this.loop()
-        return
+        return false
       } else {
         let index = this.currentIndex + 1
         if (index === this.playList.length) {
@@ -489,7 +492,6 @@ export default {
       if (!newSong.id || !newSong.url || newSong.id === oldSong.id) {
         return
       }
-      console.log(2222222222222)
       this.songReady = false
       this.canLyricPlay = false
       if (this.currentLyric) {

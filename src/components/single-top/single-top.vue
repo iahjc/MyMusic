@@ -52,7 +52,6 @@ export default {
     }
   },
   created() {
-    console.log(this.detas)
   }
 }
 </script>
@@ -80,8 +79,8 @@ export default {
         position: absolute
         left: 0
         top: 0
-        filter: blur(40px)
-        background: rgba(0, 0, 0, .5)
+        // filter: blur(40px)
+        background: rgba(0, 0, 0, .7)
       .content
         position: relative
         z-index: 2
@@ -107,6 +106,9 @@ export default {
               height: 50px
               border-radius: 100%
               background-size: cover
+              img
+                width: 100%
+                border-radius: 100%
           p
             margin-top: 20px
             font-size: 26px; /*px*/
@@ -118,5 +120,8 @@ export default {
             overflow: hidden
           h2
             font-size: 38px; /*px*/
+            white-space: nowrap
+            text-overflow: ellipsis
+            overflow: hidden
             color: #fff
 </style>

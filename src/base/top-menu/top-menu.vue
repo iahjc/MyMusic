@@ -2,7 +2,7 @@
   <section :class="$style.menu">
     <h4>{{title}}</h4>
     <ul>
-      <li :class="{active: currentIndex === index}" v-for="(item, index) in navs" :key="index" @click="selectItem(item, index, $event)">{{item.title}}</li>
+      <li :class="{active: currentIndex === index}" v-for="(item, index) in navs" :key="index" @click="selectItem(item, index, $event)">{{item.title}} <em v-if="index !== navs.length -1"></em></li>
     </ul>
   </section>
 </template>
@@ -67,4 +67,13 @@ export default {
         line-height: 92px
         padding: 0 20px
         position: relative
+        box-sizing: border-box
+        display: flex
+        align-items: center
+        em
+          display: inline-block
+          width: 1px; /*no*/
+          height: 24px
+          background: #000
+          transform: translateX(20px)
 </style>

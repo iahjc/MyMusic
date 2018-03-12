@@ -1,7 +1,7 @@
 <template lang="html">
   <section :class="$style.musicList" v-show="showFlag">
     <song-menu></song-menu>
-    <song-item :item="item" v-for="(item, index) in songList" :key="index" :index="index" @selectItem="selectItems"></song-item>
+    <song-item :item="item" v-for="(item, index) in songList" :key="index" :actions="actions" :index="index" @selectItem="selectItems"></song-item>
   </section>
 </template>
 
@@ -15,7 +15,10 @@ export default {
   },
   data() {
     return {
-      showFlag: false
+      showFlag: false,
+      actions: {
+        icon: 'fa fa-ellipsis-h'
+      }
     }
   },
   props: {

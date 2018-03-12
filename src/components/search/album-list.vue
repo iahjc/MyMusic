@@ -50,7 +50,6 @@ export default {
       this.msg = `正在搜索 '${this.keywords}'`
       this._searchAlbumList(this.keywords)
     }
-
   },
   methods: {
     selectItem(item, index) {
@@ -65,7 +64,6 @@ export default {
         res = res.replace(reg, '').replace(reg2, '')
         res = JSON.parse(res)
         this.albumList = res.data.album.list
-        console.log(res)
       })
     }
   }

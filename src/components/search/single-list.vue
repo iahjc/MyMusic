@@ -25,25 +25,7 @@
       </ul>
     </div>
     <div class="sl-songs" v-show="songs.length > 0">
-      <div class="sl-songs-li" v-for="(item, index) in songs" @click="selectItem(item, index)">
-        <div class="sls-l">
-          <p>
-            <span>{{item.name}}</span>&nbsp;&nbsp;<span class="icon1">SQ</span>&nbsp;&nbsp;<span class="icon1" v-show="item.isOnly === 1">独家</span>
-          </p>
-          <p>
-            <span v-html="item.singer"></span> · <span v-show="item.album">{{item.album}}</span>
-          </p>
-          <p v-show="item.description">
-            {{item.description}}
-          </p>
-        </div>
-        <div class="sls-m">
-          <span v-show="item.isMv" class="icon2">MV</span>
-        </div>
-        <div class="sls-r">
-          <i class="fa fa-ellipsis-h"></i>
-        </div>
-      </div>
+      <song-item :item="item" v-for="(item, index) in songs" :key="index" :index="index" @selectItem="selectItem"></song-item>
     </div>
     <div class="sl-loading" v-show="songs.length <= 0">
       <loading :isShow="true" :msg="msg"></loading>
@@ -56,9 +38,11 @@ import {searchKeyList} from 'api/search'
 import {mapGetters, mapActions} from 'vuex'
 import Loading from 'base/loading/loading'
 import {createSong} from 'domain/song'
+import SongItem from 'base/song-item/song-item'
 export default {
   components: {
-    Loading
+    Loading,
+    SongItem
   },
   data() {
     return {
@@ -113,8 +97,6 @@ export default {
         res = JSON.parse(res)
         this.zhida = res.data.zhida
         this.songs = this._initSongs(res.data.song.list)
-        console.log(this._initSongs(res.data.song.list))
-        console.log(res)
       })
     }
   },

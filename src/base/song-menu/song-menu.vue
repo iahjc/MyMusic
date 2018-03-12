@@ -26,7 +26,7 @@ export default {
     navs: {
       type: Array,
       default() {
-        return  [
+        return [
           {
             title: '下载',
             icon: 'fa fa-download',

@@ -158,7 +158,6 @@ export default {
         if (res.code === 0) {
           this.newRecommendList = res.data.list
           this.newRecommendList.length = 6
-          console.log(this.newRecommendList)
         }
       })
     },
@@ -169,9 +168,10 @@ export default {
           this.slideList = res.data.slider
           this.loadImg()
         }
-      }).then((err) => {
-        console.log(err)
       })
+      // .then((err) => {
+      //   console.log(err)
+      // })
     },
     // 加载出第一张图片 去执行slider的方法
     loadImg() {

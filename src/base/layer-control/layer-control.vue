@@ -9,7 +9,7 @@
       </div>
       <div :class="$style.lcCont">
         <ul>
-          <li v-for="item in layerDatas" v-if="item.showFlag">
+          <li v-for="(item, index) in layerDatas" v-if="item.showFlag" @click="selectItem(item, index)">
             <div :class="$style.lcIcon">
               <i :class="setIcon(item.icon)"></i>
             </div>
@@ -81,6 +81,11 @@ export default {
     this.progressBtnWidth = this.$refs.progressBtn.clientWidth
   },
   methods: {
+    selectItem(item, index) {
+      if (typeof (item.action) === 'function') {
+        item.action.call(this, item)
+      }
+    },
     progressTouchStart(e) {
       this.touch.initiated = true
       this.touch.startX = e.touches[0].pageX

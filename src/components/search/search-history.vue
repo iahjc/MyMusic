@@ -3,7 +3,7 @@
     <h4><span>搜索历史</span><span @click="clearAll">删除历史</span></h4>
     <ul :class="$style.content" ref="content">
       <li v-for="(item, index) in historyList" :key="index">
-        <span>{{item}}</span>
+        <span @click="selectItem(item)">{{item}}</span>
         <i class="fa fa-remove" @click="removeKey(item, index, $event)"></i>
       </li>
     </ul>
@@ -28,6 +28,9 @@ export default {
     removeItem(ev) {
       let el = ev.target || ev.srcElement
       this.$refs.content.removeChild(el.parentNode)
+    },
+    selectItem(item) {
+      this.$emit('selectItem', item)
     }
   }
 }
@@ -48,6 +51,11 @@ export default {
         margin: 0 auto
         font-size: 30px; /*px*/
         border-bottom: 1px solid #f0f0f0; /*no*/
+        span
+          display: inline-block
+          height: 100%
+          line-height: 90px
+          width: 450px
         i
           font-size: 28px; /*px*/
           color: #808080

@@ -1,6 +1,6 @@
 <template>
 <div id="app">
-  <section class="main">
+  <section :class="$style.main">
     <nav-slidebar ref="navSlidebar"></nav-slidebar>
     <router-view></router-view>
   </section>
@@ -35,18 +35,20 @@ export default {
   }
 }
 </script>
-
+<style lang="sass" scoped="" type="text/css" module>
+  .main
+    position: absolute
+    left: 0
+    bottom: 0
+    right: 0
+    top: 0
+    overflow: hidden
+  </style>
 <style lang="sass" scoped="" type="text/css">
   @import "common/scss/helpers/variables.scss";
   @import "common/scss/helpers/function.scss";
 
   #app
     font-family: $global-font-family
-    .main
-      position: absolute
-      left: 0
-      bottom: 0
-      right: 0
-      top: 0
-      overflow: hidden
+
 </style>

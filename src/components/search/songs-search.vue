@@ -1,4 +1,5 @@
 <template lang="html">
+  <transition name="b">
   <section :class="$style.search" v-show="flag">
     <header :class="$style.input">
       <input type="text" ref="query" v-model="query" :placeholder="placeholder"/>
@@ -8,32 +9,36 @@
       <div>
         <div :class="$style.keywords" v-show="showFlag">
           <hot-search :keys="keys" @selectKeyword="selectKeyword"></hot-search>
-          <search-history :historyList="historyList" @clearAll="clearAll" @removeKey="removeKey"></search-history>
+          <search-history :historyList="historyList" @selectItem="selectHistoryKeys" @clearAll="clearAll" @removeKey="removeKey"></search-history>
         </div>
         <div :class="$style.wrapper" v-show="!showFlag">
           <songs-list :songs="songs" @selectItem="selectItem"></songs-list>
+        </div>
+        <div :class="$style.loading" v-show="this.songs.length <= 0 && !showFlag">
+          <loading :isShow="true" :msg="msg"></loading>
         </div>
       </div>
     </scroll>
     <confirm ref="confirm"></confirm>
   </section>
+  </transition>
 </template>
 
 <script>
 import SearchHistoryDb from 'db/searchHistory'
 import Scroll from 'base/scroll/scroll'
-import {hotSearchList} from 'api/search'
+import {hotSearchList, search} from 'api/search'
 import Confirm from 'base/confirm/confirm'
 import {debounce} from 'common/js/utils/util'
-import {prefixStyle} from 'common/js/utils/dom'
+// import {prefixStyle} from 'common/js/utils/dom'
 import SearchHistory from 'components/search/search-history'
 import HotSearch from 'components/search/hot-search'
 import SongsList from 'components/search/songs-list'
-import {search} from 'api/search'
 import {createSingerSong} from 'domain/song'
+import Loading from 'base/loading/loading'
 
-let transform = prefixStyle('transform')
-let l = 100
+// let transform = prefixStyle('transform')
+// let l = 100
 let sh = new SearchHistoryDb()
 
 const perpage = 20
@@ -43,7 +48,8 @@ export default {
     Confirm,
     SearchHistory,
     HotSearch,
-    SongsList
+    SongsList,
+    Loading
   },
   data() {
     return {
@@ -55,31 +61,35 @@ export default {
       songs: [],
       historyList: [],
       showFlag: true,
-      zhida: {}
+      msg: '正在加载中...'
     }
   },
   created() {
     this.$watch('query', debounce((newQuery) => {
       this.query = newQuery
-      search(this.query, this.page, true, perpage).then((res) => {
-        if (res.code === 0) {
-          this.songs = this._initSongs(res.data.song.list)
-        }
-      })
-      this.showFlag = false
+      if (this.query === '') {
+        this.showFlag = true
+      } else {
+        search(this.query, this.page, true, perpage).then((res) => {
+          if (res.code === 0) {
+            this.songs = this._initSongs(res.data.song.list)
+          }
+        })
+        this.showFlag = false
+      }
     }, 800))
 
     this._hotSearchList()
     this._getSearchHistoryList()
   },
   mounted() {
-    this.w = window.document.body.clientWidth / 5
   },
   methods: {
-    selectItem(item, index) {
-      this.$emit('selectItem', item, index)
-      // console.log(JSON.stringify(item))
-      // addSongs()
+    selectItem(item, index, ev) {
+      this.$emit('selectItem', item, index, ev)
+    },
+    selectHistoryKeys(keys) {
+      this.selectKeyword(keys)
     },
     _initSongs(list) {
       let ret = []
@@ -94,6 +104,9 @@ export default {
       this.flag = true
     },
     hide() {
+      this.title = ''
+      this.songs = []
+      this.showFlag = true
       this.flag = false
     },
     clearAll() {
@@ -152,7 +165,9 @@ export default {
   }
 }
 </script>
-
+<style lang="sass" scoped="" type="text/css">
+  @import "../../common/scss/components/animation.scss";
+</style>
   <style lang="sass" scoped="" type="text/css" module>
     .search
       width: 100%
@@ -199,30 +214,10 @@ export default {
         width: 100%
         .keywords
           width: 100%
+        .loading
+          position: absolute
+          top: 100px
+          left: 50%
+          transform: translateX(-50%)
         .wrapper
-          .sd-wrapper
-            position: relative
-            box-sizing: border-box
-            .cur
-              width: 20%
-              height: 5px
-              position: absolute
-              left: 0
-              bottom: 0
-              background: #5ac47a
-            .sd-nav
-              display: flex
-              width: 100%
-              height: 85px
-              box-sizing: border-box
-              border-bottom: 1px solid #eaeaea; /*px*/
-              flex-direction: row
-              li
-                width: 20%
-                box-sizing: border-box
-                color: #7f7f7f
-                font-size: 30px; /*px*/
-                display: flex
-                justify-content: center
-                align-items: center
 </style>

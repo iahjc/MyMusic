@@ -10,7 +10,10 @@ export default class SongSheet {
     desc,
     creater,
     headimg,
-    songsNum
+    songsNum,
+    ifpicurl,
+    nickname,
+    logo
   }) {
     this.id = id
     this.songSheetName = songSheetName
@@ -19,6 +22,9 @@ export default class SongSheet {
     this.creater = creater
     this.headimg = headimg
     this.songsNum = songsNum
+    this.ifpicurl = ifpicurl
+    this.nickname = nickname
+    this.logo = logo
   }
 
   getJson(songSheet) {
@@ -29,7 +35,10 @@ export default class SongSheet {
       'desc': songSheet.desc,
       'creater': songSheet.creater,
       'headimg': songSheet.headimg,
-      'songsNum': songSheet.songsNum
+      'songsNum': songSheet.songsNum,
+      'ifpicurl': songSheet.ifpicurl,
+      'nickname': songSheet.nickname,
+      'logo': songSheet.logo
     }
   }
 }

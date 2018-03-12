@@ -1,13 +1,17 @@
 <template lang="html">
   <div :class="$style.songItem">
-    <div :class="$style.cont" @click="selectItem">
-      <h4>{{item.name}}&nbsp;&nbsp;<span :class="$style.icon">SQ</span>&nbsp;&nbsp;<span :class="$style.icon">独家</span></h4>
+    <div :class="$style.cont" @click.prevent="selectItem($event)">
+      <div :class="$style.title">
+        <h4>{{item.name}}</h4>&nbsp;&nbsp;
+        <span :class="$style.icon">SQ</span>&nbsp;&nbsp;
+        <span :class="[$style.icon, $style.screen]">独家</span>
+      </div>
       <p>{{item.singer}} · {{item.album}}</p>
     </div>
     <div :class="$style.middle">
-      <span :class="$style.icon">MV</span>
+      <span :class="$style.mvicon" v-if="">MV</span>
     </div>
-    <div :class="$style.control">
+    <div :class="$style.control" class="rightMenu">
       <i :class="actions.icon"></i>
     </div>
   </div>
@@ -16,15 +20,17 @@
 <script>
 export default {
   methods: {
-    selectItem() {
-      this.$emit('selectItem', this.item, this.index)
+    selectItem(ev) {
+      this.$emit('selectItem', this.item, this.index, ev)
     }
   },
   props: {
     actions: {
       type: Object,
-      default: {
-        icon: 'fa fa-ellipsis-h'
+      default() {
+        return {
+          icon: 'fa fa-ellipsis-h'
+        }
       }
     },
     item: {
@@ -54,10 +60,11 @@ export default {
       .icon
         @include icon
     .control
-      width: 70px
+      width: 100px
       justify-content: center
       display: flex
       align-items: center
+      i.icon
       i
         font-size: 30px; /*px*/
         color: #9f9f9f
@@ -67,12 +74,28 @@ export default {
         font-size: 22px; /*px*/
         color: #767676
         margin-bottom: 8px
-      h4
-        font-size: 28px; /*px*/
+        width: 450px
+        height: 24px
+        line-height: 24px
+        text-overflow: ellipsis
+        overflow: hidden
+        white-space: nowrap
+      .title
         display: flex
-        align-items: center
         margin-top: 16px
         margin-bottom: 8px
         .icon
           @include icon
+        span.screen
+          border: 1px solid #61bf81
+          color: #61bf81
+        h4
+          font-size: 28px; /*px*/
+          height: 32px
+          line-height: 32px
+          overflow: hidden
+          white-space: nowrap
+          text-overflow: ellipsis
+          max-width: 400px
+
 </style>

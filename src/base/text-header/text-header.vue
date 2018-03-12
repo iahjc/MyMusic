@@ -33,7 +33,7 @@ export default {
   },
   methods: {
     selectItem(item, index) {
-      if (typeof(item.action) === 'function') {
+      if (typeof (item.action) === 'function') {
         item.action()
       }
     }

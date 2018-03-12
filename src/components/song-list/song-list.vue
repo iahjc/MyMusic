@@ -67,19 +67,16 @@ export default {
       // this.layerDatas = rnav
     },
     selectIconItem(item, index) {
-      this.layerDatas = musicControl
+      // this.layerDatas = musicControl
       // 如果需要付费就要重新添加一个项
-      if (item.pay.pay_down !== 0) {
-        musicControl[3].showFlag = true
-      } else {
-        musicControl[3].showFlag = false
-      }
+      // if (item.pay.pay_down !== 0) {
+      //   musicControl[3].showFlag = true
+      // } else {
+      //   musicControl[3].showFlag = false
+      // }
     },
     showShare() {
-      this.layerDatas = share
-    },
-    back() {
-      window.history.length > 1 ? this.$router.go(-1) : this.$router.push('/')
+      // this.layerDatas = share
     },
     /**
      * 初始化歌曲数据

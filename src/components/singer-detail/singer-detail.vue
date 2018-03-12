@@ -41,16 +41,15 @@
 </template>
 
 <script>
-import {mapActions} from 'vuex'
+import {mapActions, mapGetters} from 'vuex'
 import {getFSNum, getSingerDetail, getSinger, getAlbum, getMV} from 'api/singer'
-import {mapGetters} from 'vuex'
-import { createSingerSong, processSongsUrl} from 'domain/song'
+import { createSingerSong, processSongsUrl } from 'domain/song'
 import { createAlbum } from 'domain/album'
 import AlbumList from 'base/album-list/album-list'
 import MvList from 'base/mv-list/mv-list'
 import SingerDetail from 'base/singer-detail/singer-detail'
 import Scroll from 'base/scroll/scroll'
-import {prefixStyle} from 'common/js/utils/dom'
+// import {prefixStyle} from 'common/js/utils/dom'
 import SongApi from 'api/song'
 import { NUM } from 'common/js/config/page'
 import Loading from 'base/loading/loading'
@@ -61,9 +60,9 @@ import NavMenu from 'base/nav-menu/nav-menu'
 import {playlistMixin} from 'common/js/mixin'
 
 let songApi = new SongApi()
-let transform = prefixStyle('transform')
-let transform2 = prefixStyle('transform')
-const filter = prefixStyle('filter')
+// let transform = prefixStyle('transform')
+// let transform2 = prefixStyle('transform')
+// const filter = prefixStyle('filter')
 let page = 1
 export default {
   mixins: [playlistMixin],
@@ -119,6 +118,11 @@ export default {
   },
   created() {
     this.mid = this.$route.params.id
+    this._getSongs(this.mid)
+    this._getFsNum(this.mid)
+    this._getAlbum(this.mid)
+    this._getMV(this.mid)
+    this._getSinger(this.mid)
   },
   computed: {
     bgStyle() {
@@ -151,14 +155,13 @@ export default {
     },
     selectMenuItem(item, index, el) {
       this.items.forEach((menuItem) => {
-        console.log(11)
         menuItem.hide()
       })
-     this.items[index].show()
+      this.items[index].show()
     },
     searchMore() {
       if (!this.hasMore) {
-        return
+        return flase
       }
       this.hasMore = false
       let mid = this.mid = this.$route.params.id
@@ -189,9 +192,6 @@ export default {
     ...mapActions([
       'selectSingerMusic'
     ]),
-    back() {
-      this.$router.go(-1)
-    },
     _initAlbumList(list) {
       let ret = []
       list.forEach((item) => {
@@ -237,7 +237,6 @@ export default {
       })
     },
     _getAlbum(mid) {
-      console.log(2222)
       getAlbum(mid).then((res) => {
         let reg = new RegExp(`^ singeralbumlistJsonCallback\\(`)
         let reg2 = new RegExp('\\)$')
@@ -266,14 +265,6 @@ export default {
         this.desc = data[0].innerHTML
       })
     }
-  },
-  created() {
-    let mid = this.$route.params.id
-    this._getSongs(mid)
-    this._getFsNum(mid)
-    this._getAlbum(mid)
-    this._getMV(mid)
-    this._getSinger(mid)
   },
   watch: {
     scrollY(newVal) {

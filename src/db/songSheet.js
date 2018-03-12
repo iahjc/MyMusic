@@ -9,7 +9,7 @@ export function insertSongSheet(songSheet) {
   if (songSheets) {
     songSheets = JSON.parse(songSheets)
     if (songSheets.length > 0) {
-      songSheets.push(songSheet)
+      songSheets.unshift(songSheet)
       storage.setItem('songSheets', JSON.stringify(songSheets))
       return false
     }
@@ -29,7 +29,6 @@ export function findSongSheet(id) {
   let songSheet = null
   if (songSheets && songSheets.length > 0) {
     songSheets.forEach((item) => {
-      console.log(item.id + '  ' + id)
       if (parseInt(item.id) === parseInt(id)) {
         songSheet = item
         return false

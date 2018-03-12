@@ -1,5 +1,5 @@
 <template lang="html">
-  <section :class="$style.userinfo">
+  <section :class="$style.userinfo" @click="selectUserInfo">
     <div :class="$style.loginInfo" v-show="isLogin">
       <div :class="$style.img">
         <img src="./user.jpg" />
@@ -21,7 +21,12 @@ export default {
   props: {
     isLogin: {
       type: Boolean,
-      default: false
+      default: true
+    }
+  },
+  methods: {
+    selectUserInfo() {
+      this.$emit('selectUserInfo')
     }
   }
 }

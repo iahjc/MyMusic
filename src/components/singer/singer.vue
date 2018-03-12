@@ -54,7 +54,6 @@ export default {
   methods: {
     handlePlayList(playList) {
       const bottom = playList.length > 0 ? `1.3333333rem` : ''
-      console.log(11111111111111111)
       this.$refs.singer.style.bottom = bottom
       this.$refs.scroll.refresh()
     },
@@ -82,7 +81,6 @@ export default {
           let reg2 = new RegExp('\\)$')
           res = res.replace(reg, '').replace(reg2, '')
           res = JSON.parse(res)
-          console.log(res)
           this._initSingerList(res)
         } else {
           this.$refs.prompt.show()
@@ -101,7 +99,6 @@ export default {
   },
   watch: {
     scrollY(newScrollY) {
-      console.log(newScrollY)
     }
   }
 }

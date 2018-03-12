@@ -8,7 +8,7 @@
       <div>
         <div :class="$style.keywords" v-show="showFlag">
           <hot-search :keys="keys" @selectKeyword="selectKeyword"></hot-search>
-          <search-history :historyList="historyList" @clearAll="clearAll" @removeKey="removeKey"></search-history>
+          <search-history :historyList="historyList" @selectItem="selectKeyword" @clearAll="clearAll" @removeKey="removeKey"></search-history>
         </div>
         <div :class="$style.wrapper" v-show="!showFlag">
           <navMenu :navs="navs" @selectMenuItem="selectMenuItem"></navMenu>
@@ -27,13 +27,13 @@ import {hotSearchList} from 'api/search'
 import Confirm from 'base/confirm/confirm'
 import {debounce} from 'common/js/utils/util'
 import {mapMutations} from 'vuex'
-import {prefixStyle} from 'common/js/utils/dom'
+// import {prefixStyle} from 'common/js/utils/dom'
 import SearchHistory from 'components/search/search-history'
 import HotSearch from 'components/search/hot-search'
 import NavMenu from 'base/nav-menu/nav-menu'
-
-let transform = prefixStyle('transform')
-let l = 100
+//
+// let transform = prefixStyle('transform')
+// let l = 100
 let sh = new SearchHistoryDb()
 export default {
   components: {
@@ -100,7 +100,7 @@ export default {
     }),
     clearAll() {
       let _this = this
-      this.$refs.confirm.show({
+      let options = {
         title: '是否清空所有搜索历史',
         msg: ' ',
         btns: [
@@ -121,7 +121,8 @@ export default {
              color: '#719e8a'
           }
         ]
-      })
+      }
+      this.$refs.confirm.show(options)
     },
     removeKey(item, index, removeItem, ev) {
       sh.remove(item)

@@ -8,10 +8,10 @@
         <ul>
           <router-link :to="{ path: '/main/userCenter' }"><li>我的</li></router-link>
           <router-link :to="{ path: '/main/musichall' }"><li>音乐馆</li></router-link>
-          <a href="#"><li>发现</li></a>
+          <a href="javascript:void(0)"><li @click="openMsg">发现</li></a>
         </ul>
       </nav>
-      <div class="mh-t-cr">
+      <div class="mh-t-cr" @click="openMsg">
         <i class="fa fa-plus"></i>
       </div>
     </section>
@@ -31,6 +31,9 @@ export default {
     },
     search() {
       this.$emit('search')
+    },
+    openMsg() {
+      this.$emit('openMsg')
     }
   }
 }

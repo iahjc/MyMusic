@@ -23,7 +23,7 @@ import {
 } from 'api/musichall'
 import Scroll from 'base/scroll/scroll'
 // import LayerControl from 'base/layer-control/layer-control'
-import { musicControl, share, rnav } from 'common/js/config/layer-control'
+// import { musicControl, share, rnav } from 'common/js/config/layer-control'
 import { getAlbumInfo } from 'api/album'
 import THeader from 'base/t-header/t-header'
 import SingleTop from 'components/single-top/single-top'
@@ -76,9 +76,6 @@ export default {
         list: this.songList,
         index: 0
       })
-    },
-    back() {
-      window.history.length > 1 ? this.$router.go(-1) : this.$router.push('/')
     },
     /**
      * 初始化歌曲数据

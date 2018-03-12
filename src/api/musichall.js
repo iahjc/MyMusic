@@ -154,7 +154,6 @@ export function singerRecommend() {
  * @return {[type]} [description]
  */
 export function singerList(condition) {
-  console.log(condition)
   let url = `/api/getSingerList`
   let params = {
     'channel': 'singer',

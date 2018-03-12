@@ -54,7 +54,6 @@ export default {
         res = res.replace(reg, '').replace(reg2, '')
         res = JSON.parse(res)
         this.mvList = res.data.mv.list
-        console.log(this.mvList)
       })
     }
   }

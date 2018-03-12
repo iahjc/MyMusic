@@ -1,7 +1,7 @@
 <template>
   <section class="radio-station">
     <t-header :title="title" :bgColor="bgColor" @back="back" :rFlag="false"></t-header>
-    <scroll class="rs-cont">
+    <scroll class="rs-cont" ref="radioStation">
       <div>
         <ul class="c-w-lis">
           <li :class="{cur: currentIndex === index}" v-for="(item, index) in rsList" @click="selectItem(index)">{{item.name}}</li>
@@ -17,11 +17,13 @@
 <script>
 import Scroll from 'base/scroll/scroll'
 import {getRadioStationList, getSongs} from 'api/radiostation'
-import { createSong } from 'domain/song'
+import { createSong, processSongsUrl } from 'domain/song'
 import {mapActions} from 'vuex'
 import RadioItem from 'base/radio-item/radio-item'
 import THeader from 'base/t-header/t-header'
+import {playlistMixin} from 'common/js/mixin'
 export default {
+  mixins: [playlistMixin],
   components: {
     Scroll,
     RadioItem,
@@ -41,6 +43,11 @@ export default {
     this._getRadioStationList()
   },
   methods: {
+    handlePlayList(playList) {
+      const bottom = playList.length > 0 ? `1.3333333rem` : ''
+      this.$refs.radioStation.$el.style.bottom = bottom
+      this.$refs.radioStation.refresh()
+    },
     ...mapActions([
       'selectSingerMusic'
     ]),
@@ -64,12 +71,13 @@ export default {
         res = res.replace(reg, '').replace(reg2, '')
         res = JSON.parse(res)
         this.songs = res.songlist.data.track_list
-        console.log(this.songs)
         if (this.songs) {
-          this.songs = this.initSongs(this.songs)
-          this.selectSingerMusic({
-            list: this.songs,
-            index: 0
+          processSongsUrl(this.initSongs(this.songs)).then((songs) => {
+            this.songs = songs
+            this.selectSingerMusic({
+              list: this.songs,
+              index: 0
+            })
           })
         }
       }).then((err) => {
@@ -85,13 +93,10 @@ export default {
         let reg2 = new RegExp('\\)$')
         res = res.replace(reg, '').replace(reg2, '')
         res = JSON.parse(res)
+        console.log(res)
         this.rsList = res.data.data.groupList
         this.radioList = this.rsList[this.currentIndex].radioList
-        console.log(this.rsList)
       })
-    },
-    back() {
-      window.history.length > 1 ? this.$router.go(-1) : this.$router.push('/')
     }
   },
   watch: {

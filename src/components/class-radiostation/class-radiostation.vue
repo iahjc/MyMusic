@@ -37,9 +37,11 @@ import Scroll from 'base/scroll/scroll'
 import CategoryList from 'components/category-list/category-list'
 import THeader from 'base/t-header/t-header'
 import Loading from 'base/loading/loading'
+import {playlistMixin} from 'common/js/mixin'
 
-const perpage = 30
+// const perpage = 30
 export default {
+  mixins: [playlistMixin],
   components: {
     GdList,
     Scroll,
@@ -70,6 +72,11 @@ export default {
     this._getClassRsList(this.categoryId, this.sortId, this.sin, this.ein, 'search')
   },
   methods: {
+    handlePlayList(playList) {
+      const bottom = playList.length > 0 ? `1.3333333rem` : ''
+      this.$refs.scroll.$el.style.bottom = bottom
+      this.$refs.scroll.refresh()
+    },
     refresh() {
       this.$refs.scroll.refresh()
     },
@@ -85,7 +92,6 @@ export default {
       this.hasMore = false
 
       this._getClassRsList(this.categoryId, this.sortId, this.ein, this.ein + 30, 'searchMore')
-
     },
     listScroll() {
     },
@@ -114,8 +120,6 @@ export default {
         res = JSON.parse(res)
         this.categories = res.data.categories
         this.theme = this.categories[3]
-        console.log(this.categories)
-        console.log(res)
       })
     },
     _getClassRsList(catid, sortId, sin, ein, type) {
@@ -132,7 +136,6 @@ export default {
         this.sin = res.data.sin
         this.ein = res.data.ein
         this.hasMore = false
-        console.log(this.rsList)
       })
     }
   },

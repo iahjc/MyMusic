@@ -60,7 +60,6 @@ export default {
       let reg2 = new RegExp('\\)$')
       res = res.replace(reg, '').replace(reg2, '')
       res = JSON.parse(res)
-      console.log(res)
     })
   },
   methods: {

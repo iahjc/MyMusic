@@ -26,8 +26,6 @@ export default {
     }
   },
   created() {
-    console.log(111)
-    console.log(this.singerList)
   },
   methods: {
     selectItem(item, index) {

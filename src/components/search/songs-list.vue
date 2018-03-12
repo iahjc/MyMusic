@@ -8,8 +8,8 @@
 import SongItem from 'base/song-item/song-item'
 export default {
   methods: {
-    selectItem(item, index) {
-      this.$emit('selectItem', item, index)
+    selectItem(item, index, ev) {
+      this.$emit('selectItem', item, index, ev)
     }
   },
   data() {

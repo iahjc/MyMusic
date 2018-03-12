@@ -1,8 +1,9 @@
 <template>
   <section class="main" ref="main">
-    <m-header @search="search" @showNavbar="showNavbar"></m-header>
+    <m-header @search="search" @showNavbar="showNavbar" @openMsg="openMsg"></m-header>
     <router-view></router-view>
     <bg ref="bg" @selectBg="selectBg"></bg>
+    <msg ref="msg"></msg>
   </section>
 </template>
 
@@ -13,11 +14,13 @@ import {
 } from 'vuex'
 import MHeader from 'components/m-header/m-header'
 import Bg from 'base/bg/bg'
+import Msg from 'base/msg/msg'
 
 export default {
   components: {
     MHeader,
-    Bg
+    Bg,
+    Msg
   },
   computed: {
     ...mapGetters([
@@ -25,6 +28,13 @@ export default {
     ])
   },
   methods: {
+    openMsg() {
+      this.$refs.msg.show({
+        msg: '该功能还未实现，敬请期待!',
+        msgType: 'error',
+        delay: 900
+      })
+    },
     search() {
       this.$router.push({
         path: `/search`

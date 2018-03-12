@@ -8,7 +8,7 @@
       <p class="r-h-title">
         {{title}}
       </p>
-      <p class="r-h-r">
+      <p class="r-h-r" @click="recover">
         恢复
       </p>
     </header>
@@ -44,7 +44,7 @@
     </scroll>
 
     <div class="ms-remove">
-      <div class="re-rm" @click="remove">
+      <div class="re-rm" @click="remove" :class="setCls">
         <i class="fa fa-trash-o"></i>
         <p>
           删除
@@ -62,15 +62,21 @@
 import Scroll from 'base/scroll/scroll'
 import Msg from 'base/msg/msg'
 import Confirm from 'base/confirm/confirm'
-// import { deleteSongSheet } from 'db/songSheet'
+import { deleteSongSheet } from 'db/songSheet'
 
 export default {
+  computed: {
+    setCls() {
+      return this.size === 0 ? 'disable' : ''
+    }
+  },
   data() {
     return {
       showFlag: false,
       sheets: [],
       title: '管理自建歌单',
-      size: 0
+      size: 0,
+      indexes: []
     }
   },
   components: {
@@ -85,17 +91,75 @@ export default {
     }
   },
   methods: {
+    recover() {
+      this.$refs.msg.show({
+        msg: '该功能还没有上线，敬请等待!',
+        msgType: 'error',
+        delay: 1200
+      })
+      return false
+    },
+    removeItem(confirmThis) {
+      confirmThis.hide()
+      this.removeSheets()
+    },
+    removeSheets() {
+      // 获取sheets在当前数组中的索引
+      let indexes = []
+      this.songSheets.forEach((item, index) => {
+        this.sheets.forEach((so) => {
+          if (so.id === item.id && so.songSheetName === item.songSheetName) {
+            indexes.push(index)
+            return false
+          }
+        })
+      })
+
+      // 索引排序
+      indexes.sort(compare)
+
+      function compare(val1, val2) {
+        if (val1 < val2) {
+          return -1
+        } else if (val1 > val2) {
+          return 1
+        } else {
+          return 0
+        }
+      }
+
+      if (indexes.length > 0) {
+        indexes.forEach((item, index) => {
+          this.songSheets.splice((item - index), 1)
+        })
+      }
+      // 去除选中
+      this._setTitle()
+
+      let lis = document.querySelectorAll('.ms-check')
+      lis = Array.from(lis)
+      lis.forEach((item) => {
+        item.className = 'ms-check'
+      })
+      deleteSongSheet(this.sheets)
+      this.sheets = []
+    },
     remove() {
       if (this.sheets.length > 0) {
         this.$refs.confirm.show({
           title: '删除自建歌单',
-          msg: `确定要删除要选中的${this.size}个自建歌单吗？`,
+          msg: `确定要删除选中的${this.size}个自建歌单吗？`,
           btns: [
             {
               title: '取消',
               click: function(confirmThis) {
                 confirmThis.hide()
               }
+            },
+            {
+              title: '删除',
+              color: '#719e8a',
+              click: this.removeItem
             }
           ]
         })
@@ -195,7 +259,7 @@ export default {
       background: #fff
       .rs-header
         background-color: #61bf81
-        @include px2rem(height, 86px)
+        height: 86px
         width: 100%
         display: flex
         justify-content: space-between
@@ -203,8 +267,8 @@ export default {
         position: absolute
         top: 0
         .r-h-r
-          @include px2rem(width, 86px)
-          @include px2rem(height, 86px)
+          width: 86px
+          height: 86px
           color: #fff
           font-size: 30px; /*px*/
           display: flex
@@ -218,31 +282,33 @@ export default {
           color: #fff
         .r-h-nav
           color: #fff
-          @include px2rem(width, 80px)
+          width: 80px
           text-align: center
           i
             font-size: 36px; /*px*/
       .ms-cont
         position: absolute
-        @include px2rem(top, 86px)
+        top: 86px
         width: 100%
         left: 0
-        bottom: 0
+        bottom: 132px
+        overflow: hidden
+        .ms-li:last-child
+          ul
+            border-bottom: 0
         .ms-li
           display: flex
           width: 100%
           .ms-check
-            @include px2rem(width, 100px)
+            width: 100px
             display: flex
             justify-content: center
             align-items: center
             div
-              @include px2rem(width, 40px)
-              @include px2rem(height, 40px)
+              width: 40px
+              height: 40px
               box-sizing: border-box
-              @include px2rem(border-width, 4px)
-              border-style: solid
-              border-color: #dedede
+              border: 4px solid #dedede
               border-radius: 100%
               display: flex
               justify-content: center
@@ -262,28 +328,24 @@ export default {
             display: flex
             align-items: center
             justify-content: center
-            @include px2rem(border-bottom-width, 2px)
-            border-style: solid
-            border-color: #ececec
-            @include px2rem(padding-top, 12px)
-            @include px2rem(padding-bottom, 12px)
+            border-bottom: 1px solid #ececec; /*no*/
+            padding-top: 12px
+            padding-bottom: 12px
             li
-              @include px2rem(height, 120px)
+              height: 120px
             li:first-child
-              @include px2rem(height, 120px)
-              @include px2rem(width, 120px)
+              height: 120px
+              width: 120px
               background: #ececec
               display: flex
               justify-content: center
               align-items: center
               .c-mr
-                @include px2rem(width, 70px)
-                @include px2rem(height, 70px)
+                width: 70px
+                height: 70px
                 border-radius: 100%
                 overflow: hidden
-                @include px2rem(border-width, 4px)
-                border-color: #d6d6d6
-                border-style: solid
+                border: 4px solid #d6d6d6
                 display: flex
                 align-items: center
                 justify-content: center
@@ -291,8 +353,8 @@ export default {
                   font-size: 32px; /*px*/
                   color: #d6d6d6
             li:nth-child(3)
-              @include px2rem(width, 80px)
-              @include px2rem(height, 80px)
+              width: 80px
+              height: 80px
               display: flex
               justify-content: center
               align-items: center
@@ -306,17 +368,17 @@ export default {
               flex-direction: column
               font-size: 30px; /*px*/
               box-sizing: border-box
-              @include px2rem(padding-left, 20px)
+              padding-left: 20px
               p:first-child
                 font-size: 30px; /*px*/
-                @include px2rem(line-height, 45px)
+                line-height: 45px
                 color: #444
               p:last-child
                 font-size: 24px; /*px*/
-                @include px2rem(line-height, 38px)
+                line-height: 38px
                 color: #bdbdbd
       .ms-remove
-        @include px2rem(height, 132px)
+        height: 132px
         width: 100%
         background: #fff
         position: absolute
@@ -325,17 +387,19 @@ export default {
         display: flex
         justify-content: center
         align-items: center
-        .re-rm
-          @include px2rem(width, 100px)
-          @include px2rem(height, 100px)
+        div.disable
           color: #9f9f9f
+        .re-rm
+          width: 100px
+          height: 100px
+          color: #444
           font-size: 20px; /*px*/
           display: flex
           justify-content: center
           align-items: center
           flex-direction: column
           p
-            @include px2rem(line-height, 40px)
+            line-height: 40px
           i
             font-size: 50px; /*px*/
 </style>

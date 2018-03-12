@@ -6,7 +6,7 @@
     <h4 :class="$style.middle" v-if="title">
       {{title}}
     </h4>
-    <div :class="$style.control">
+    <div :class="$style.control" @click="selectRightMenu">
       <i class="fa fa-ellipsis-h" v-show="rFlag"></i>
     </div>
   </header>
@@ -34,6 +34,9 @@ export default {
     }
   },
   methods: {
+    selectRightMenu() {
+      this.$emit('selectRightMenu')
+    },
     back() {
       // this.$router.back()
       this.$emit('back')
@@ -53,10 +56,13 @@ export default {
     z-index: 2
     color: #fff
     .middle
-      flex: 1
       font-size: 30px; /*px*/
       line-height: 75px
       text-align: center
+      white-space: nowrap
+      overflow: hidden
+      text-overflow: ellipsis
+      width: 450px
     .nav,.control
       display: flex
       width: 100px
