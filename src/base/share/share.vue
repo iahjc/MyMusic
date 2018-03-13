@@ -1,5 +1,6 @@
 <template lang="html">
-  <section class="share" v-show="showFlag">
+  <transition name="share-fade">
+  <section class="share" v-show="shareState">
     <div class="share-cont">
       <ul>
         <li>
@@ -41,18 +42,24 @@
       </ul>
       <btn :cname="cla" @selectItem="hide">取消</btn>
     </div>
-    <bg ref="bg" @selectBg="hide"></bg>
   </section>
+  </transition>
 </template>
 
 <script>
 import Btn from 'base/btn/btn'
 import Bg from 'base/bg/bg'
+import {mapGetters} from 'vuex'
 export default {
+  computed: {
+    ...mapGetters([
+      'shareState'
+    ])
+  },
   data() {
     return {
       cla: 'close',
-      showFlag: false
+      showFlag: true
     }
   },
   components: {
@@ -73,13 +80,14 @@ export default {
 </script>
 
 <style lang="sass" scoped="" type="text/css">
+  @import "../../common/scss/components/animation.scss";
   .share
     position: fixed
     bottom: 0
     left: 0
     right: 0
     top: 0
-    z-index: 100
+    z-index: 500
     .share-cont
       width: 100%
       background: #e4e4e4

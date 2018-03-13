@@ -5,6 +5,8 @@
     <router-view></router-view>
   </section>
   <play></play>
+  <share></share>
+  <auxiliary></auxiliary>
 </div>
 </template>
 <script>
@@ -13,6 +15,8 @@ import NavSlidebar from 'components/nav-slidebar/nav-slidebar'
 // import Player from 'components/player/player'
 // import Main from 'components/main/main'
 import Play from 'components/player/play'
+import Share from 'base/share/share'
+import Auxiliary from 'base/layout/auxiliary'
 export default {
   name: 'app',
   computed: {
@@ -22,7 +26,9 @@ export default {
   },
   components: {
     NavSlidebar,
-    Play
+    Play,
+    Share,
+    Auxiliary
   },
   watch: {
     navFlag(newFlag) {

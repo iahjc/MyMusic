@@ -42,6 +42,18 @@ const matutaions = {
   },
   [types.SET_PLAY_HISTORY](state, history) {
     state.playHistory = history
+  },
+  [types.SET_SHARESTATE](state, flag) {
+    state.shareState = flag
+  },
+  [types.SET_AUXILIARYSTATE](state, flag) {
+    state.auxiliaryState = flag
+  },
+  [types.SET_AUXILIARYLIST](state, list) {
+    state.auxiliaryList = list
+  },
+  [types.SET_AUXILIARYACTIONS](state, list) {
+    state.auxiliaryActions = list
   }
 }
 

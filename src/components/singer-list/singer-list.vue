@@ -1,8 +1,5 @@
 <template>
   <section class="singer-list">
-    <div class="sl-key">
-      热
-    </div>
     <div class="sl-lis" v-for="(item, index) in singerList" @click="selectItem(item, index)">
       <div class="sl-li">
         <div class="sli-img">

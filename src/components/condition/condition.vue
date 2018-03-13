@@ -60,6 +60,7 @@ export default {
 
   .condition
     background: #f4f4f4
+    height: 210px
     .c-w-lis
       display: flex
       border-bottom: 1px solid #ededed; /*no*/

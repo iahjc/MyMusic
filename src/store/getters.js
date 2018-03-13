@@ -15,3 +15,7 @@ export const catName = state => state.catName
 export const topList = state => state.topList
 export const keywords = state => state.keywords
 export const playHistory = state => state.playHistory
+export const shareState = state => state.shareState
+export const auxiliaryState = state => state.auxiliaryState
+export const auxiliaryList = state => state.auxiliaryList
+export const auxiliaryActions = state => state.auxiliaryActions

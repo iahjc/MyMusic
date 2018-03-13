@@ -1,34 +1,34 @@
 <template>
-  <transition name="playlist">
+  <transition name="playlist-fadeIn">
     <section :class="$style.playList" v-show="showFlag">
-      <div :class="$style.content">
+      <div :class="$style.content" class="playlist-content">
         <div :class="$style.header">
-          <div :class="$style.playMode">
-            <i class="fa fa-refresh"></i>&nbsp;&nbsp;<span>单曲循环</span>
+          <div :class="$style.playMode" @click="changeMode">
+            <i :class="iconMode"></i>&nbsp;&nbsp;<span>{{modeStr}}</span>
           </div>
           <ul :class="$style.headerR">
-            <li>
+            <li @click="openMsg">
               <i class="fa fa-download"></i>
             </li>
-            <li>
+            <li @click="openMsg">
               <i class="fa fa-plus"></i>
             </li>
-            <li>
+            <li @click="clearAll">
               <i class="fa fa-trash-o"></i>
             </li>
           </ul>
         </div>
-        <scroll :class="$style.playListWrapper" :data="playList">
-          <div>
+        <scroll ref="scroll" :class="$style.playListWrapper" :data="playList">
+          <div class="songsList">
             <div v-for="(item, index) in playList" :key="index" :class="[$style.item, {active: currentIndex === index}]">
               <div :class="$style.title" @click="selectItem(item, index)">
-                <span>{{item.name}}</span>&nbsp;&nbsp;-&nbsp;&nbsp;<span>{{item.singer}}</span>&nbsp;&nbsp;<img v-show="currentIndex === index" src="./wave.gif"/>
+                <p :class="$style.songTitle">{{item.name}}</p>&nbsp;&nbsp;-&nbsp;&nbsp;<span>{{item.singer}}</span>&nbsp;&nbsp;<img v-show="currentIndex === index" src="./wave.gif"/>
               </div>
               <ul :class="$style.itemR">
                 <li>
                   <i class="fa fa-heart-o"></i>
                 </li>
-                <li>
+                <li @click="removeSong(item, index)">
                   <i class="fa fa-times"></i>
                 </li>
               </ul>
@@ -39,39 +39,114 @@
           关闭
         </div>
       </div>
+      <msg ref="msg"></msg>
+      <confirm ref="confirm"></confirm>
     </section>
   </transition>
 </template>
 
 <script>
 import Scroll from 'base/scroll/scroll'
-import {mapMutations} from 'vuex'
-
+import {mapMutations, mapGetters, mapActions} from 'vuex'
+import { playMode } from 'common/js/playmode'
+import Msg from 'base/msg/msg'
+import Confirm from 'base/confirm/confirm'
 export default {
+  computed: {
+    iconMode() {
+      return this.mode === playMode.sequence ? 'fa fa-exchange' : this.mode === playMode.loop ? 'fa fa-circle-o-notch' : 'fa fa-random'
+    },
+    ...mapGetters([
+      'mode',
+      'playList',
+      'sequenceList',
+      'currentSong',
+      'currentIndex'
+    ])
+  },
   components: {
-    Scroll
+    Scroll,
+    Msg,
+    Confirm
   },
   data() {
     return {
-      showFlag: false
-    }
-  },
-  props: {
-    playList: {
-      type: Array,
-      default: []
-    },
-    currentIndex: {
-      type: Number,
-      default: -1
+      showFlag: false,
+      modeStr: '单曲循环'
     }
   },
   methods: {
+    ...mapActions([
+      'deleteSong',
+      'deleteSongList'
+    ]),
     ...mapMutations({
-      setCurrentIndex: 'SET_CURRENTINDEX'
+      setCurrentIndex: 'SET_CURRENTINDEX',
+      setPlaying: 'SET_PLAYING'
     }),
+    clearAll() {
+      let _this = this
+      this.$refs.confirm.show({
+        title: '清空当前播放队列?',
+        msg: ` `,
+        btns: [
+          {
+            title: '取消',
+            click: function(confirmThis) {
+              confirmThis.hide()
+            }
+          },
+          {
+            title: '清空',
+            color: '#719e8a',
+            click: clear
+          }
+        ]
+      })
+
+      function clear() {
+        _this.deleteSongList()
+        _this.$refs.confirm.hide()
+        _this.hide()
+      }
+    },
+    openMsg() {
+      this.$refs.msg.show({
+        msg: '功能未实现，敬请期待!',
+        msgType: 'error',
+        delay: 900
+      })
+    },
+    removeSong(item, index) {
+      if (item.deleting) {
+        return false
+      }
+      item.deleting = true
+      this.deleteSong(item)
+      if (!this.playList.length) {
+        this.hide()
+      }
+      setTimeout(() => {
+        item.deleting = false
+      }, 300)
+    },
+    scrollToCurrentSong(current) {
+      const index = this.sequenceList.findIndex((song) => {
+        return current.id === song.id
+      })
+      // console.log(this.$refs.scroll.$el)
+      let lis = document.querySelector('.songsList')
+      this.$refs.scroll.scrollToElement(lis.children[index], 300)
+    },
+    changeMode() {
+      this.$emit('changeMode')
+    },
     show() {
       this.showFlag = true
+      setTimeout(() => {
+        this.$refs.scroll.refresh()
+        this.scrollToCurrentSong(this.currentSong)
+      }, 20)
     },
     hide() {
       this.showFlag = false
@@ -80,10 +155,27 @@ export default {
       this.$emit('closePlayList')
     },
     selectItem(item, index) {
+      if (this.mode === playMode.random) {
+        index = this.playList.findIndex((song) => {
+          return song.id === item.id
+        })
+      }
       this.setCurrentIndex(index)
+      this.setPlaying(true)
     }
   },
   created() {
+  },
+  watch: {
+    mode(newMode) {
+      if (newMode === playMode.sequence) {
+        this.modeStr = '顺序播放'
+      } else if (newMode === playMode.loop) {
+        this.modeStr = '循环播放'
+      } else {
+        this.modeStr = '随机播放'
+      }
+    }
   }
 }
 </script>
@@ -96,7 +188,7 @@ export default {
       top: 0
       bottom: 0
       z-index: 200
-      background: rgba(0, 0, 0, 0)
+      background: rgba(0, 0, 0, .3)
       .content
         position: absolute
         left: 0
@@ -158,10 +250,25 @@ export default {
               align-items: center
               font-size: 22px; /*px*/
               color: #80756d
+              flex: 1
+              span
+                display: inline-block
+                height: 75px
+                line-height: 75px
+                overflow: hidden
+                max-width: 240px
+                text-overflow: ellipsis
+                white-space: nowrap
               img
                 width: 20px
-              span:first-child
+              p.songTitle
                 font-size: 26px; /*px*/
+                height: 75px
+                text-overflow: ellipsis
+                overflow: hidden
+                line-height: 75px
+                white-space: nowrap
+                max-width: 240px
                 color: #fff
             .itemR
               display: flex
@@ -187,7 +294,11 @@ export default {
   </style>
 
   <style lang="sass" scoped="" type="text/css">
+    @import "../../common/scss/components/animation.scss";
     div.active
-        span
-          color: #69b586!important
+      color: #69b586!important
+      p
+        color: #69b586!important
+      span
+        color: #69b586!important
 </style>

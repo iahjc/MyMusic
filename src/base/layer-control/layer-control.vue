@@ -1,6 +1,6 @@
 <template lang="html">
   <transition name="b">
-    <section :class="[$style.layerControl, sname]" v-show="showFlag">
+    <section :class="[$style.layerControl]" v-show="showFlag">
       <div :class="$style.lcHeader" v-if="datas">
         <h4>{{datas.name}} <span>原唱：{{datas.singer}}</span></h4>
         <div :class="$style.fm" v-show="datas.pay.pay_down !== 0">
@@ -19,20 +19,13 @@
           </li>
         </ul>
       </div>
-      <div :class="$style.mcVoice" v-show="true">
+      <div :class="$style.mcVoice" v-show="showVoice">
         <ul class="mc-v">
           <li>
             <i class="fa fa-volume-down"></i>
           </li>
           <li>
-            <div :class="$style.voiceCont" ref="progressBar">
-              <div ref="progressBtn" :class="$style.progressbtn"
-                @touchstart.prevent="progressTouchStart"
-                @touchmove.prevent="progressTouchMove"
-                @touchend="progressTouchEnd"
-              ></div>
-              <div ref="progress" :class="$style.progress"></div>
-            </div>
+            <progress-bar @percentChange="onProgressBarChange" :percent="percent" @percentChanging="onProgressBarChanging"></progress-bar>
           </li>
           <li>
             <i class="fa fa-volume-off"></i>
@@ -51,16 +44,19 @@ import Btn from 'base/btn/btn'
 import {
   prefixStyle
 } from 'common/js/utils/dom'
+import ProgressBar from 'base/progress-bar/progress-bar'
 const transform = prefixStyle('transform')
 export default {
   props: {
     layerDatas: {
       type: Array,
-      default: []
+      default() {
+        return []
+      }
     },
-    sname: {
-      type: String,
-      default: ''
+    showVoice: {
+      type: Boolean,
+      default: false
     }
   },
   data() {
@@ -74,11 +70,10 @@ export default {
       showLcFlag: false,
       cname: 'content',
       datas: null,
-      progressBtnWidth: 0
+      percent: 0
     }
   },
   mounted() {
-    this.progressBtnWidth = this.$refs.progressBtn.clientWidth
   },
   methods: {
     selectItem(item, index) {
@@ -86,25 +81,11 @@ export default {
         item.action.call(this, item)
       }
     },
-    progressTouchStart(e) {
-      this.touch.initiated = true
-      this.touch.startX = e.touches[0].pageX
-      this.touch.left = this.$refs.progress.clientWidth
+    onProgressBarChange() {
+
     },
-    progressTouchMove(e) {
-      if (!this.touch.initiated) {
-        return
-      }
-      const deltaX = e.touches[0].pageX - this.touch.startX
-      const offsetWidth = Math.min(this.$refs.progressBar.clientWidth - this.progressBtnWidth, Math.max(0, this.touch.left + deltaX))
-      this._offset(offsetWidth)
-    },
-    progressTouchEnd(e) {
-      this.touch.initiated = false
-    },
-    _offset(offsetWidth) {
-      this.$refs.progress.style.width = `${offsetWidth}px`
-      this.$refs.progressBtn.style[transform] = `translate3d(${offsetWidth}px,0,0)`
+    onProgressBarChanging() {
+
     },
     setIcon(str) {
       return `fa fa-${str}`
@@ -122,7 +103,8 @@ export default {
     }
   },
   components: {
-    Btn
+    Btn,
+    ProgressBar
   }
 }
 </script>
@@ -156,10 +138,10 @@ export default {
 
   .layerControl
     width: 100%
-    position: absolute
+    position: fixed
     bottom: 0
     background: #e4e4e4
-    z-index: 6
+    z-index: 50000
     .lcHeader
       border-bottom: 1px solid #cdcdcd; /*no*/
       padding: 24px 0

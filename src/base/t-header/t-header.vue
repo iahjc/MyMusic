@@ -53,7 +53,7 @@ export default {
     display: flex
     height: 75px
     justify-content: space-between
-    z-index: 2
+    z-index: 20
     color: #fff
     .middle
       font-size: 30px; /*px*/

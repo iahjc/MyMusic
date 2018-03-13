@@ -37,7 +37,7 @@
 import {searchKeyList} from 'api/search'
 import {mapGetters, mapActions} from 'vuex'
 import Loading from 'base/loading/loading'
-import {createSong} from 'domain/song'
+import { createSong, processSongsUrl } from 'domain/song'
 import SongItem from 'base/song-item/song-item'
 export default {
   components: {
@@ -96,7 +96,9 @@ export default {
         res = res.replace(reg, '').replace(reg2, '')
         res = JSON.parse(res)
         this.zhida = res.data.zhida
-        this.songs = this._initSongs(res.data.song.list)
+        processSongsUrl(this._initSongs(res.data.song.list)).then((songs) => {
+          this.songs = songs
+        })
       })
     }
   },

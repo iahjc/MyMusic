@@ -8,11 +8,19 @@
       :data="singerList"
     >
       <div>
-        <condition @searchSinger="searchSinger"></condition>
+        <condition @searchSinger="searchSinger" ref="condition"></condition>
+        <div :class="$style.where">
+          <p ref="where1" v-show="showFlag">
+            sdf
+          </p>
+        </div>
         <singer-list :singerList="singerList" @selectItem="selectItem"></singer-list>
       </div>
     </scroll>
     <prompt ref="prompt" :msg="msg" @closePrompt="closePrompt" :btnMsg="btnMsg"></prompt>
+    <p ref="where" :class="$style.whereTitle" v-show="!showFlag">
+      sdf
+    </p>
   </section>
 </template>
 
@@ -37,7 +45,9 @@ export default {
       msg: '由于不知道QQ音乐接口，因而功能有些错乱，请见谅!',
       btnMsg: '我知道了',
       probeType: 3,
-      listenScroll: true
+      listenScroll: true,
+      showFlag: true,
+      h: 0
     }
   },
   components: {
@@ -50,6 +60,9 @@ export default {
   created() {
     let condtion = 'all_all_all'
     this.getSingerList(condtion)
+  },
+  mounted() {
+    this.h = this.$refs.condition.$el.clientHeight
   },
   methods: {
     handlePlayList(playList) {
@@ -99,6 +112,11 @@ export default {
   },
   watch: {
     scrollY(newScrollY) {
+      if (Math.abs(newScrollY) >= this.h) {
+        this.showFlag = false
+      } else {
+        this.showFlag = true
+      }
     }
   }
 }
@@ -118,4 +136,26 @@ export default {
       top: 86px
       bottom: 0
       overflow: hidden
+      .where
+        width: 100%
+        height: 54px
+        background-color: #eaeaea
+        border-top: 1px solid #e5e5e5; /*no*/
+        border-bottom: 1px solid #e5e5e5; /*no*/
+        font-size: 20px; /*px*/
+        color: #565656
+        line-height: 54px
+        padding-left: 32px
+        box-sizing: border-box
+    .whereTitle
+      position: fixed
+      top: 86px
+      width: 100%
+      height: 54px
+      line-height: 54px
+      padding-left: 32px
+      font-size: 20px; /*px*/
+      left: 0
+      background: rgba(255, 255, 255, .3)
+      z-index: 1000
 </style>

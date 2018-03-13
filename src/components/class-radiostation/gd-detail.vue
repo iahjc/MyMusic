@@ -1,13 +1,12 @@
 <template>
 <section class="gd-detail">
-  <t-header :title="catName" @back="back"></t-header>
+  <t-header :title="catName" @back="back" @selectRightMenu="selectRightMenu"></t-header>
   <div class="gd-t">
     <p>{{catName}}</p>
     <div class="btn4">
       <i class="fa fa-play"></i>&nbsp;&nbsp;<span>随机播放</span>
     </div>
-    <div class="gd-bg">
-      <img :src="setBg" />
+    <div class="gd-bg" :style="setBg">
     </div>
   </div>
   <scroll class="gd-detail-cont" ref="songSheet">
@@ -19,7 +18,7 @@
 </template>
 
 <script>
-import {mapGetters} from 'vuex'
+import {mapGetters, mapMutations} from 'vuex'
 import {getClassRsList} from 'api/radiostation'
 import GdList from 'components/class-radiostation/gd-list'
 import Scroll from 'base/scroll/scroll'
@@ -29,7 +28,7 @@ export default {
   mixins: [playlistMixin],
   computed: {
     setBg() {
-      return ''
+      return `background-image: url(${this.imgURL})`
     },
     ...mapGetters([
       'catName'
@@ -47,7 +46,8 @@ export default {
       catid: 0,
       sortId: 5,
       sin: 0,
-      ein: 29
+      ein: 29,
+      imgURL: ''
     }
   },
   methods: {
@@ -55,6 +55,78 @@ export default {
       const bottom = playList.length > 0 ? `1.3333333rem` : ''
       this.$refs.songSheet.$el.style.bottom = bottom
       this.$refs.songSheet.refresh()
+    },
+    ...mapMutations({
+      setAuxiliaryList: 'SET_AUXILIARYLIST',
+      setAuxiliaryState: 'SET_AUXILIARYSTATE',
+      setAuxiliaryActions: 'SET_AUXILIARYACTIONS',
+      setShareState: 'SET_SHARESTATE'
+    }),
+    selectRightMenu() {
+      let list = [
+        {
+          title: '分享',
+          icon: 'share-alt',
+          action: this.openShare,
+          showFlag: true
+        }
+      ]
+      let actions = [
+        {
+          action: this.closeAuxiliary
+        }
+      ]
+      this.setAuxiliaryActions(actions)
+      this.setAuxiliaryList(list)
+      this.setAuxiliaryState(true)
+    },
+    openShare() {
+      let list = [
+        {
+          title: '微信好友',
+          icon: 'weixin',
+          action: '',
+          showFlag: true
+        },
+        {
+          title: '朋友圈',
+          icon: 'fonticons',
+          action: '',
+          showFlag: true
+        },
+        {
+          title: 'QQ',
+          icon: 'qq',
+          action: '',
+          showFlag: true
+        },
+        {
+          title: '新浪微博',
+          icon: 'weibo',
+          action: '',
+          showFlag: true
+        },
+        {
+          title: 'github',
+          icon: 'github',
+          action: '',
+          showFlag: true
+        },
+        {
+          title: '推特',
+          icon: 'twitter',
+          action: '',
+          showFlag: true
+        }
+      ]
+      this.setAuxiliaryState(false)
+      setTimeout(() => {
+        this.setAuxiliaryList(list)
+        this.setAuxiliaryState(true)
+      }, 300)
+    },
+    closeAuxiliary() {
+      this.setAuxiliaryState(false)
     },
     back() {
       window.history.length > 1 ? this.$router.go(-1) : this.$router.push('/')
@@ -75,6 +147,7 @@ export default {
         } else if (type === 'searchMore') {
           this.rsList = this.rsList.concat(res.data.list)
         }
+        this.imgURL = this.rsList[8].imgurl
         this.sin = res.data.sin
         this.ein = res.data.ein
         this.hasMore = false
@@ -160,6 +233,7 @@ export default {
           left: 0
           top: 0
           z-index: 0
-          img
-            width: 100%
+          width: 100%
+          bottom: 0
+          background-size: cover
 </style>

@@ -8,7 +8,7 @@
     >
       <div :class="$style.screenPlayer" v-show="fullScreen">
           <div :class="$style.background" :style="bgStyle"></div>
-          <t-header :title="currentSong.name" @back="back"></t-header>
+          <t-header :title="currentSong.name" @back="back" @selectRightMenu="selectRightMenu"></t-header>
         <div :class="$style.middle"
              @touchstart.prevent="middleTouchStart"
              @touchmove.prevent="middleTouchMove"
@@ -89,12 +89,14 @@
         <div :class="$style.miniR" @click.stop="togglePlay">
             <i :class="miniIcon"></i>
         </div>
-        <div :class="$style.playList">
+        <div :class="$style.playList" @click.stop="openPlayList">
           <i class="fa fa-music"></i>
         </div>
       </div>
     </transition>
-    <play-list :playList="playList" ref="playlist" @closePlayList="closePlayList" :currentIndex="currentIndex"></play-list>
+    <msg ref="msg"></msg>
+    <layer-control ref="LayerControl" :cname="$style.black" :showVoice="false" :layerDatas="datas"></layer-control>
+    <play-list ref="playlist" @changeMode="changeMode" @closePlayList="closePlayList"></play-list>
     <audio ref="myAudio" @pause="paused" @error="error" @ended="end" @timeupdate="updateTime" @play="ready"></audio>
   </section>
 </template>
@@ -119,6 +121,9 @@ import THeader from 'base/t-header/t-header'
 import ProgressBar from 'base/progress-bar/progress-bar'
 import Scroll from 'base/scroll/scroll'
 import PlayList from 'components/player/play-list'
+import LayerControl from 'base/layer-control/layer-control'
+import {musicControl} from 'common/js/config/layer-control'
+import Msg from 'base/msg/msg'
 
 const transform = prefixStyle('transform')
 const transitionDuration = prefixStyle('transitionDuration')
@@ -134,14 +139,17 @@ export default {
       songReady: false,
       currentLineNum: 0,
       currentShow: 'cd',
-      touch: {}
+      touch: {},
+      datas: null
     }
   },
   components: {
     THeader,
     ProgressBar,
     Scroll,
-    PlayList
+    PlayList,
+    LayerControl,
+    Msg
   },
   computed: {
     toggleCls() {
@@ -173,6 +181,97 @@ export default {
     }
   },
   methods: {
+    openMsg() {
+      this.$refs.msg.show({
+        msg: '该功能未实现，敬请期待!',
+        msgType: 'error',
+        delay: 900
+      })
+    },
+    selectRightMenu() {
+      this.datas = [
+        {
+          title: '下一首',
+          icon: 'caret-square-o-right',
+          action: this.next,
+          showFlag: true
+        },
+        {
+          title: '加到歌单',
+          icon: 'music',
+          action: this.openMsg,
+          showFlag: true
+        },
+        {
+          title: '下载',
+          icon: 'download',
+          action: this.openMsg,
+          showFlag: true
+        },
+        {
+          title: '单曲购买',
+          icon: 'credit-card',
+          action: this.openMsg,
+          showFlag: false
+        },
+        {
+          title: '分享',
+          icon: 'share-alt',
+          action: this.openMsg,
+          showFlag: true
+        },
+        {
+          title: '评论',
+          icon: 'commenting',
+          action: this.openMsg,
+          showFlag: true
+        },
+        {
+          title: '不感兴趣',
+          icon: 'trash-o',
+          action: this.openMsg,
+          showFlag: true
+        },
+        {
+          title: '相似歌曲',
+          icon: 'clone',
+          action: this.openMsg,
+          showFlag: true
+        },
+        {
+          title: '唱这首歌',
+          icon: 'angellist',
+          action: this.openMsg,
+          showFlag: true
+        },
+        {
+          title: '查看歌手',
+          icon: 'user-o',
+          action: this.openMsg,
+          showFlag: true
+        },
+        {
+          title: '查看专辑',
+          icon: 'gratipay',
+          action: this.openMsg,
+          showFlag: true
+        },
+        {
+          title: '歌词海报',
+          icon: 'opencart',
+          action: this.openMsg,
+          showFlag: true
+        }
+      ]
+      let song = this.playList[this.currentIndex]
+      this.$refs.LayerControl.show({
+        name: song.name,
+        singer: song.singer,
+        pay: {
+          pay_down: 0
+        }
+      })
+    },
     closePlayList() {
       this.$refs.playlist.hide()
     },
@@ -567,6 +666,7 @@ export default {
       width: 100%
       height: 100%
       border-radius: 50%
+
 </style>
 
 <style lang="sass" scoped="" type="text/css" module>
@@ -734,7 +834,7 @@ export default {
         width: 56px
         margin-right: 36px
         box-sizing: border-box
-        border: 6px solid #5dbf82; /*no*/
+        border: 6px solid #5dbf82
         display: flex
         justify-content: center
         align-items: center

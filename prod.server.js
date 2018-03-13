@@ -1,10 +1,14 @@
 var express = require('express')
-var config = require('./config/index')
+var config = require('./config/index0')
 var axios = require('axios')
+const bodyParser = require('body-parser')
 
 var port = 8086
 
 var app = express()
+
+app.use(bodyParser.urlencoded({extended: true}))
+const querystring = require('querystring')
 
 var apiRoutes = express.Router()
 
@@ -385,6 +389,21 @@ apiRoutes.get('/getAlbumInfo', function (req, res) {
       host: 'c.y.qq.com'
     },
     params: req.query
+  }).then((response) => {
+    res.json(response.data)
+  }).catch((e) => {
+    console.log(e)
+  })
+})
+
+apiRoutes.post('/getPurlUrl', bodyParser.json(), function (req, res) {
+  const url = 'https://u.y.qq.com/cgi-bin/musicu.fcg'
+  axios.post(url, req.body, {
+    headers: {
+      referer: 'https://y.qq.com/',
+      origin: 'https://y.qq.com',
+      'Content-type': 'application/x-www-form-urlencoded'
+    }
   }).then((response) => {
     res.json(response.data)
   }).catch((e) => {

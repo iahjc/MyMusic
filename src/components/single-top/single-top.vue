@@ -1,7 +1,9 @@
 <template lang="html">
   <section :class="$style.singleTop">
     <div :class="[$style.background]">
-      <div :class="$style.filter"  :style="bgStyle"></div>
+      <div :class="$style.filter"></div>
+      <div :class="$style.bg" :style="bgStyle">
+      </div>
       <article :class="$style.content">
         <div :class="$style.contentL" :style="bgStyle">
 
@@ -60,7 +62,7 @@ export default {
   .singleTop
     width: 100%
     position: relative
-    padding-top: 66%
+    height: 500px
     overflow: hidden
     .background
       position: absolute
@@ -71,7 +73,7 @@ export default {
       display: flex
       justify-content: center
       align-items: center
-      .filter
+      .bg
         background-size: cover
         background-repeat: no-repeat
         width: 100%
@@ -79,11 +81,17 @@ export default {
         position: absolute
         left: 0
         top: 0
-        // filter: blur(40px)
-        background: rgba(0, 0, 0, .7)
+        filter: blur(20px)
+        z-index: -1
+      .filter
+        width: 100%
+        height: 100%
+        position: absolute
+        left: 0
+        top: 0
+        background: rgba(7, 17, 27, 0.4)
       .content
         position: relative
-        z-index: 2
         display: flex
         .contentL
           width: 250px

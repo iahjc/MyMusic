@@ -1,8 +1,8 @@
 <template>
 <section class="song-list" v-show="album">
-  <t-header :title="title" @back="back"></t-header>
+  <t-header :title="title" @back="back" @selectRightMenu="selectRightMenu"></t-header>
   <single-top :detas="album"></single-top>
-  <scroll class="sl-wrapper" :data="songList">
+  <scroll class="sl-wrapper" :data="songList" ref="scroll">
     <div>
       <song-menu @playAll="playAll"></song-menu>
       <div class="sl-list">
@@ -10,40 +10,41 @@
       </div>
     </div>
   </scroll>
-  <!-- <layer-control ref="layerControl" :layerDatas="layerDatas"></layer-control> -->
+  <msg ref="msg"></msg>
 </section>
 </template>
 
 <script>
-import {mapActions} from 'vuex'
+import {mapActions, mapMutations} from 'vuex'
 import { createSingerSong, processSongsUrl } from 'domain/song'
 import {
   getSongList,
   getCollectionNum
 } from 'api/musichall'
 import Scroll from 'base/scroll/scroll'
-// import LayerControl from 'base/layer-control/layer-control'
-// import { musicControl, share, rnav } from 'common/js/config/layer-control'
 import { getAlbumInfo } from 'api/album'
 import THeader from 'base/t-header/t-header'
 import SingleTop from 'components/single-top/single-top'
 import SongMenu from 'base/song-menu/song-menu'
 import SongItem from 'base/song-item/song-item'
+import Msg from 'base/msg/msg'
+import {playlistMixin} from 'common/js/mixin'
 
 export default {
+  mixins: [playlistMixin],
   components: {
     Scroll,
     SongMenu,
     SongItem,
     SingleTop,
-    THeader
+    THeader,
+    Msg
   },
   data() {
     return {
       album: {},
       coll: {},
       songList: null,
-      layerDatas: [],
       songCount: 0,
       title: '专辑'
     }
@@ -53,6 +54,97 @@ export default {
     this._getCollectionNum()
   },
   methods: {
+    handlePlayList(playList) {
+      const bottom = playList.length > 0 ? `1.3333333rem` : ''
+      this.$refs.scroll.$el.style.bottom = bottom
+      this.$refs.scroll.refresh()
+    },
+    selectRightMenu() {
+      let list = [
+        {
+          title: '加到歌单',
+          icon: 'plus-square-o',
+          action: this.openMsg,
+          showFlag: true
+        },
+        {
+          title: '分享',
+          icon: 'share-alt',
+          action: this.openShare,
+          showFlag: true
+        }
+      ]
+      let actions = [
+        {
+          action: this.closeAuxiliary
+        }
+      ]
+      this.setAuxiliaryActions(actions)
+      this.setAuxiliaryList(list)
+      this.setAuxiliaryState(true)
+    },
+    openShare() {
+      let list = [
+        {
+          title: '微信好友',
+          icon: 'weixin',
+          action: '',
+          showFlag: true
+        },
+        {
+          title: '朋友圈',
+          icon: 'fonticons',
+          action: '',
+          showFlag: true
+        },
+        {
+          title: 'QQ',
+          icon: 'qq',
+          action: '',
+          showFlag: true
+        },
+        {
+          title: '新浪微博',
+          icon: 'weibo',
+          action: '',
+          showFlag: true
+        },
+        {
+          title: 'github',
+          icon: 'github',
+          action: '',
+          showFlag: true
+        },
+        {
+          title: '推特',
+          icon: 'twitter',
+          action: '',
+          showFlag: true
+        }
+      ]
+      this.setAuxiliaryState(false)
+      setTimeout(() => {
+        this.setAuxiliaryList(list)
+        this.setAuxiliaryState(true)
+      }, 300)
+    },
+    closeAuxiliary() {
+      this.setAuxiliaryState(false)
+    },
+    openMsg() {
+      this.closeAuxiliary()
+      this.$refs.msg.show({
+        msg: '该功能未实现，敬请期待!',
+        msgType: 'error',
+        delay: 900
+      })
+    },
+    ...mapMutations({
+      setAuxiliaryList: 'SET_AUXILIARYLIST',
+      setAuxiliaryState: 'SET_AUXILIARYSTATE',
+      setAuxiliaryActions: 'SET_AUXILIARYACTIONS',
+      setShareState: 'SET_SHARESTATE'
+    }),
     back() {
       this.$router.back()
     },

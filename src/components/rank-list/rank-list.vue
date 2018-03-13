@@ -1,6 +1,6 @@
 <template>
 <section :class="$style.rankList" v-show="detas">
-  <t-header :title="topList.ListName" @back="back"></t-header>
+  <t-header :title="topList.ListName" @back="back" @selectRightMenu="selectRightMenu"></t-header>
   <div :class="$style.content">
     <div :class="$style.background" :style="bgStyle">
     </div>
@@ -14,11 +14,12 @@
       <song-item :item="item" v-for="(item, index) in songList" :key="index" :index="index" @selectItem="selectItems"></song-item>
     </div>
   </scroll>
+  <msg ref="msg"></msg>
 </section>
 </template>
 
 <script>
-import {mapActions, mapGetters} from 'vuex'
+import {mapActions, mapGetters, mapMutations} from 'vuex'
 import { createSingerSong, processSongsUrl } from 'domain/song'
 import {
   getRankList
@@ -27,6 +28,7 @@ import Scroll from 'base/scroll/scroll'
 import THeader from 'base/t-header/t-header'
 import SongMenu from 'base/song-menu/song-menu'
 import SongItem from 'base/song-item/song-item'
+import Msg from 'base/msg/msg'
 
 export default {
   components: {
@@ -34,7 +36,8 @@ export default {
     Scroll,
     THeader,
     SongMenu,
-    SongItem
+    SongItem,
+    Msg
   },
   computed: {
     bgStyle() {
@@ -63,6 +66,92 @@ export default {
     })
   },
   methods: {
+    selectRightMenu() {
+      let list = [
+        {
+          title: '加到歌单',
+          icon: 'plus-square-o',
+          action: this.openMsg,
+          showFlag: true
+        },
+        {
+          title: '分享歌手',
+          icon: 'share',
+          action: this.openShare,
+          showFlag: true
+        }
+      ]
+      let actions = [
+        {
+          action: this.closeAuxiliary
+        }
+      ]
+      this.setAuxiliaryActions(actions)
+      this.setAuxiliaryList(list)
+      this.setAuxiliaryState(true)
+    },
+    openShare() {
+      let list = [
+        {
+          title: '微信好友',
+          icon: 'weixin',
+          action: '',
+          showFlag: true
+        },
+        {
+          title: '朋友圈',
+          icon: 'fonticons',
+          action: '',
+          showFlag: true
+        },
+        {
+          title: 'QQ',
+          icon: 'qq',
+          action: '',
+          showFlag: true
+        },
+        {
+          title: '新浪微博',
+          icon: 'weibo',
+          action: '',
+          showFlag: true
+        },
+        {
+          title: 'github',
+          icon: 'github',
+          action: '',
+          showFlag: true
+        },
+        {
+          title: '推特',
+          icon: 'twitter',
+          action: '',
+          showFlag: true
+        }
+      ]
+      this.setAuxiliaryState(false)
+      setTimeout(() => {
+        this.setAuxiliaryList(list)
+        this.setAuxiliaryState(true)
+      }, 300)
+    },
+    closeAuxiliary() {
+      this.setAuxiliaryState(false)
+    },
+    openMsg() {
+      this.closeAuxiliary()
+      this.$refs.msg.show({
+        msg: '该功能未实现，敬请期待!',
+        msgType: 'error',
+        delay: 900
+      })
+    },
+    ...mapMutations({
+      setAuxiliaryList: 'SET_AUXILIARYLIST',
+      setAuxiliaryState: 'SET_AUXILIARYSTATE',
+      setAuxiliaryActions: 'SET_AUXILIARYACTIONS',
+      setShareState: 'SET_SHARESTATE'
+    }),
     back() {
       window.history.length > 1 ? this.$router.go(-1) : this.$router.push('/')
     },

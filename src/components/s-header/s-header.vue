@@ -6,20 +6,37 @@
 
     <ul class="s-h-cont">
       <li class="cur">歌手</li>
-      <li>我的</li>
+      <li @click="my">我的</li>
     </ul>
 
-    <div class="s-h-search">
+    <div class="s-h-search" @click="search">
       <i class="fa fa-search"></i>
     </div>
+    <msg ref="msg"></msg>
   </header>
 </template>
 
 <script>
+import Msg from 'base/msg/msg'
 export default {
+  components: {
+    Msg
+  },
   methods: {
     back() {
       window.history.length > 1 ? this.$router.go(-1) : this.$router.push('/')
+    },
+    search() {
+      this.$router.push({
+        path: `/search`
+      })
+    },
+    my() {
+      this.$refs.msg.show({
+        msg: '功能未实现，敬请期待!',
+        msgType: 'error',
+        delay: 900
+      })
     }
   }
 }

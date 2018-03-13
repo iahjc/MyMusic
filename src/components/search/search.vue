@@ -4,7 +4,7 @@
       <input type="text" ref="query" v-model="query" :placeholder="placeholder"/>
       <span @click="back">取消</span>
     </header>
-    <scroll :class="$style.content">
+    <scroll :class="$style.content" ref="scroll">
       <div>
         <div :class="$style.keywords" v-show="showFlag">
           <hot-search :keys="keys" @selectKeyword="selectKeyword"></hot-search>
@@ -31,11 +31,13 @@ import {mapMutations} from 'vuex'
 import SearchHistory from 'components/search/search-history'
 import HotSearch from 'components/search/hot-search'
 import NavMenu from 'base/nav-menu/nav-menu'
+import {playlistMixin} from 'common/js/mixin'
 //
 // let transform = prefixStyle('transform')
 // let l = 100
 let sh = new SearchHistoryDb()
 export default {
+  mixins: [playlistMixin],
   components: {
     Scroll,
     Confirm,
@@ -90,6 +92,11 @@ export default {
     this.w = window.document.body.clientWidth / 5
   },
   methods: {
+    handlePlayList(playList) {
+      const bottom = playList.length > 0 ? `1.3333333rem` : ''
+      this.$refs.scroll.$el.style.bottom = bottom
+      this.$refs.scroll.refresh()
+    },
     selectMenuItem(item, index, ev) {
       this.$router.push({
         path: this.navs[index].to

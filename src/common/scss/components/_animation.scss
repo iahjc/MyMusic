@@ -28,6 +28,77 @@
   transition: transform .2s cubic-bezier(1.0, 0.5, 0.8, 1.0);
 }
 
+/*auxiliary*/
+.auxiliary-fade-enter-active {
+  animation: fadeIn 0.3s;
+  .auxiliary-content {
+    animation: slideIn 0.3s;
+  }
+}
+
+.auxiliary-fade-leave-active {
+  animation: fadeOut 0.3s;
+  .auxiliary-content {
+    animation: slideOut 0.3s;
+  }
+}
+
+/*playlist*/
+.playlist-fadeIn-enter-active {
+  animation: fadeIn 0.3s;
+  .playlist-content {
+    animation: slideIn 0.3s;
+  }
+}
+
+.playlist-fadeIn-leave-active {
+  animation: fadeOut 0.3s;
+  .playlist-content {
+    animation: slideOut 0.3s;
+  }
+}
+
+/*share*/
+.share-fade-enter-active {
+  animation: fadeIn 0.3s;
+}
+
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+@keyframes fadeOut {
+  0% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+@keyframes slideIn {
+  0% {
+    transform: translateY(100%);
+  }
+  100% {
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideOut {
+  0% {
+    transform: translateY(0);
+  }
+  100% {
+    transform: translateY(100%);
+  }
+}
+
 /*
 播放器
  */

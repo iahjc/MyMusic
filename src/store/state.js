@@ -17,7 +17,11 @@ const state = {
   catName: '',
   topList: {},
   keywords: '',
-  playHistory: stroage.loadPlayHistory()
+  playHistory: stroage.loadPlayHistory(),
+  shareState: false,
+  auxiliaryState: false,
+  auxiliaryList: [],
+  auxiliaryActions: []
 }
 
 export default state

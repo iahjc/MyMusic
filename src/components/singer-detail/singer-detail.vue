@@ -1,10 +1,6 @@
 <template>
   <section :class="$style.singerDetail">
-    <t-header :title="title" @back="back"></t-header>
-    <author-detail :singer="singer" :fansNum="fansNum"></author-detail>
-    <div :class="$style.bgLayer" ref="bgLayer">
-    </div>
-
+    <t-header :title="title" @back="back" @selectRightMenu="selectRightMenu"></t-header>
     <scroll :class="$style.detailWrapper"
       :data="songList"
       @scroll="scroll"
@@ -16,6 +12,7 @@
       ref="list"
     >
       <div>
+          <author-detail :singer="singer" :fansNum="fansNum"></author-detail>
           <nav-menu @selectMenuItem="selectMenuItem" :navs="navs"></nav-menu>
           <div :class="$style.content">
             <div class="sd-c-1">
@@ -37,11 +34,12 @@
         <loading :isShow="true"></loading>&nbsp;&nbsp;<span>正在载入更多</span>
       </div>
     </scroll>
+    <msg ref="msg"></msg>
   </section>
 </template>
 
 <script>
-import {mapActions, mapGetters} from 'vuex'
+import {mapActions, mapGetters, mapMutations} from 'vuex'
 import {getFSNum, getSingerDetail, getSinger, getAlbum, getMV} from 'api/singer'
 import { createSingerSong, processSongsUrl } from 'domain/song'
 import { createAlbum } from 'domain/album'
@@ -58,7 +56,7 @@ import AuthorDetail from 'components/singer-detail/author-detail'
 import MusicList from 'components/singer-detail/music-list'
 import NavMenu from 'base/nav-menu/nav-menu'
 import {playlistMixin} from 'common/js/mixin'
-
+import Msg from 'base/msg/msg'
 let songApi = new SongApi()
 // let transform = prefixStyle('transform')
 // let transform2 = prefixStyle('transform')
@@ -75,7 +73,8 @@ export default {
     Scroll,
     Loading,
     THeader,
-    NavMenu
+    NavMenu,
+    Msg
   },
   data() {
     return {
@@ -113,7 +112,8 @@ export default {
       loadingFlag: false,
       scrollY: 0,
       headerH: 0,
-      sdHeight: 0
+      sdHeight: 0,
+      layerDatas: null
     }
   },
   created() {
@@ -142,8 +142,96 @@ export default {
   methods: {
     handlePlayList(playList) {
       const bottom = playList.length > 0 ? `1.3333333rem` : ''
-      this.$refs.list.$el.style.bottom = bottom
+
       this.$refs.list.refresh()
+    },
+    ...mapMutations({
+      setAuxiliaryList: 'SET_AUXILIARYLIST',
+      setAuxiliaryState: 'SET_AUXILIARYSTATE',
+      setAuxiliaryActions: 'SET_AUXILIARYACTIONS',
+      setShareState: 'SET_SHARESTATE'
+    }),
+    selectRightMenu() {
+      let list = [
+        {
+          title: '加到歌单',
+          icon: 'plus-square-o',
+          action: this.openMsg,
+          showFlag: true
+        },
+        {
+          title: '分享歌手',
+          icon: 'share',
+          action: this.openShare,
+          showFlag: true
+        }
+      ]
+
+      let actions = [
+        {
+          action: this.closeAuxiliary
+        }
+      ]
+
+      this.setAuxiliaryActions(actions)
+      this.setAuxiliaryList(list)
+      this.setAuxiliaryState(true)
+    },
+    openShare() {
+      let list = [
+        {
+          title: '微信好友',
+          icon: 'weixin',
+          action: '',
+          showFlag: true
+        },
+        {
+          title: '朋友圈',
+          icon: 'fonticons',
+          action: '',
+          showFlag: true
+        },
+        {
+          title: 'QQ',
+          icon: 'qq',
+          action: '',
+          showFlag: true
+        },
+        {
+          title: '新浪微博',
+          icon: 'weibo',
+          action: '',
+          showFlag: true
+        },
+        {
+          title: 'github',
+          icon: 'github',
+          action: '',
+          showFlag: true
+        },
+        {
+          title: '推特',
+          icon: 'twitter',
+          action: '',
+          showFlag: true
+        }
+      ]
+      this.setAuxiliaryState(false)
+      setTimeout(() => {
+        this.setAuxiliaryList(list)
+        this.setAuxiliaryState(true)
+      }, 300)
+    },
+    closeAuxiliary() {
+      this.setAuxiliaryState(false)
+    },
+    openMsg() {
+      this.closeAuxiliary()
+      this.$refs.msg.show({
+        msg: '该功能未实现，敬请期待!',
+        msgType: 'error',
+        delay: 900
+      })
     },
     selectAlbumItem(item, index) {
       this.$router.push({
@@ -268,35 +356,7 @@ export default {
   },
   watch: {
     scrollY(newVal) {
-      // const percent = Math.abs(newVal / this.sdHeight)
-      // this.$refs.bgLayer.style[transform2] = `translate3d(0, ${newVal}px, 0)`
-      // let scale = 1
-      // if (newVal <= 0) {
-      //   if (Math.abs(newVal) <= this.sdHeight - this.headerH) {
-      //     this.$refs.sdh.style.height = this.sdHeight - Math.abs(newVal) + 'px'
-      //   }
-      //
-      //   if (Math.abs(newVal) >= this.sdHeight - this.headerH) {
-      //     this.$refs.sdh.style.height = this.headerH + 'px'
-      //   }
-      // } else {
-      //   scale = scale + percent
-      //   this.$refs.sdh.style[transform] = `scale(${scale})`
-      // }
 
-      // if (Math.abs(newVal) >= this.sdHeight) {
-      //   this.$refs.sdh.style.height = this.sdHeight - Math.abs(newVal) + 'px'
-      // }
-      // if (newVal < 0) {
-      //   if (this.sdHeight - Math.abs(newVal) >= this.headerH) {
-      //     console.log(this.sdHeight)
-      //     this.$refs.sdh.style.height = this.sdHeight - Math.abs(newVal) + 'px'
-      //   }
-      // } else {
-      //   this.$refs.sdh.style.height = this.sdHeight + Math.abs(newVal) + 'px'
-      //   let scale = 1 + percent
-      //   this.$refs.sdbg.style[transform2] = `scale(${scale})`
-      // }
     }
   }
 }
@@ -312,7 +372,7 @@ export default {
     .detailWrapper
       position: absolute
       left: 0
-      top: 525px
+      top: 0
       width: 100%
       bottom: 0
       .content
