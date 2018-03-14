@@ -19,7 +19,7 @@
 </template>
 
 <script>
-import {mapActions} from 'vuex'
+import {mapActions, mapMutations} from 'vuex'
 import { createSong, processSongsUrl, Song } from 'domain/song'
 import { findSongSheet } from 'db/songSheet'
 import Scroll from 'base/scroll/scroll'
@@ -61,20 +61,18 @@ export default {
       this.$refs.scroll.$el.style.bottom = bottom
       this.$refs.scroll.refresh()
     },
-    openMsg(action) {
-      this.$refs.msg.show({
-        msg: action.title + '模块未实现，敬请期待!',
-        msgType: 'error',
-        delay: 900
-      })
-      this.$refs.layerControl.hide()
-    },
+    ...mapMutations({
+      setAuxiliaryList: 'SET_AUXILIARYLIST',
+      setAuxiliaryState: 'SET_AUXILIARYSTATE',
+      setAuxiliaryActions: 'SET_AUXILIARYACTIONS',
+      setShareState: 'SET_SHARESTATE'
+    }),
     addSongs() {
+      this.closeAuxiliary()
       this.addSongSheet()
-      this.$refs.layerControl.hide()
     },
     selectRightMenu() {
-      this.layerDatas = [
+      let list = [
         {
           title: '添加歌曲',
           icon: 'plus-square-o',
@@ -90,7 +88,7 @@ export default {
         {
           title: '分享',
           icon: 'share',
-          action: this.openMsg,
+          action: this.openShare,
           showFlag: true
         },
         {
@@ -106,7 +104,71 @@ export default {
           showFlag: true
         }
       ]
-      this.$refs.layerControl.show()
+      let actions = [
+        {
+          action: this.closeAuxiliary
+        }
+      ]
+
+      this.setAuxiliaryActions(actions)
+      this.setAuxiliaryList(list)
+      this.setAuxiliaryState(true)
+    },
+    openShare() {
+      let list = [
+        {
+          title: '微信好友',
+          icon: 'weixin',
+          action: '',
+          showFlag: true
+        },
+        {
+          title: '朋友圈',
+          icon: 'fonticons',
+          action: '',
+          showFlag: true
+        },
+        {
+          title: 'QQ',
+          icon: 'qq',
+          action: '',
+          showFlag: true
+        },
+        {
+          title: '新浪微博',
+          icon: 'weibo',
+          action: '',
+          showFlag: true
+        },
+        {
+          title: 'github',
+          icon: 'github',
+          action: '',
+          showFlag: true
+        },
+        {
+          title: '推特',
+          icon: 'twitter',
+          action: '',
+          showFlag: true
+        }
+      ]
+      this.setAuxiliaryState(false)
+      setTimeout(() => {
+        this.setAuxiliaryList(list)
+        this.setAuxiliaryState(true)
+      }, 300)
+    },
+    closeAuxiliary() {
+      this.setAuxiliaryState(false)
+    },
+    openMsg() {
+      this.closeAuxiliary()
+      this.$refs.msg.show({
+        msg: '该功能未实现，敬请期待!',
+        msgType: 'error',
+        delay: 900
+      })
     },
     addSongSheet() {
       this.$refs.addSongs.show()
