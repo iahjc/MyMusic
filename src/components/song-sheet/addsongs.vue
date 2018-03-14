@@ -9,7 +9,7 @@
         </div>
         <div :class="$style.list">
           <h4>最近播放</h4>
-          <div :class="$style.content" @click="openMsg">
+          <div :class="$style.content" @click="openPlayHostory">
             <songsheet-item :item="item" v-for="(item, index) in historyList" :key="index"></songsheet-item>
           </div>
         </div>
@@ -22,6 +22,7 @@
       </div>
     </scroll>
     <songs-search ref="songsSearch" @refreshSongsheet="getSongSheet" @selectItem="selectItem"></songs-search>
+    <playhistory-list :playHistory="playHistory" ref="playHistoryList" @refreshSongsheet="getSongSheet" @selectItem="selectItem"></playhistory-list>
     <msg ref="msg"></msg>
   </section>
   </transition>
@@ -34,7 +35,16 @@ import { getSongSheet, addSongs } from 'db/songSheet'
 import SongsSearch from 'components/search/songs-search'
 import Msg from 'base/msg/msg'
 import Scroll from 'base/scroll/scroll'
+import PlayhistoryList from 'components/song-sheet/playhistory-list'
+import {mapGetters} from 'vuex'
+import {playlistMixin} from 'common/js/mixin'
 export default {
+  mixins: [playlistMixin],
+  computed: {
+    ...mapGetters([
+      'playHistory'
+    ])
+  },
   props: {
     sid: {
       type: String,
@@ -49,13 +59,25 @@ export default {
     TextHeader,
     SongsheetItem,
     SongsSearch,
+    PlayhistoryList,
     Msg,
     Scroll
   },
   created() {
     this.getSongSheet()
   },
+  mounted() {
+    this.historyList[0].songsNum = this.playHistory.length
+  },
   methods: {
+    handlePlayList(playList) {
+      const bottom = playList.length > 0 ? `1.3333333rem` : ''
+      this.$refs.scroll.$el.style.bottom = bottom
+      this.$refs.scroll.refresh()
+    },
+    openPlayHostory() {
+      this.$refs.playHistoryList.show()
+    },
     openMsg() {
       this.$refs.msg.show({
         msg: '该功能还未实现，敬请期待!',
@@ -81,6 +103,11 @@ export default {
     },
     show() {
       this.showFlag = true
+      setTimeout(() => {
+        this.getSongSheet()
+        this.$refs.scroll.refresh()
+      }, 300)
+
     },
     hide() {
       this.showFlag = false
@@ -131,10 +158,11 @@ export default {
     width: 100%
     top: 0
     bottom: 0
+    overflow: hidden
     background: #f4f4f4
     .wrapper
       width: 100%
-      position: absolute
+      position: fixed
       left: 0
       top: 86px
       bottom: 0

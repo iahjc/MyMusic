@@ -4,7 +4,7 @@
       <div>
         <div :class="$style.top">
           <userinfo @selectUserInfo="selectUserInfo"></userinfo>
-          <user-items @selectUserMenu="selectUserMenu"></user-items>
+          <user-items :navs="userItems" @selectUserMenu="selectUserMenu"></user-items>
         </div>
         <section :class="$style.items">
           <div :class="$style.item" v-for="(item, index) in radios" :key="index" @click="playSongs(item.radioId)">
@@ -39,7 +39,7 @@ import BuildSongsheet from 'components/song-sheet/build-songsheet'
 import ManageSongsheet from 'components/song-sheet/manage-songsheet'
 import { createSong, processSongsUrl } from 'domain/song'
 import { getSongs } from 'api/radiostation'
-import {mapActions} from 'vuex'
+import {mapActions, mapGetters} from 'vuex'
 import {
   getSongSheet
 } from 'db/songSheet'
@@ -48,8 +48,51 @@ import {playlistMixin} from 'common/js/mixin'
 import Msg from 'base/msg/msg'
 export default {
   mixins: [playlistMixin],
+  computed: {
+    ...mapGetters([
+      'playHistory'
+    ])
+  },
   data() {
     return {
+      userItems: [
+        {
+          title: '全部歌曲',
+          icon: 'fa fa-music',
+          action: null,
+          count: 1
+        },
+        {
+          title: '下载歌曲',
+          icon: 'fa fa-download',
+          action: null,
+          count: 1
+        },
+        {
+          title: '最近播放',
+          icon: 'fa fa-clock-o',
+          action: null,
+          count: 0
+        },
+        {
+          title: '我喜欢',
+          icon: 'fa fa-heart-o',
+          action: null,
+          count: 1
+        },
+        {
+          title: '下载MV',
+          icon: 'fa fa-video-camera',
+          action: null,
+          count: 1
+        },
+        {
+          title: '已购音乐',
+          icon: 'fa fa-credit-card',
+          action: null,
+          count: 1
+        }
+      ],
       songSheets: [],
       menu: [
         {
@@ -96,6 +139,9 @@ export default {
   },
   created() {
     this._getSongSheet()
+  },
+  mounted() {
+    this.userItems[2].count = this.playHistory.length
   },
   methods: {
     handlePlayList(playList) {
