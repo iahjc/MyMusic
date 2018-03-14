@@ -8,7 +8,7 @@
 
 [项目演示地址](http://reli-e-ad.cn)
 
-![二维码](http://reli-e-ad.cn/qr.png)
+![二维码](http://reli.e-ad.cn/static/img/qr.png)
 
 ## bug修复
 
