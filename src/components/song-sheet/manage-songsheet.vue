@@ -1,6 +1,6 @@
 <template>
   <transition name="songsheet">
-  <section class="manage-songsheet" v-show="showFlag">
+  <section class="manage-songsheet" ref="manageSongsheet" v-show="showFlag">
     <header class="rs-header">
       <div class="r-h-nav" @click="back">
         <i class="fa  fa-chevron-left"></i>
@@ -13,7 +13,7 @@
       </p>
     </header>
 
-    <scroll class="ms-cont" :data="songSheets">
+    <scroll class="ms-cont" :data="songSheets" ref="scroll">
       <div>
         <div class="ms-li" v-for="item in songSheets" @click="selectSongSheet(item, $event)">
           <div class="ms-check">
@@ -43,7 +43,7 @@
       </div>
     </scroll>
 
-    <div class="ms-remove">
+    <div class="ms-remove" ref="remove">
       <div class="re-rm" @click="remove" :class="setCls">
         <i class="fa fa-trash-o"></i>
         <p>
@@ -63,8 +63,9 @@ import Scroll from 'base/scroll/scroll'
 import Msg from 'base/msg/msg'
 import Confirm from 'base/confirm/confirm'
 import { deleteSongSheet } from 'db/songSheet'
-
+import {playlistMixin} from 'common/js/mixin'
 export default {
+  mixins: [playlistMixin],
   computed: {
     setCls() {
       return this.size === 0 ? 'disable' : ''
@@ -91,6 +92,11 @@ export default {
     }
   },
   methods: {
+    handlePlayList(playList) {
+      const bottom = playList.length > 0 ? `1.3333333rem` : ''
+      this.$refs.manageSongsheet.style.bottom = bottom
+      this.$refs.scroll.refresh()
+    },
     recover() {
       this.$refs.msg.show({
         msg: '该功能还没有上线，敬请等待!',
