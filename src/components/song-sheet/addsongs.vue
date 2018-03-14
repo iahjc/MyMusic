@@ -21,7 +21,7 @@
         </div>
       </div>
     </scroll>
-    <songs-search ref="songsSearch" @selectItem="selectItem"></songs-search>
+    <songs-search ref="songsSearch" @refreshSongsheet="getSongSheet" @selectItem="selectItem"></songs-search>
     <msg ref="msg"></msg>
   </section>
   </transition>
@@ -53,7 +53,7 @@ export default {
     Scroll
   },
   created() {
-    this._getSongSheet()
+    this.getSongSheet()
   },
   methods: {
     openMsg() {
@@ -84,8 +84,9 @@ export default {
     },
     hide() {
       this.showFlag = false
+      this.$emit('refreshSongsheet')
     },
-    _getSongSheet() {
+    getSongSheet() {
       this.songSheets = getSongSheet()
     }
   },

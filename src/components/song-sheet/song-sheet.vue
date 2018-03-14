@@ -12,8 +12,7 @@
     </div>
   </scroll>
 
-  <addsongs ref="addSongs" :sid="sid" :songSheetName="songSheetName"></addsongs>
-  <layer-control ref="layerControl" :layerDatas="layerDatas"></layer-control>
+  <addsongs ref="addSongs" :sid="sid" :songSheetName="songSheetName" @refreshSongsheet="refreshSongsheet"></addsongs>
   <msg ref="msg"></msg>
 </section>
 </template>
@@ -28,7 +27,6 @@ import SingleTop from 'components/single-top/single-top'
 import Addsongs from 'components/song-sheet/addsongs'
 import SongItem from 'base/song-item/song-item'
 import SongMenu from 'base/song-menu/song-menu'
-import LayerControl from 'base/layer-control/layer-control'
 import Msg from 'base/msg/msg'
 import {playlistMixin} from 'common/js/mixin'
 export default {
@@ -40,7 +38,6 @@ export default {
     Addsongs,
     SongItem,
     SongMenu,
-    LayerControl,
     Msg
   },
   data() {
@@ -67,6 +64,13 @@ export default {
       setAuxiliaryActions: 'SET_AUXILIARYACTIONS',
       setShareState: 'SET_SHARESTATE'
     }),
+    refreshSongsheet() {
+      // 判断有没有添加
+      let songsheet = findSongSheet(this.sid)
+      if (songsheet.songs.length > 0 && songsheet.songs.length > this.songSheet.songs.length) {
+        this.getSongSheet(this.sid)
+      }
+    },
     addSongs() {
       this.closeAuxiliary()
       this.addSongSheet()

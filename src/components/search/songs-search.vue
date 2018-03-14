@@ -151,6 +151,8 @@ export default {
     },
     back() {
       this.hide()
+      // 同步刷新缓存的数据
+      this.$emit('refreshSongsheet')
     },
     _hotSearchList() {
       hotSearchList().then((res) => {
