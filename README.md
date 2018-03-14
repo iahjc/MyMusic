@@ -1,28 +1,15 @@
-# mymusic
+# 高仿QQ音乐
 
-> 一个vue+webpack的音乐app
+> vue+webpack+sass整合开发
 
-## Build Setup
+## 说明
 
-``` bash
-# install dependencies
-npm install
+模仿QQ音乐APP版，主要有歌手，排行，电台，分类歌单，视频MV，数字专辑，播放器，自建歌单，搜索等模块，本项目是自己独立业余开发，不可用作商业用途，如遇官方QQ问题，随时可能下线。
 
-# serve with hot reload at localhost:8080
-npm run dev
+[项目演示地址](http://reli-e-ad.cn)
 
-# build for production with minification
-npm run build
+![二维码](http://reli-e-ad.cn/qr.png)
 
-# build for production and view the bundle analyzer report
-npm run build --report
+## bug修复
 
-# run unit tests
-npm run unit
-
-# run e2e tests
-npm run e2e
-
-# run all tests
-npm test
-```
+由于项目有一定的复杂度，所以难免会出现bug，大家在发现bug的时候可以通过issue的方式提问，我会慢慢迭代修复问题，当前项目不是完整版，后期会慢慢迭代开发。
