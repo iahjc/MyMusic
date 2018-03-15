@@ -19,7 +19,8 @@
 
 <script>
 import {mapActions, mapMutations} from 'vuex'
-import { createSong, processSongsUrl, Song } from 'domain/song'
+import { createSong, processSongsUrl } from 'domain/song'
+import Song from 'domain/song'
 import { findSongSheet } from 'db/songSheet'
 import Scroll from 'base/scroll/scroll'
 import THeader from 'base/t-header/t-header'
@@ -186,7 +187,29 @@ export default {
       }
       this.songSheetName = this.songSheet.songSheetName
       if (this.songSheet.songs.length > 0) {
-        processSongsUrl(this.songSheet.songs).then((songs) => {
+        let songss = []
+        this.songSheet.songs.forEach((item) => {
+          item = new Song({
+              id: item.id,
+              mid: item.mid,
+              singer: item.singer,
+              name: item.name,
+              album: item.album,
+              duration: item.duration,
+              image: item.image,
+              url: item.url,
+              des: item.des,
+              isMv: item.isMv,
+              isOnly: item.isOnly,
+              pay: item.pay,
+              count: item.count,
+              lyricContent: item.lyricContent,
+              lyricTitle: item.lyricTitle,
+              description: item.description
+          })
+          songss.push(item)
+        })
+        processSongsUrl(songss).then((songs) => {
           this.songs = songs
         })
       } else {

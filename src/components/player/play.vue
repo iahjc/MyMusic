@@ -430,26 +430,28 @@ export default {
       }
     },
     getLyric() {
-      this.currentSong.getLyric().then((lyric) => {
-        if (this.currentSong.lyric !== lyric) {
-          return
-        }
-        this.currentLyric = new Lyric(lyric, this.handleLyric)
-        this.isPureMusic = !this.currentLyric.lines.length
-        if (this.isPureMusic) {
-          this.pureMusicLyric = this.currentLyric.lrc.replace(timeExp, '').trim()
-          this.playingLyric = this.pureMusicLyric
-        } else {
-          if (this.playing && this.canLyricPlay) {
-            // 这个时候有可能用户已经播放了歌曲，要切到对应位置
-            this.currentLyric.seek(this.currentTime * 1000)
+      if (this.currentSong.getLyric) {
+        this.currentSong.getLyric().then((lyric) => {
+          if (this.currentSong.lyric !== lyric) {
+            return
           }
-        }
-      }).catch(() => {
-        this.currentLyric = null
-        this.playingLyric = ''
-        this.currentLineNum = 0
-      })
+          this.currentLyric = new Lyric(lyric, this.handleLyric)
+          this.isPureMusic = !this.currentLyric.lines.length
+          if (this.isPureMusic) {
+            this.pureMusicLyric = this.currentLyric.lrc.replace(timeExp, '').trim()
+            this.playingLyric = this.pureMusicLyric
+          } else {
+            if (this.playing && this.canLyricPlay) {
+              // 这个时候有可能用户已经播放了歌曲，要切到对应位置
+              this.currentLyric.seek(this.currentTime * 1000)
+            }
+          }
+        }).catch(() => {
+          this.currentLyric = null
+          this.playingLyric = ''
+          this.currentLineNum = 0
+        })
+      }
     },
     handleLyric({
       lineNum,
