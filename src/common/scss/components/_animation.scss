@@ -58,6 +58,20 @@
   }
 }
 
+/*消息提醒 message*/
+.message-enter,
+.message-leave-to {
+  transform: translateY(-100%);
+}
+
+.message-enter-active {
+  transition: all .3s cubic-bezier(1.0, 0.5, 0.8, 1.0);
+}
+
+.message-leave-active {
+  transition: all .3s cubic-bezier(1.0, 0.5, 0.8, 1.0);
+}
+
 /*share*/
 .share-fade-enter-active {
   animation: fadeIn 0.3s;

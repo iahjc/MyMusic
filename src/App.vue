@@ -7,6 +7,7 @@
   <play></play>
   <share></share>
   <auxiliary></auxiliary>
+  <message></message>
 </div>
 </template>
 <script>
@@ -17,6 +18,7 @@ import NavSlidebar from 'components/nav-slidebar/nav-slidebar'
 import Play from 'components/player/play'
 import Share from 'base/share/share'
 import Auxiliary from 'base/layout/auxiliary'
+import Message from 'base/message/message'
 export default {
   name: 'app',
   computed: {
@@ -28,7 +30,8 @@ export default {
     NavSlidebar,
     Play,
     Share,
-    Auxiliary
+    Auxiliary,
+    Message
   },
   watch: {
     navFlag(newFlag) {

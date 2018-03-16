@@ -57,9 +57,6 @@ export default {
 </script>
 
   <style lang="sass" scoped="" type="text/css">
-    @import "../../common/scss/helpers/variables.scss";
-    @import "../../common/scss/helpers/mixins.scss";
-    @import "../../common/scss/base/base.scss";
     .msg-enter,.msg-leave-to
       transform: translateY(-100%)
     .msg-enter-active
@@ -68,7 +65,7 @@ export default {
       transition: all .5s cubic-bezier(1.0, 0.5, 0.8, 1.0)
     .msg
       position: fixed
-      height: 80px
+      height: 75px
       width: 100%
       top: 0
       background: #61bf81

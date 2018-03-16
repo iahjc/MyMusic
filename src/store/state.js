@@ -21,7 +21,9 @@ const state = {
   shareState: false,
   auxiliaryState: false,
   auxiliaryList: [],
-  auxiliaryActions: []
+  auxiliaryActions: [],
+  messageState: false,
+  messageOptions: {}
 }
 
 export default state

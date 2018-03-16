@@ -54,6 +54,12 @@ const matutaions = {
   },
   [types.SET_AUXILIARYACTIONS](state, list) {
     state.auxiliaryActions = list
+  },
+  [types.SET_MESSAGESTATE](state, flag) {
+    state.messageState = flag
+  },
+  [types.SET_MESSAGEOPTIONS](state, obj) {
+    state.messageOptions = obj
   }
 }
 

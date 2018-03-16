@@ -19,3 +19,5 @@ export const shareState = state => state.shareState
 export const auxiliaryState = state => state.auxiliaryState
 export const auxiliaryList = state => state.auxiliaryList
 export const auxiliaryActions = state => state.auxiliaryActions
+export const messageState = state => state.messageState
+export const messageOptions = state => state.messageOptions

@@ -28,7 +28,6 @@
     <play-history ref="playHistory"></play-history>
     <create ref="create" ></create>
     <manage-songsheet ref="ManageSongsheet" :songSheets="songSheets"></manage-songsheet>
-    <msg ref="msg"></msg>
   </section>
 </template>
 
@@ -40,13 +39,12 @@ import BuildSongsheet from 'components/song-sheet/build-songsheet'
 import ManageSongsheet from 'components/song-sheet/manage-songsheet'
 import { createSong, processSongsUrl } from 'domain/song'
 import { getSongs } from 'api/radiostation'
-import {mapActions, mapGetters} from 'vuex'
+import {mapActions, mapGetters, mapMutations} from 'vuex'
 import {
   getSongSheet
 } from 'db/songSheet'
 import Scroll from 'base/scroll/scroll'
 import {playlistMixin} from 'common/js/mixin'
-import Msg from 'base/msg/msg'
 import PlayHistory from 'components/play-history/play-history'
 export default {
   mixins: [playlistMixin],
@@ -137,7 +135,6 @@ export default {
     BuildSongsheet,
     ManageSongsheet,
     Scroll,
-    Msg,
     PlayHistory
   },
   created() {
@@ -152,6 +149,10 @@ export default {
       this.$refs.userCenter.style.bottom = bottom
       this.$refs.scroll.refresh()
     },
+    ...mapMutations({
+      setMessageState: 'SET_MESSAGESTATE',
+      setMessageOptions: 'SET_MESSAGEOPTIONS'
+    }),
     openPlayHistory() {
       this.$refs.playHistory.show()
     },
@@ -189,25 +190,29 @@ export default {
       })
     },
     selectUserInfo(item, index) {
-      if (typeof (item.action) === 'function') {
-        item.action.call(this, item, index)
-      } else {
-        this.$refs.msg.show({
-          msg: '用户模块 还未上线，敬请期待!',
-          msgType: 'error',
-          delay: 900
-        })
-      }
+      this.setMessageOptions({
+        msg: '用户模块还未上线，敬请期待!',
+        type: 'error',
+        icon: 'fa fa-question-circle-o'
+      })
+      this.setMessageState(true)
+      setTimeout(() => {
+        this.setMessageState(false)
+      }, 900)
     },
     selectUserMenu(item, index) {
       if (typeof (item.action) === 'function') {
         item.action.call(this, item, index)
       } else {
-        this.$refs.msg.show({
+        this.setMessageOptions({
           msg: item.title + '模块 还未上线，敬请期待!',
-          msgType: 'error',
-          delay: 900
+          type: 'error',
+          icon: 'fa fa-question-circle-o'
         })
+        this.setMessageState(true)
+        setTimeout(() => {
+          this.setMessageState(false)
+        }, 900)
       }
     },
     openManage() {
