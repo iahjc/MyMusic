@@ -55,6 +55,9 @@ export default {
       }
     }
   },
+  mounted() {
+    console.log(this.navs)
+  },
   methods: {
     selectUserMenu(item, index) {
       this.$emit('selectUserMenu', item, index)

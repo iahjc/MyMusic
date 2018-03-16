@@ -25,6 +25,7 @@
         <build-songsheet @createSongSheet="createSongSheet"  @selectSongSheet="selectSongSheet" :songSheets="songSheets" :menu="menu"></build-songsheet>
       </div>
     </scroll>
+    <play-history ref="playHistory"></play-history>
     <create ref="create" ></create>
     <manage-songsheet ref="ManageSongsheet" :songSheets="songSheets"></manage-songsheet>
     <msg ref="msg"></msg>
@@ -46,6 +47,7 @@ import {
 import Scroll from 'base/scroll/scroll'
 import {playlistMixin} from 'common/js/mixin'
 import Msg from 'base/msg/msg'
+import PlayHistory from 'components/play-history/play-history'
 export default {
   mixins: [playlistMixin],
   computed: {
@@ -71,7 +73,7 @@ export default {
         {
           title: '最近播放',
           icon: 'fa fa-clock-o',
-          action: null,
+          action: this.openPlayHistory,
           count: 0
         },
         {
@@ -135,7 +137,8 @@ export default {
     BuildSongsheet,
     ManageSongsheet,
     Scroll,
-    Msg
+    Msg,
+    PlayHistory
   },
   created() {
     this._getSongSheet()
@@ -148,6 +151,9 @@ export default {
       const bottom = playList.length > 0 ? `1.3333333rem` : ''
       this.$refs.userCenter.style.bottom = bottom
       this.$refs.scroll.refresh()
+    },
+    openPlayHistory() {
+      this.$refs.playHistory.show()
     },
     initSongs(list) {
       let ret = []
@@ -182,19 +188,27 @@ export default {
         console.log(err)
       })
     },
-    selectUserInfo() {
-      this.$refs.msg.show({
-        msg: '用户模块 还未上线，敬请期待!',
-        msgType: 'error',
-        delay: 900
-      })
+    selectUserInfo(item, index) {
+      if (typeof (item.action) === 'function') {
+        item.action.call(this, item, index)
+      } else {
+        this.$refs.msg.show({
+          msg: '用户模块 还未上线，敬请期待!',
+          msgType: 'error',
+          delay: 900
+        })
+      }
     },
     selectUserMenu(item, index) {
-      this.$refs.msg.show({
-        msg: item.title + '模块 还未上线，敬请期待!',
-        msgType: 'error',
-        delay: 900
-      })
+      if (typeof (item.action) === 'function') {
+        item.action.call(this, item, index)
+      } else {
+        this.$refs.msg.show({
+          msg: item.title + '模块 还未上线，敬请期待!',
+          msgType: 'error',
+          delay: 900
+        })
+      }
     },
     openManage() {
       this._getSongSheet()

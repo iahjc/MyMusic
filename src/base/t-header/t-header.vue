@@ -7,7 +7,7 @@
       {{title}}
     </h4>
     <div :class="$style.control" @click="selectRightMenu">
-      <i class="fa fa-ellipsis-h" v-show="rFlag"></i>
+      <i :class="rIcon" v-show="rFlag"></i>
     </div>
   </header>
 </template>
@@ -26,6 +26,10 @@ export default {
     rFlag: {
       type: Boolean,
       default: true
+    },
+    rIcon: {
+      type: String,
+      default: 'fa fa-ellipsis-h'
     }
   },
   computed: {
