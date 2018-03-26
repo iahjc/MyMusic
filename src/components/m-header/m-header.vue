@@ -46,7 +46,7 @@ export default {
 
   .header
     width: 100%
-    @include px2rem(height, 152px)
+    height: 152px
     background-color: $header-bg
     display: flex
     flex-direction: column
@@ -58,7 +58,7 @@ export default {
       display: flex
       width: 100%
       justify-content: space-between
-      @include px2rem(height, 80px)
+      height: 80px
       align-items: center
       .mh-t-navbar
         width: 100px
@@ -74,13 +74,13 @@ export default {
           display: flex
           font-size: 30px; /*px*/
           color: $h-cr-color
-          @include px2rem(height, 50px)
+          height: 50px
           align-items: center
           a
             display: inline-block
-            @include px2rem(margin-right, 47px)
+            margin-right: 47px
             color: #f8ffff
-            @include px2rem(height, 50px)
+            height: 50px
             display: flex
             align-items: center
           a.router-link-exact-active,a.router-link-active
@@ -97,7 +97,7 @@ export default {
           font-size: 38px; /*px*/
   .mh-search
     width: 90%
-    @include px2rem(height, 60px)
+    height: 60px
     background-color: $h-input-color
     display: flex
     align-items: center

@@ -54,8 +54,6 @@ export default {
 </script>
 
 <style lang="sass" scoped="" type="text/css">
-  @import "../../common/scss/helpers/variables.scss";
-  @import "../../common/scss/helpers/mixins.scss";
   @import "../../common/scss/base/base.scss";
 
   .condition
@@ -65,10 +63,10 @@ export default {
       display: flex
       border-bottom: 1px solid #ededed; /*no*/
       li
-        @include px2rem(height, 70px)
-        @include px2rem(width, 110px)
+        height: 70px
+        width: 110px
         text-align: center
-        @include px2rem(line-height, 70px)
+        line-height: 70px
       li.cur
         color: #81a395
 </style>

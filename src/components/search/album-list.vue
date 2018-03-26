@@ -71,10 +71,6 @@ export default {
 </script>
 
   <style lang="sass" scoped="" type="text/css">
-    @import "../../common/scss/helpers/variables.scss";
-    @import "../../common/scss/helpers/mixins.scss";
-    @import "../../common/scss/base/base.scss";
-    @import "../../common/scss/components/buttons.scss";
 
     .album-list
       width: 100%
@@ -87,19 +83,19 @@ export default {
         justify-content: center
       .al-li
         width: 100%
-        @include px2rem(height, 125px)
+        height: 125px
         border-bottom: 1px solid #f0f0f0; /*px*/
         ul
           width: 100%
           height: 100%
           display: flex
           li:first-child
-            @include px2rem(width, 125px)
-            @include px2rem(height, 125px)
+            width: 125px
+            height: 125px
             img
               width: 100%
           li:nth-child(2)
-            @include px2rem(margin-left, 28px)
+            margin-left: 28px
             display: flex
             flex-direction: column
             justify-content: center
@@ -107,11 +103,11 @@ export default {
             p:first-child
               font-size: 28px; /*px*/
             p:last-child
-              @include px2rem(margin-top, 18px)
+              margin-top: 18px
               font-size: 20px; /*px*/
               color: #7f7f7f
           li:nth-child(3)
-            @include px2rem(width, 70px)
+            width: 70px
             display: flex
             justify-content: center
             align-items: center

@@ -264,10 +264,6 @@ export default {
     z-index: 30
   </style>
 <style lang="sass" scoped="" type="text/css">
-  @import "../../common/scss/helpers/variables.scss";
-  @import "../../common/scss/helpers/mixins.scss";
-  @import "../../common/scss/helpers/function.scss";
-  @import "../../common/scss/base/base.scss";
   .song-list
     width: 100%
     position: fixed

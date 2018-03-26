@@ -114,8 +114,6 @@ export default {
 
   <style lang="sass" scoped="" type="text/css">
     @import "../../common/scss/helpers/variables.scss";
-    @import "../../common/scss/helpers/mixins.scss";
-    @import "../../common/scss/base/base.scss";
 
     .radio-station
       position: fixed
@@ -126,7 +124,7 @@ export default {
       top: 0
       .rs-cont
         position: absolute
-        @include px2rem(top, 86px)
+        top: 86px
         width: 100%
         bottom: 0
         .c-w-lis
@@ -134,10 +132,10 @@ export default {
           border-bottom: 2px solid #ededed
           flex-wrap: wrap
           li
-            @include px2rem(height, 70px)
-            @include px2rem(width, 110px)
+            height: 70px
+            width: 110px
             text-align: center
-            @include px2rem(line-height, 70px)
+            line-height: 70px
           li.cur
             color: #81a395
         .cw-c
@@ -145,18 +143,18 @@ export default {
           flex-wrap: wrap
           justify-content: space-between
           .cw-c-li
-            @include px2rem(width, 240px)
-            @include px2rem(padding-bottom, 30px)
+            width: 240px
+            padding-bottom: 30px
             .cwc-img
-              @include px2rem(height, 240px)
-              @include px2rem(width, 240px)
+              height: 240px
+              width: 240px
               img
                 width: 100%
             p:nth-child(2)
               width: 90%
               margin: 0 auto
               font-size: 28px; /*px*/
-              @include px2rem(line-height, 60px)
+              line-height: 60px
             p:nth-child(3)
               width: 90%
               margin: 0 auto

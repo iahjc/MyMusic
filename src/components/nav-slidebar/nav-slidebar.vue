@@ -139,11 +139,9 @@ export default {
 
 <style lang="sass" scoped="" type="text/css">
   @import "../../common/scss/helpers/variables.scss";
-  @import "../../common/scss/helpers/mixins.scss";
-  @import "../../common/scss/helpers/function.scss";
-  @import "../../common/scss/base/base.scss";
+
   section.navSlidebarWidth
-    @include px2rem('width', 640px)
+    width: 640px
 
   .navSlidebar
     position: absolute
@@ -161,15 +159,15 @@ export default {
       margin-left: 5%
       .l-ns-lis
         width: 100%
-        @include px2rem(margin-top, 48px)
+        margin-top: 48px
         li
           display: flex
           .l-ns-title
             width: 50%
             font-size: 28px; /*px*/
             color: $ns-l-color
-            @include px2rem(margin-top, 24px)
-            @include px2rem(margin-bottom, 24px)
+            margin-top: 24px
+            margin-bottom: 24px
           .l-ns-des
             width: 50%
             text-align: right
@@ -184,7 +182,7 @@ export default {
       position: absolute
       bottom: 0
       left: 5%
-      @include px2rem(height, 100px)
+      height: 100px
       box-sizing: border-box
       border-top: 1px solid #e8e8e8; /*no*/
       i

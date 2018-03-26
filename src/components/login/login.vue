@@ -35,9 +35,6 @@ export default {
 </script>
 
   <style lang="sass" scoped="" type="text/css">
-    @import "../../common/scss/helpers/variables.scss";
-    @import "../../common/scss/helpers/mixins.scss";
-    @import "../../common/scss/base/base.scss";
     @import "../../common/scss/components/buttons.scss";
 
     .login
@@ -59,13 +56,13 @@ export default {
             justify-content: center
             canvas
               background: #ccc
-              @include px2rem(width, 100px)
-              @include px2rem(height, 100px)
+              width: 100px
+              height: 100px
           li:nth-child(2)
             span
               font-size: 28px; /*px*/
             input
-              @include px2rem(height, 45px)
+              height: 45px
               background: none
               border: 1px solid #71ca9a
               color: #fff

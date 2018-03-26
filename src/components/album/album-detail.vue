@@ -1,8 +1,8 @@
 <template>
-<section class="song-list" v-show="album">
+<section :class="$style.songList" v-show="album">
   <t-header :title="title" @back="back" @selectRightMenu="selectRightMenu"></t-header>
   <single-top :detas="album"></single-top>
-  <scroll class="sl-wrapper" :data="songList" ref="scroll">
+  <scroll :class="$style.wrapper" :data="songList" ref="scroll">
     <div>
       <song-menu @playAll="playAll"></song-menu>
       <div class="sl-list">
@@ -221,137 +221,16 @@ export default {
 }
 </script>
 
-<style lang="sass" scoped="" type="text/css">
-  @import "../../common/scss/helpers/variables.scss";
-  @import "../../common/scss/helpers/mixins.scss";
-  @import "../../common/scss/helpers/function.scss";
-  @import "../../common/scss/base/base.scss";
-
-  .song-list
+<style lang="sass" scoped="" type="text/css" module>
+  .songList
     width: 100%
     position: fixed
     bottom: 0
     overflow: hidden
     top: 0
-    .sl-h
-      width: 100%
+    .wrapper
       position: absolute
-      left: 0
-      @include px2rem(height, 80px)
-      display: flex
-      justify-content: space-between
-      align-items: center
-      z-index: 10
-      .sl-h-nav
-        @include px2rem(width, 100px)
-        display: flex
-        justify-content: center
-        i
-          color: #fff
-          font-size: 64px; /*px*/
-      p
-        font-size: 35px; /*px*/
-        color: #fffdfe
-      .sl-h-r
-        @include px2rem(width, 100px)
-        display: flex
-        justify-content: center
-        i
-          font-size: 40px; /*px*/
-          color: #fff
-    .sl-c
-      @include px2rem(height, 520px)
-      display: flex
-      justify-content: center
-      align-items: center
-      flex-direction: column
-      position: relative
-      overflow: hidden
-      .sl-c-bg
-        width: 100%
-        height: 100%
-        position: absolute
-        img
-          width: 100%
-          height: 100%
-          filter: blur(90px)
-        div
-          width: 100%
-          height: 100%
-          background-color: rgba(0, 0, 0, .2)
-          position: absolute
-          left: 0
-          top: 0
-          z-index: 1
-      .sl-z
-        position: relative
-        z-index: 10
-        display: flex
-        align-items: center
-        overflow: hidden
-        @include px2rem(height, 250px)
-        .sl-z-img
-          @include px2rem(width, 250px)
-          @include px2rem(height, 250px)
-          img
-            width: 100%
-            height: 100%
-        .sl-z-c
-          @include px2rem(width, 382px)
-          @include px2rem(margin-left, 24px)
-          h2
-            font-size: 34px; /*px*/
-            @include px2rem(line-height, 38px)
-            @include px2rem(width, 320px)
-            color: #fff3f7
-          .sl-z-a
-            @include px2rem(height, 52px)
-            display: flex
-            align-items: center
-            @include px2rem(margin-top, 24px)
-            @include px2rem(margin-bottom, 24px)
-            .sl-z-a-i
-              @include px2rem(width, 52px)
-              @include px2rem(height, 52px)
-              @include px2rem(margin-right, 10px)
-              position: relative
-              img
-                width: 100%
-                border-radius: 300px
-              img:last-child
-                @include px2rem(width, 15px)
-                @include px2rem(height, 16px)
-                position: absolute
-                right: 0
-                bottom: 0
-            span
-              font-size: 24px; /*px*/
-              color: #f9f1ef
-        p
-          text-overflow: ellipsis
-          @include px2rem(height, 32px)
-          @include px2rem(line-height, 32px)
-          overflow: hidden
-          font-size: 26px; /*px*/
-          color: #fff8f0
-      .sl-b
-        display: flex
-        color: #fcfcfe
-        position: absolute
-        bottom: 6%
-        z-index: 5
-        width: 100%
-        justify-content: space-between
-        @include px2rem(width, 650px)
-        li
-          @include px2rem(height, 36px)
-          display: flex
-          align-items: center
-          i
-            font-size: 36px; /*px*/
-    .sl-wrapper
-      position: absolute
-      @include px2rem(top, 520px)
+      top: 520px
       width: 100%
       bottom: 0
       overflow: hidden

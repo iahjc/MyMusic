@@ -162,10 +162,6 @@ export default {
 </script>
 
   <style lang="sass" scoped="" type="text/css">
-    @import "../../common/scss/helpers/variables.scss";
-    @import "../../common/scss/helpers/function.scss";
-    @import "../../common/scss/helpers/mixins.scss";
-    @import "../../common/scss/base/base.scss";
     @import "../../common/scss/components/buttons.scss"
 
     .gd-detail
@@ -179,14 +175,14 @@ export default {
         width: 100%
         position: absolute
         left: 0
-        @include px2rem(height, 80px)
+        height: 80px
         display: flex
         top: 0
         justify-content: space-between
         align-items: center
         z-index: 10
         .sl-h-nav
-          @include px2rem(width, 100px)
+          width: 100px
           display: flex
           justify-content: center
           i
@@ -196,7 +192,7 @@ export default {
           font-size: 30px; /*px*/
           color: #fffdfe
         .sl-h-r
-          @include px2rem(width, 100px)
+          width: 100px
           display: flex
           justify-content: center
           i
@@ -212,7 +208,7 @@ export default {
         overflow: hidden
       .gd-t
         width: 100%
-        @include px2rem(height, 400px)
+        height: 400px
         background: #ccc
         position: relative
         overflow: hidden

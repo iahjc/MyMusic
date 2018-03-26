@@ -61,10 +61,6 @@ export default {
 </script>
 
   <style lang="sass" scoped="" type="text/css">
-    @import "../../common/scss/helpers/variables.scss";
-    @import "../../common/scss/helpers/mixins.scss";
-    @import "../../common/scss/base/base.scss";
-    @import "../../common/scss/components/buttons.scss";
     .mv-list
       width: 100%
       position: relative
@@ -75,15 +71,15 @@ export default {
         display: flex
         justify-content: center
       .mv-li
-        @include px2rem(height, 128px)
+        height: 128px
         border-bottom: 1px solid #efefef; /*px*/
         box-sizing: border-box
         ul
           display: flex
           li
-            @include px2rem(height, 128px)
+            height: 128px
           li:first-child
-            @include px2rem(width, 220px)
+            width: 220px
             img
               width: 100%
           li:last-child
@@ -92,10 +88,10 @@ export default {
             flex-direction: column
             justify-content: center
             box-sizing: border-box
-            @include px2rem(max-width, 480px)
-            @include px2rem(margin-left, 28px)
+            max-width: 480px
+            margin-left: 28px
             p:last-child
               font-size: 20px; /*px*/
               color: #4c4c4c
-              @include px2rem(margin-top, 24px)
+              margin-top: 24px
 </style>

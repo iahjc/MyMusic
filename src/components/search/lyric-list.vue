@@ -94,9 +94,6 @@ export default {
 </script>
 
   <style lang="sass" scoped="" type="text/css">
-    @import "../../common/scss/helpers/variables.scss";
-    @import "../../common/scss/helpers/mixins.scss";
-    @import "../../common/scss/base/base.scss";
     @import "../../common/scss/components/buttons.scss";
     .lyric-list
       .lyric-loading
@@ -109,11 +106,9 @@ export default {
         width: 100%
         .lyric-songs-li
           display: flex
-          @include px2rem(border-bottom-width, 2px)
-          border-style: solid
-          border-color: #f2f2f2
-          @include px2rem(padding-top, 20px)
-          @include px2rem(padding-bottom, 20px)
+          border-bottom: 1px solid #f2f2f2
+          padding-top: 20px
+          padding-bottom: 20px
           box-sizing: border-box
           padding-left: 2.5%
           .sls-l
@@ -121,19 +116,19 @@ export default {
             p:first-child
               font-size: 28px; /*px*/
               color: #363636
-              @include px2rem(height, 28px)
-              @include px2rem(line-height, 28px)
+              height: 28px
+              line-height: 28px
             p:nth-child(2)
-              @include px2rem(margin-top, 10px)
+              margin-top: 10px
               font-size: 20px; /*px*/
               span:first-child
                 color: #666
             p:last-child
-              @include px2rem(margin-top, 10px)
+              margin-top: 10px
               font-size: 24px; /*px*/
               color: #666666
             .lyric-cont
-              @include px2rem(margin-top, 32px)
+              margin-top: 32px
               .lyric-wrapper
                 margin-top: 36px
                 font-size: 20px; /*px*/
@@ -143,21 +138,21 @@ export default {
                 color: #b4b4b4
                 margin-top: 36px
               .lc-t
-                @include px2rem(line-height, 38px)
+                line-height: 38px
           .sls-r
-            @include px2rem(width, 80px)
+            width: 80px
             display: flex
             justify-content: center
             i
               font-size: 40px; /*px*/
               color: #afafaf
           .sls-m
-            @include px2rem(width, 80px)
+            width: 80px
             display: flex
             justify-content: center
             .icon2
               background: #afafaf
               color: #fff
-              @include px2rem(padding-left, 2px)
-              @include px2rem(padding-right, 2px)
+              padding-left: 2px
+              padding-right: 2px
 </style>

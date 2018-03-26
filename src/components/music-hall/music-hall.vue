@@ -193,10 +193,6 @@ export default {
 </script>
 
   <style lang="sass" scoped="" type="text/css">
-    @import "../../common/scss/helpers/variables.scss";
-    @import "../../common/scss/helpers/function.scss";
-    @import "../../common/scss/helpers/mixins.scss";
-    @import "../../common/scss/base/base.scss";
 
     .music-hall
       width: 100%
@@ -226,13 +222,13 @@ export default {
         box-sizing: border-box
         li
           width: 33.33%
-          @include px2rem(height, 82px)
+          height: 82px
           display: flex
           justify-content: center
           align-items: center
           span
             display: block
-            @include px2rem(width, 100px)
+            width: 100px
           i
             font-size: 48px; /*px*/
     .col-3-cont
@@ -250,7 +246,7 @@ export default {
             left: 0
             bottom: 0px
             z-index: 2
-            @include px2rem(height, 56px)
+            height: 56px
             display: flex
             justify-content: space-between
             width: 100%
@@ -266,10 +262,10 @@ export default {
         p
           color: #0d0d0d
           font-size: 24px; /*px*/
-          @include px2rem(line-height, 32px)
+          line-height: 32px
           box-sizing: border-box
           padding-left: 3%
           padding-right: 3%
-          @include px2rem(margin-top, 16px)
-          @include px2rem(margin-bottom, 16px)
+          margin-top: 16px
+          margin-bottom: 16px
 </style>

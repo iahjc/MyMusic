@@ -56,10 +56,6 @@ export default {
 </script>
 
   <style lang="sass" scoped="" type="text/css">
-    @import "../../common/scss/helpers/variables.scss";
-    @import "../../common/scss/helpers/function.scss";
-    @import "../../common/scss/helpers/mixins.scss";
-    @import "../../common/scss/base/base.scss";
     @import "../../common/scss/components/buttons.scss"
 
     .catelist-enter,.catelist-leave-to

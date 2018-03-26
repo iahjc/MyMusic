@@ -126,10 +126,6 @@ export default {
 </script>
 
   <style lang="sass" scoped="" type="text/css">
-    @import "../../common/scss/helpers/variables.scss";
-    @import "../../common/scss/helpers/mixins.scss";
-    @import "../../common/scss/helpers/function.scss";
-    @import "../../common/scss/base/base.scss";
 
     .music-control
       position: absolute
@@ -139,14 +135,12 @@ export default {
       background: rgba(0, 0, 0, 0.9)
       z-index: 111
       .mc-t
-        @include px2rem(height, 85px)
+        height: 85px
         color: #897c76
         display: flex
         align-items: center
         box-sizing: border-box
-        @include px2rem(border-bottom-width, 2px)
-        border-style: solid
-        border-color: rbga(255, 255, 255, .7)
+        border-bottom: 1px solid rbga(255, 255, 255, .7); /*no*/
         font-size: 24px; /*px*/
         box-sizing: border-box
         padding-left: 5%
@@ -158,33 +152,31 @@ export default {
         width: 100%
         display: flex
         justify-content: center
-        @include px2rem(margin-top, 30px)
-        @include px2rem(padding-bottom, 20px)
-        @include px2rem(border-bottom-width, 2px)
-        border-style: solid
-        border-color: rgba(255, 255, 255, .7)
+        margin-top: 30px
+        padding-bottom: 20px
+        border-bottom: 1px solid rgba(255, 255, 255, .7); /*no*/
         ul
           width: 95%
           display: flex
           flex-wrap: wrap
           justify-content: space-between
-          @include px2rem(margin-right, -35px)
+          margin-right: -35px
           li
-            @include px2rem(width, 92px)
+            width: 92px
             color: #c1bdbc
-            @include px2rem(margin-right, 35px)
+            margin-right: 35px
             .mc-icon
-              @include px2rem(width, 92px)
-              @include px2rem(height, 92px)
+              width: 92px
+              height: 92px
               background: rgba(255, 255, 255, .3)
-              @include px2rem(border-radius, 15px)
+              border-radius: 15px
               display: flex
               justify-content: center
               align-items: center
               i
                 font-size: 50px; /*px*/
             p
-              @include px2rem(height, 70px)
+              height: 70px
               font-size: 20px; /*px*/
               color: #fff
               opacity: .7
@@ -193,11 +185,9 @@ export default {
               align-items: center
       .mc-voice
         width: 100%
-        @include px2rem(height, 125px)
+        height: 125px
         color: #fff
-        @include px2rem(border-bottom-width, 2px)
-        border-style: solid
-        border-color: rgba(255, 255, 255, .7)
+        border-bottom: 1px solid rgba(255, 255, 255, .7); /*no*/
         display: flex
         justify-content: center
         align-items: center
@@ -206,14 +196,14 @@ export default {
           justify-content: center
           align-items: center
           li:nth-child(2)
-            @include px2rem(width, 480px)
+            width: 480px
             .mc-vc
               width: 100%
-              @include px2rem(height, 8px)
+              height: 8px
               background: rgba(255, 255, 255, .6)
           li
-            @include px2rem(width, 100px)
-            @include px2rem(height, 100px)
+            width: 100px
+            height: 100px
             display: flex
             justify-content: center
             align-items: center
@@ -221,7 +211,7 @@ export default {
               font-size: 32px; /*px*/
       .mc-close
         width: 100%
-        @include px2rem(height, 110px)
+        height: 110px
         color: #fff
         font-size: 30px; /*px*/
         display: flex

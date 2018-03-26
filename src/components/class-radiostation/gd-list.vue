@@ -45,17 +45,13 @@ export default {
 </script>
 
   <style lang="sass" scoped="" type="text/css">
-    @import "../../common/scss/helpers/variables.scss";
-    @import "../../common/scss/helpers/function.scss";
-    @import "../../common/scss/helpers/mixins.scss";
-    @import "../../common/scss/base/base.scss";
     @import "../../common/scss/components/buttons.scss"
 
     .gd-list
       .gd-t
         display: flex
         justify-content: space-between
-        @include px2rem(height, 92px)
+        height: 92px
         align-items: center
         .gd-t-title
           font-size: 32px; /*px*/
@@ -66,11 +62,11 @@ export default {
         flex-wrap: wrap
         justify-content: space-between
         li
-          @include px2rem(width, 350px)
+          width: 350px
           .gd-img
-            @include px2rem(width, 350px)
-            @include px2rem(height, 350px)
-            @include px2rem(margin-bottom, 20px)
+            width: 350px
+            height: 350px
+            margin-bottom: 20px
             img
               width: 100%
           p
@@ -78,14 +74,14 @@ export default {
             width: 95%
             margin: 0 auto
             color: #000000
-            @include px2rem(line-height, 38px)
+            line-height: 38px
           .gd-author
             width: 95%
             margin: 0 auto
             font-size: 20px; /*px*/
-            @include px2rem(height, 40px)
+            height: 40px
             display: flex
             align-items: center
             color: #5d5d5d
-            @include px2rem(margin-bottom, 20px)
+            margin-bottom: 20px
 </style>

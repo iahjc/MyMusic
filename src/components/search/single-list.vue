@@ -111,28 +111,24 @@ export default {
 </script>
 
   <style lang="sass" scoped="" type="text/css">
-    @import "../../common/scss/helpers/variables.scss";
-    @import "../../common/scss/helpers/mixins.scss";
-    @import "../../common/scss/base/base.scss";
-    @import "../../common/scss/components/buttons.scss";
 
     .single-list
       .sl-fast
         width: 95%
         margin: 0 auto
         border-bottom: 1px solid #efefef; /*px*/
-        @include px2rem(padding-bottom, 20px)
+        padding-bottom: 20px
         p.sl-title
-          @include px2rem(height, 60px)
-          @include px2rem(line-height, 60px)
+          height: 60px
+          line-height: 60px
           font-size: 20px; /*px*/
           color: #828282
         .sm-zp
           li.album
             display: flex
             div.album-l
-              @include px2rem(width, 105px)
-              @include px2rem(height, 105px)
+              width: 105px
+              height: 105px
               img
                 width: 100%
             div.slbum-r
@@ -142,7 +138,7 @@ export default {
               i
                 font-size: 52px; /*px*/
             div.album-m
-              @include px2rem(margin-left, 25px)
+              margin-left: 25px
               flex: 1
               display: flex
               justify-content: center
@@ -151,7 +147,7 @@ export default {
                 font-size: 28px; /*px*/
                 color: #444
               p:last-child
-                @include px2rem(margin-top, 16px)
+                margin-top: 16px
                 font-size: 20px; /*px*/
                 color: #666666
       .sl-loading
@@ -165,8 +161,8 @@ export default {
         .sl-songs-li
           display: flex
           border-bottom: 1px solid #f2f2f2; /*px*/
-          @include px2rem(padding-top, 20px)
-          @include px2rem(padding-bottom, 20px)
+          padding-top: 20px
+          padding-bottom: 20px
           box-sizing: border-box
           padding-left: 2.5%
           .sls-l
@@ -174,31 +170,31 @@ export default {
             p:first-child
               font-size: 28px; /*px*/
               color: #363636
-              @include px2rem(height, 28px)
-              @include px2rem(line-height, 28px)
+              height: 28px
+              line-height: 28px
             p:nth-child(2)
-              @include px2rem(margin-top, 10px)
+              margin-top: 10px
               font-size: 20px; /*px*/
               span:first-child
                 color: #666
             p:last-child
-              @include px2rem(margin-top, 10px)
+              margin-top: 10px
               font-size: 24px; /*px*/
               color: #666666
           .sls-r
-            @include px2rem(width, 80px)
+            width: 80px
             display: flex
             justify-content: center
             i
               font-size: 40px; /*px*/
               color: #afafaf
           .sls-m
-            @include px2rem(width, 80px)
+            width: 80px
             display: flex
             justify-content: center
             .icon2
               background: #afafaf
               color: #fff
-              @include px2rem(padding-left, 2px)
-              @include px2rem(padding-right, 2px)
+              padding-left: 2px
+              padding-right: 2px
 </style>
