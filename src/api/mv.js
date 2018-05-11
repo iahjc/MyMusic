@@ -24,6 +24,7 @@ export function getMvType() {
     '_': '0.39269422918813635'
   }
 
+
   let url = '/api/getMvType'
 
   return axios.get(url, {
